@@ -44,15 +44,15 @@ public class TankCommond : CharCommond
         {
             GameObject particleObj = BattleObjManager.Instance.
                 BorrowParticleObj(m_effectResPath);
+            particleObj.transform.position = Vector3.zero;
             particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
             if (m_effectPointTrs == null)
             {
+                Debug.Log("m_cctr.Transform.position" + m_cctr.Transform.position);
                 m_effectPointTrs = m_cctr.Transform.Find(m_effectPointTrsPath);
             }
             particleObj.transform.SetParent(m_effectPointTrs, false);
         }
-        //m_cctr.Animator.SetTrigger("Fire");
-
     }
 
     public void Attacked()
