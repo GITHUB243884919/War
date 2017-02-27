@@ -54,13 +54,14 @@ public class Scene_Commond_Test : MonoBehaviour
         obj.GameObject.transform.position = initPos;
 
         //
+        CharController cctr = null;
         if (withAI)
         {
 
-            CharController ctr = obj.GameObject.GetComponent<CharController>();
+            cctr = obj.GameObject.GetComponent<CharController>();
             Vector3 target = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
-            ctr.TargetForArrive = target;
-            ctr.Commond(CharController.E_COMMOND.ARRIVE);
+            cctr.TargetForArrive = target;
+            cctr.Commond(CharController.E_COMMOND.ARRIVE);
         }
 
         if (withEffect)
@@ -72,16 +73,18 @@ public class Scene_Commond_Test : MonoBehaviour
             //Transform firePoint = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01");
             //effectGo.transform.SetParent(firePoint, false);
 
-            string effectPath = "Effect/Tank/Prefab/Tank_dapao_fire";
-            GameObject particleObj = null;
-            Transform trs = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01/Tank_dapao_fire");
-            if (trs == null)
-            {
-                particleObj = BattleObjManager.Instance.BorrowParticleObj(effectPath);
-                particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
-                Transform firePoint = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01");
-                particleObj.transform.SetParent(firePoint, false);
-            }
+            //string effectPath = "Effect/Tank/Prefab/Tank_dapao_fire";
+            //GameObject particleObj = null;
+            //Transform trs = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01/Tank_dapao_fire");
+            //if (trs == null)
+            //{
+            //    particleObj = BattleObjManager.Instance.BorrowParticleObj(effectPath);
+            //    particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
+            //    Transform firePoint = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01");
+            //    particleObj.transform.SetParent(firePoint, false);
+            //}
+
+            cctr.Commond(CharController.E_COMMOND.ATTACK);
 
 
         }
