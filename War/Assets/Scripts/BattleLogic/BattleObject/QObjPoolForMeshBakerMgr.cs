@@ -14,8 +14,8 @@ using System.Collections.Generic;
 
 public class QObjPoolForMeshBakerMgr
 {
-    Dictionary<BattleScene2.E_BATTLE_OBJECT_TYPE, QObjPool<GameObject>> m_pools =
-        new Dictionary<BattleScene2.E_BATTLE_OBJECT_TYPE, QObjPool<GameObject>>();
+    Dictionary<BattleObjManager.E_BATTLE_OBJECT_TYPE, QObjPool<GameObject>> m_pools =
+        new Dictionary<BattleObjManager.E_BATTLE_OBJECT_TYPE, QObjPool<GameObject>>();
 
     private static QObjPoolForMeshBakerMgr s_Instance = null;
     public static QObjPoolForMeshBakerMgr Instance
@@ -42,7 +42,7 @@ public class QObjPoolForMeshBakerMgr
         };
         Debug.Log("Init Tank pool");
         InitBattleObjPool(pathsTank,
-            BattleScene2.E_BATTLE_OBJECT_TYPE.TANK, countTank);
+            BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK, countTank);
 
         //int countSoldier = 32;
         //string[] pathsSoldier = new string[4] 
@@ -57,7 +57,7 @@ public class QObjPoolForMeshBakerMgr
         //    BattleScene2.E_BATTLE_OBJECT_TYPE.SOLDIER, countSoldier);
     }
 
-    public GameObject BorrowObj(BattleScene2.E_BATTLE_OBJECT_TYPE type)
+    public GameObject BorrowObj(BattleObjManager.E_BATTLE_OBJECT_TYPE type)
     {
         GameObject obj = null;
         QObjPool<GameObject> pool = null;
@@ -72,7 +72,7 @@ public class QObjPoolForMeshBakerMgr
         return obj;
     }
 
-    public void ReturnObj(GameObject obj, BattleScene2.E_BATTLE_OBJECT_TYPE type)
+    public void ReturnObj(GameObject obj, BattleObjManager.E_BATTLE_OBJECT_TYPE type)
     {
         QObjPool<GameObject> pool = null;
         m_pools.TryGetValue(type, out pool);
@@ -84,10 +84,10 @@ public class QObjPoolForMeshBakerMgr
         pool.ReturnObj(obj);
     }
 
-    private void InitBattleObjPool(string[] paths, BattleScene2.E_BATTLE_OBJECT_TYPE type, int count)
+    private void InitBattleObjPool(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
     {
         QObjCreatorFactory<GameObject> creatorFactory = new QObjCreatorFactoryForMeshBaker(
-            paths, BattleScene2.E_BATTLE_OBJECT_TYPE.TANK, count);
+            paths, BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK, count);
 
         QObjPool<GameObject> pool = new QObjPool<GameObject>();
         pool.Init(null, creatorFactory);

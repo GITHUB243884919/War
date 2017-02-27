@@ -34,7 +34,7 @@ public class BattleObjManager : MonoBehaviour
                 s_Instance = FindObjectOfType(typeof(BattleObjManager))
                         as BattleObjManager;
                 if (s_Instance == null)
-                    Debug.Log("场景中没有持有BattleObjManager的对象");
+                    Debug.LogError("场景中没有持有BattleObjManager的对象");
             }
             return s_Instance;
         }
@@ -72,9 +72,21 @@ public class BattleObjManager : MonoBehaviour
 
         //缓存中没有才从对象池中取
         GameObject obj = CharObjPoolManager.Instance.BorrowObj(type);
+        if (obj == null)
+        {
+            Debug.LogError("CharObjPoolManager.Instance.BorrowObj 取到空Obj" + type);
+            return charObj;
+        }
         
         //对象池中取的要打上ServerEntityID
         CharController cctr = obj.GetComponent<CharController>();
+        if (cctr == null)
+        {
+            //注意，这里没有取到组件，但是已经从pool借走了！！！
+            Debug.LogError("对象上没有持有 CharController组件");
+            return charObj;
+
+        }
         cctr.ServerEntityID = serverEntityID;
 
         //从对象池中取出的对象要放入缓存中

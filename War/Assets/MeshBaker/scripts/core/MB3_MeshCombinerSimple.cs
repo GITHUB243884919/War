@@ -1485,10 +1485,11 @@ namespace DigitalOpus.MB.Core{
 				Debug.LogError("root was null.");
 				return null;	
 			}
-			if (mom.textureBakeResults == null){
-				Debug.LogError("textureBakeResults must be set.");
-				return null;
-			}
+            if (mom.textureBakeResults == null)
+            {
+                Debug.LogError("textureBakeResults must be set.");
+                return null;
+            }
 			if (root.GetComponent<Renderer>() != null){
 				Debug.LogError ("root game object cannot have a renderer component");
 				return null;

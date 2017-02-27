@@ -44,7 +44,8 @@ public class MB_Utility{
 			mesh = mf.sharedMesh;
 		}
 		
-		SkinnedMeshRenderer smr = go.GetComponent<SkinnedMeshRenderer>();
+		//SkinnedMeshRenderer smr = go.GetComponent<SkinnedMeshRenderer>();
+        SkinnedMeshRenderer smr = go.GetComponentInChildren<SkinnedMeshRenderer>();
 		if (smr != null){
 			sharedMaterials = smr.sharedMaterials;
 			mesh = smr.sharedMesh;
@@ -74,7 +75,8 @@ public class MB_Utility{
 			return mf.sharedMesh;
 		}
 		
-		SkinnedMeshRenderer smr = go.GetComponent<SkinnedMeshRenderer>();
+		//SkinnedMeshRenderer smr = go.GetComponent<SkinnedMeshRenderer>();
+        SkinnedMeshRenderer smr = go.GetComponentInChildren<SkinnedMeshRenderer>();
 		if (smr != null){
 			return smr.sharedMesh;
 		}
@@ -89,7 +91,8 @@ public class MB_Utility{
 		if (mr != null) return mr; 
 		
 		
-		SkinnedMeshRenderer smr = go.GetComponent<SkinnedMeshRenderer>();
+		//SkinnedMeshRenderer smr = go.GetComponent<SkinnedMeshRenderer>();
+        SkinnedMeshRenderer smr = go.GetComponentInChildren<SkinnedMeshRenderer>();
 		if (smr != null) return smr;
 		return null;		
 	}

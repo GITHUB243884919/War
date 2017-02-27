@@ -15,7 +15,7 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
     //被生成并克隆的对象，称为种子。春天把一个坦克埋进去，到秋天长出好多坦克:)
     private GameObject m_seed;
     private GameObject m_meshbakerGo;
-    private BattleScene2.E_BATTLE_OBJECT_TYPE m_type;
+    private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
     
     //一次生成的对象个数
     public int m_count;
@@ -36,9 +36,14 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
     /// </param>
     /// <param name="type"></param>
     /// <param name="count"></param>
-    public QObjCreatorForMeshBaker(string[] paths, BattleScene2.E_BATTLE_OBJECT_TYPE type, int count)
+    public QObjCreatorForMeshBaker(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
     {
         GameObject bakerRes = Resources.Load<GameObject>(paths[0]);
+        if (bakerRes == null)
+        {
+            Debug.LogError("加载baker生成器资源出错" + paths[0]);
+            return;
+        }
         m_meshbakerGo = GameObject.Instantiate<GameObject>(bakerRes);
 
         MB3_TextureBaker textureBaker = m_meshbakerGo.GetComponent<MB3_TextureBaker>();
@@ -117,7 +122,7 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
 public class QObjCreatorFactoryForMeshBaker : QObjCreatorFactory<GameObject>
 {
     private string[] m_paths;
-    private BattleScene2.E_BATTLE_OBJECT_TYPE m_type;
+    private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
     private int m_count;
 
     /// <summary>
@@ -130,7 +135,7 @@ public class QObjCreatorFactoryForMeshBaker : QObjCreatorFactory<GameObject>
     /// </param>
     /// <param name="type"></param>
     /// <param name="count"></param>
-    public QObjCreatorFactoryForMeshBaker(string[] paths, BattleScene2.E_BATTLE_OBJECT_TYPE type, int count)
+    public QObjCreatorFactoryForMeshBaker(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
     {
         m_paths = paths;
         m_type = type;
