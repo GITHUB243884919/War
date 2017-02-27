@@ -1,0 +1,95 @@
+﻿/// <summary>
+/// 角色对象缓存。
+/// author: fanzhengyong
+/// date: 2017-02-24 
+/// 
+/// 这里存的都是已经从对象池中取过的对象。
+/// 内部主要使用map存储，key是服务器的实体编号。
+/// </summary>
+/// 
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class CharObjCache
+{
+    private Dictionary<int, CharObj> m_cache
+       = new Dictionary<int, CharObj>();
+
+    private static CharObjCache s_Instance = null;
+    public static CharObjCache Instance
+    {
+        get
+        {
+            if (s_Instance == null)
+            {
+                s_Instance = new CharObjCache();
+            }
+            return s_Instance;
+        }
+    }
+
+    public void Init() { }
+
+    public bool Add(int serverEntityID, GameObject obj,
+        BattleObjManager.E_BATTLE_OBJECT_TYPE type, out CharObj charObj)
+    {
+        bool result = false;
+        charObj = null;
+
+        if (obj == null)
+        {
+            return result;
+        }
+
+        m_cache.TryGetValue(serverEntityID, out charObj);
+        if (charObj != null)
+        {
+            result = true;
+            return result;
+        }
+
+        charObj = new CharObj();
+        charObj.ServerEntityID = serverEntityID;
+        charObj.GameObject = obj;
+        //charObj.ServerEntityType = type;
+        charObj.Type = type;
+
+        m_cache.Add(serverEntityID, charObj);
+
+        result = true;
+        return result;
+    }
+
+    public bool Remove(CharObj charObj)
+    {
+        bool result = false;
+
+        if (charObj == null)
+        {
+            return result;
+        }
+
+        CharObj _charObj = null;
+        m_cache.TryGetValue(charObj.ServerEntityID, out charObj);
+        if (_charObj == null)
+        {
+            result = true;
+            return result;
+        }
+
+        m_cache[charObj.ServerEntityID] = null;
+        m_cache.Remove(charObj.ServerEntityID);
+
+        result = true;
+        return result;
+    }
+
+    public CharObj Find(int serverEntityID)
+    {
+        CharObj charObj = null;
+        m_cache.TryGetValue(serverEntityID, out charObj);
+
+        return charObj;
+    }
+}
