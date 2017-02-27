@@ -85,7 +85,7 @@ public class MoveSteerForArrive : MoveSteer
             Active = false;
             m_steers.Active = false;
 
-            Debug.Log("Arrive 到了终点 " + m_endPos + " time " + Time.realtimeSinceStartup);
+            //Debug.Log("Arrive 到了终点 " + m_endPos + " time " + Time.realtimeSinceStartup);
 
             if (m_arrivedCallback != null)
             {

@@ -1,30 +1,22 @@
 ﻿/// <summary>
-/// 坦克的命令，这个应该被抽象。
+/// 坦克的命令
 /// author : fanzhengyong
 /// date  : 2017-02-22
 /// 
 using UnityEngine;
 using System.Collections;
 
-public class TankCommond 
+public class TankCommond : CharCommond
 {
-    public CharController m_ctr;
-	public TankCommond(CharController ctr)
-    {
-        if (ctr == null)
-        {
-            Debug.LogWarning("CharController 为空");
-            return;
-        }
+	public TankCommond(CharController cctr)
+        :base(cctr){}
 
-        m_ctr = ctr;
-    }
-
-    public void Init()
+    private Transform m_trsEffect = null;
+    public override void Init()
     {
-        m_ctr.RegCommond(CharController.E_COMMOND.IDLE, Idle);
-        m_ctr.RegCommond(CharController.E_COMMOND.ATTACK, Attack);
-        m_ctr.RegCommond(CharController.E_COMMOND.ATTACKED, Attacked);
+        m_cctr.RegCommond(CharController.E_COMMOND.IDLE, Idle);
+        m_cctr.RegCommond(CharController.E_COMMOND.ATTACK, Attack);
+        m_cctr.RegCommond(CharController.E_COMMOND.ATTACKED, Attacked);
     }
 
     public void Idle()
@@ -35,6 +27,12 @@ public class TankCommond
     public void Attack()
     {
         Debug.Log("Attack");
+        if (m_trsEffect == null)
+        {
+            //m_trsEffect
+            //BattleObjManager.Instance.BorrowParticleObj(effectPath);
+        }
+        //m_cctr.Transform.Find("Bone01/Bone02/Dummy01/Tank_dapao_fire");
     }
 
     public void Attacked()
@@ -42,8 +40,13 @@ public class TankCommond
         Debug.Log("Attacked");
     }
 
-	public void Update () 
+	public override void Update() 
     {
 	
 	}
+
+    public override void FixedUpdate()
+    {
+        //base.FixedUpdate();
+    }
 }

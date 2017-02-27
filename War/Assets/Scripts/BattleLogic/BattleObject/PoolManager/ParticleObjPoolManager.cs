@@ -51,6 +51,7 @@ public class ParticleObjPoolManager
                 Debug.LogError("QObjPool 初始失败 " + path);
                 return obj;
             }
+            m_pools.Add(path, pool);
         }
 
         obj = pool.BorrowObj();

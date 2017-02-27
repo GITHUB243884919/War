@@ -10,6 +10,7 @@ using System.Collections.Generic;
 public class CharController : MonoBehaviour 
 {
     public int ServerEntityID { get; set; }
+    public int m_charType = 0;
     public enum E_COMMOND
     {
         NONE,
@@ -31,8 +32,9 @@ public class CharController : MonoBehaviour
     public Dictionary<E_COMMOND, CommondCallback> m_commondCallbacks =
         new Dictionary<E_COMMOND, CommondCallback>();
 
-    TankCommond m_commond;
-    MoveSteers  m_steers;
+    //TankCommond m_commond;
+    CharCommond m_commond = null;
+    MoveSteers  m_steers  = null;
     //位置数据
     public Vector3     TargetForPosition    { get; set; }
     public Vector3     TargetForArrive      { get; set; }
@@ -61,7 +63,9 @@ public class CharController : MonoBehaviour
         WaitForCommond = E_COMMOND.NONE;
         RegCommond(E_COMMOND.WAIT, OnWait);
         
-        m_commond  = new TankCommond(this);
+        //m_commond  = new TankCommond(this);
+        //m_commond.Init();
+        m_commond = CharCommondFactory.CreateCommond(this, m_charType);
         m_commond.Init();
 
         m_steers   = new MoveSteers(this);
