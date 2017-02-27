@@ -15,7 +15,7 @@ public class Scene_Commond_Test : MonoBehaviour
 
     public void BtnClick()
     {
-        Debug.Log("Begin click " + Time.realtimeSinceStartup);
+        //Debug.Log("Begin click " + Time.realtimeSinceStartup);
         StartCoroutine("CreateTanks");
         //for (int i = 0; i < 128; i++)
         //{
@@ -24,14 +24,15 @@ public class Scene_Commond_Test : MonoBehaviour
         //    CreateTank(i, true, true);
 
         //}
-        Debug.Log("End click " + Time.realtimeSinceStartup);
+        //Debug.Log("End click " + Time.realtimeSinceStartup);
 
     }
 
     IEnumerator CreateTanks()
     {
         yield return null;
-        for (int i = 0; i < 128; i++)
+        //for (int i = 0; i < 128; i++)
+        for (int i = 0; i < 1; i++)
         {
             //CreateTank(i, false, false);
             //CreateTank(i, true, false);
@@ -46,22 +47,19 @@ public class Scene_Commond_Test : MonoBehaviour
         int serverEntityID = entityID;
         int serverEntityType = 1;
 
-        //Vector3 initPos = new Vector3(0f, 0f, 0f);
-        Vector3 initPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
-        CharObj obj = BattleObjManager.Instance.BorrowCharObj(
+        Vector3 startPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
+        Vector3 endPos   = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
+        //假定服务器规定这段路必须time秒走完
+        float   time     = 30;
+        float   speed    = (endPos - startPos).magnitude / time;
+        CharObj obj      = BattleObjManager.Instance.BorrowCharObj(
             type, serverEntityID, serverEntityType);
-
-        obj.GameObject.transform.position = initPos;
-
         //
         CharController cctr = null;
         if (withAI)
         {
-
             cctr = obj.GameObject.GetComponent<CharController>();
-            Vector3 target = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
-            cctr.TargetForArrive = target;
-            cctr.Commond(CharController.E_COMMOND.ARRIVE);
+            cctr.Arrive(startPos, endPos, speed);
         }
 
         if (withEffect)
@@ -84,7 +82,8 @@ public class Scene_Commond_Test : MonoBehaviour
             //    particleObj.transform.SetParent(firePoint, false);
             //}
 
-            cctr.Commond(CharController.E_COMMOND.ATTACK);
+            //cctr.Commond(CharController.E_COMMOND.ATTACK);
+            cctr.Attack();
 
 
         }

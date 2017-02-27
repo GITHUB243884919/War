@@ -32,12 +32,14 @@ public class CharController : MonoBehaviour
     public Dictionary<E_COMMOND, CommondCallback> m_commondCallbacks =
         new Dictionary<E_COMMOND, CommondCallback>();
 
-    //TankCommond m_commond;
-    CharCommond m_commond = null;
-    MoveSteers  m_steers  = null;
+    CharCommond        m_commond = null;
+    MoveSteers         m_steers  = null;
+
     //位置数据
     public Vector3     TargetForPosition    { get; set; }
     public Vector3     TargetForArrive      { get; set; }
+    public float       TimeForArrive        { get; set; }
+    public float       SpeedForArrive       { get; set; }
 
     //等待数据
     public float       WaitForSecond        { get; set; }
@@ -46,6 +48,31 @@ public class CharController : MonoBehaviour
     public GameObject  GameObject           { get; private set; }
     public Transform   Transform            { get; private set; }
     public Animator    Animator             { get; private set; }
+
+    //供上层模块调用的接口
+    /// <summary>
+    /// 到达
+    /// </summary>
+    /// <param name="startPoint">起点</param>
+    /// <param name="endPoint">终点</param>
+    /// <param name="speed">速度</param>
+    public void Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
+    {
+        Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
+        TargetForPosition = startPoint;
+        TargetForArrive = endPoint;
+        SpeedForArrive = speed;
+        OnArrive();
+    }
+
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    public void Attack()
+    {
+        Debug.Log("Attack");
+        Commond(E_COMMOND.ATTACK);
+    }
 
     private void Init()
     {
@@ -78,13 +105,7 @@ public class CharController : MonoBehaviour
         Transform  = null;
         Animator   = null;
 
-        //foreach (KeyValuePair<E_COMMOND, CommondCallback> pair 
-        //    in m_commondCallbacks)
-        //{
-        //    m_commondCallbacks[pair.Key] = null;
-        //}
         m_commondCallbacks.Clear();
-        //m_commondCallbacks = null;
     }
 
     public void Commond(E_COMMOND commond)
@@ -121,11 +142,17 @@ public class CharController : MonoBehaviour
 
     private void OnPositon()
     {
+        Debug.Log("OnPositon");
         Transform.position = TargetForPosition;
     }
 
     private void OnArrive()
     {
+        Debug.Log("OnArrive " + Time.realtimeSinceStartup);
+        //先定位到起点
+        OnPositon();
+        //转向
+        Transform.LookAt(TargetForArrive);
         MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
         arrive.Active    = true;
         m_steers.Active  = true;
