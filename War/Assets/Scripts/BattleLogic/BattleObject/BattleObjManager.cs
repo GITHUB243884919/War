@@ -47,8 +47,10 @@ public class BattleObjManager : MonoBehaviour
         Debug.Log("end CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjCache.Instance.Init();
         Debug.Log("CharObjCache Init");
-        BNGObjPoolManager.Instance.Init();
-        Debug.Log("BNGObjPoolManager Init");
+        //BNGObjPoolManager.Instance.Init();
+        //Debug.Log("BNGObjPoolManager Init");
+        ParticleObjPoolManager.Instance.Init();
+        Debug.Log("ParticleObjPoolManager Init");
     }
 
     /// <summary>
@@ -104,16 +106,28 @@ public class BattleObjManager : MonoBehaviour
         CharObjPoolManager.Instance.ReturnObj(obj.GameObject, obj.Type);
     }
 
-    public GameObject BorrowBNGObj(string path)
+    //public GameObject BorrowBNGObj(string path)
+    //{
+    //    GameObject obj = null;
+    //    obj = BNGObjPoolManager.Instance.BorrowObj(path);
+    //    return obj;
+    //}
+
+    //public void ReturnBNGObj(GameObject obj, string path)
+    //{
+    //    BNGObjPoolManager.Instance.ReturnObj(obj, path);
+    //}
+
+    public GameObject BorrowParticleObj(string path)
     {
         GameObject obj = null;
-        obj = BNGObjPoolManager.Instance.BorrowObj(path);
+        obj = ParticleObjPoolManager.Instance.BorrowObj(path);
         return obj;
     }
 
-    public void ReturnBNGObj(GameObject obj, string path)
+    public void ReturnParticleObj(GameObject obj, string path)
     {
-        BNGObjPoolManager.Instance.ReturnObj(obj, path);
+        ParticleObjPoolManager.Instance.ReturnObj(obj, path);
     }
 
     void Start()

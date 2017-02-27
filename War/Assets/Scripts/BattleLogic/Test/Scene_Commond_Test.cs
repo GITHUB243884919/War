@@ -65,12 +65,25 @@ public class Scene_Commond_Test : MonoBehaviour
 
         if (withEffect)
         {
+            //string effectPath = "Effect/Tank/Prefab/Tank_dapao_fire";
+            //GameObject effectRes = Resources.Load<GameObject>(effectPath);
+            //GameObject effectGo = GameObject.Instantiate<GameObject>(effectRes);
+            //effectGo.transform.Rotate(new Vector3(0f, -90f, 0f));
+            //Transform firePoint = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01");
+            //effectGo.transform.SetParent(firePoint, false);
+
             string effectPath = "Effect/Tank/Prefab/Tank_dapao_fire";
-            GameObject effectRes = Resources.Load<GameObject>(effectPath);
-            GameObject effectGo = GameObject.Instantiate<GameObject>(effectRes);
-            effectGo.transform.Rotate(new Vector3(0f, -90f, 0f));
-            Transform firePoint = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01");
-            effectGo.transform.SetParent(firePoint, false);
+            GameObject particleObj = null;
+            Transform trs = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01/Tank_dapao_fire");
+            if (trs == null)
+            {
+                particleObj = BattleObjManager.Instance.BorrowParticleObj(effectPath);
+                particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
+                Transform firePoint = obj.GameObject.transform.Find("Bone01/Bone02/Dummy01");
+                particleObj.transform.SetParent(firePoint, false);
+            }
+
+
         }
 
     }

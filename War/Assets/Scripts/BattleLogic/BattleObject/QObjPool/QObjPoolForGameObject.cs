@@ -14,7 +14,7 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
 
     public int m_count;
 
-    private static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
+    public static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
 
     private GameObject m_seed;
 
@@ -39,7 +39,7 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
 
     private QObjCreatorForGameObject() { }
 
-    public void Realse()
+    public override void Realse()
     {
         m_seed = null;
     }

@@ -15,7 +15,7 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
     //被生成并克隆的对象，称为种子。春天把一个坦克埋进去，到秋天长出好多坦克:)
     private GameObject m_seed;
     private GameObject m_meshbakerGo;
-    private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
+    //private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
     
     //一次生成的对象个数
     public int m_count;
@@ -51,7 +51,7 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
 
         InitBaker(paths, textureBaker, m_meshBaker);
 
-        m_type = type;
+        //m_type = type;
         GameObject seedRes = Resources.Load<GameObject>(paths[3]);
         m_seed = GameObject.Instantiate<GameObject>(seedRes);
         m_seed.transform.position = INIT_POS;
