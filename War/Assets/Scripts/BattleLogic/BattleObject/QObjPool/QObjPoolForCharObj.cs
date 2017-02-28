@@ -10,7 +10,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
+public class CharObjCreator : QObjCreator<CharObj>
 {
     //被生成并克隆的对象，称为种子。春天把一个坦克埋进去，到秋天长出好多坦克:)
     private GameObject m_seed;
@@ -21,8 +21,8 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
     public int m_count;
     
     //初始化生成位置固定,是一个在场景中看不到的地方。
-    private readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
-    private readonly float   MAX_BOUND_SIDE = 1000f;
+    private static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
+    private static readonly float   MAX_BOUND_SIDE = 1000f;
 
     private MB3_MeshBaker m_meshBaker;
 
@@ -36,8 +36,10 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
     /// </param>
     /// <param name="type"></param>
     /// <param name="count"></param>
-    public QObjCreatorForMeshBaker(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
+    public CharObjCreator(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
     {
+        bool retCode        = false;
+
         GameObject bakerRes = Resources.Load<GameObject>(paths[0]);
         if (bakerRes == null)
         {
@@ -49,46 +51,63 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
         MB3_TextureBaker textureBaker = m_meshbakerGo.GetComponent<MB3_TextureBaker>();
         m_meshBaker = m_meshbakerGo.GetComponentInChildren<MB3_MeshBaker>();
 
-        InitBaker(paths, textureBaker, m_meshBaker);
+        retCode = InitBaker(paths, textureBaker, m_meshBaker);
+        if (!retCode)
+        {
+            Debug.LogError("MeshBaker初始化失败");
+            return;
+        }
 
-        //m_type = type;
         GameObject seedRes = Resources.Load<GameObject>(paths[3]);
+        if (seedRes == null)
+        {
+            Debug.LogError("加载种子资源失败 " + paths[3]);
+            return;
+        }
         m_seed = GameObject.Instantiate<GameObject>(seedRes);
         m_seed.transform.position = INIT_POS;
 
         m_count = count;
     }
-    private QObjCreatorForMeshBaker() { }
 
-    public override GameObject[] CreateObjects()
+    private CharObjCreator() { }
+
+    public override CharObj[] CreateObjects()
     {
-        GameObject[] objects = new GameObject[m_count];
+        GameObject[] goObjs   = new GameObject[m_count];
+        CharObj[]    charObjs = new CharObj[m_count];
         for (int i = 0; i < m_count; i++)
         {
             GameObject go = GameObject.Instantiate<GameObject>(m_seed);
-            go.transform.position = INIT_POS;
-            objects[i] = go;
-            //go.transform.SetParent(m_seed.transform, false);
+            go.transform.position  = INIT_POS;
+            goObjs[i]              = go;
+            CharObj charObj = new CharObj();
+            charObj.GameObject = goObjs[i];
+            charObjs[i] = charObj;
         }
 
         //人为调整合并后smr的bound
-        objects[0].transform.position = new Vector3(MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
-        objects[1].transform.position = new Vector3(-MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
-        objects[2].transform.position = new Vector3(INIT_POS.x, INIT_POS.y, MAX_BOUND_SIDE);
-        objects[3].transform.position = new Vector3(INIT_POS.x, INIT_POS.y, -MAX_BOUND_SIDE);
+        charObjs[0].GameObject.transform.position = 
+            new Vector3(MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
+        charObjs[1].GameObject.transform.position 
+            = new Vector3(-MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
+        charObjs[2].GameObject.transform.position 
+            = new Vector3(INIT_POS.x, INIT_POS.y, MAX_BOUND_SIDE);
+        charObjs[3].GameObject.transform.position 
+            = new Vector3(INIT_POS.x, INIT_POS.y, -MAX_BOUND_SIDE);
 
-        m_meshBaker.AddDeleteGameObjects(objects, null, true);
+        m_meshBaker.AddDeleteGameObjects(goObjs, null, true);
         m_meshBaker.Apply();
 
-        return objects;
+        return charObjs;
     }
 
-    public override void HideObject(GameObject obj)
+    public override void HideObject(CharObj obj)
     {
-        obj.transform.position = INIT_POS;
+        obj.GameObject.transform.position = INIT_POS;
     }
 
-    public override void RealseObject(GameObject obj)
+    public override void RealseObject(CharObj obj)
     {
 
     }
@@ -100,6 +119,7 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
         Material material = Resources.Load<Material>(paths[1]);
         if (material == null)
         {
+            Debug.LogError("加载合并材质资源失败" + paths[1]);
             return result;
         }
 
@@ -107,19 +127,20 @@ public class QObjCreatorForMeshBaker : QObjCreator<GameObject>
             Resources.Load<MB2_TextureBakeResults>(paths[2]);
         if (textureBakeResults == null)
         {
+            Debug.LogError("加载MB2_TextureBakeResults资源失败" + paths[2]);
             return result;
         }
 
-        textureBaker.resultMaterial = material;
+        textureBaker.resultMaterial     = material;
         textureBaker.textureBakeResults = textureBakeResults;
-        meshBaker.textureBakeResults = textureBakeResults;
+        meshBaker.textureBakeResults    = textureBakeResults;
 
         result = true;
         return result;
     }
 }
 
-public class QObjCreatorFactoryForMeshBaker : QObjCreatorFactory<GameObject>
+public class CharObjCreatorFactory : QObjCreatorFactory<CharObj>
 {
     private string[] m_paths;
     private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
@@ -135,17 +156,17 @@ public class QObjCreatorFactoryForMeshBaker : QObjCreatorFactory<GameObject>
     /// </param>
     /// <param name="type"></param>
     /// <param name="count"></param>
-    public QObjCreatorFactoryForMeshBaker(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
+    public CharObjCreatorFactory(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
     {
         m_paths = paths;
-        m_type = type;
+        m_type  = type;
         m_count = count;
     }
 
-    private QObjCreatorFactoryForMeshBaker() { }
-    public override QObjCreator<GameObject> CreatCreator()
+    private CharObjCreatorFactory() { }
+    public override QObjCreator<CharObj> CreatCreator()
     {
-        QObjCreatorForMeshBaker creator = new QObjCreatorForMeshBaker(
+        CharObjCreator creator = new CharObjCreator(
             m_paths, m_type, m_count);
         return creator;
     }

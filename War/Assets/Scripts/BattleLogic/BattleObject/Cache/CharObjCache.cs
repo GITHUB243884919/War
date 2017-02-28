@@ -31,31 +31,24 @@ public class CharObjCache
 
     public void Init() { }
 
-    public bool Add(int serverEntityID, GameObject obj,
-        BattleObjManager.E_BATTLE_OBJECT_TYPE type, out CharObj charObj)
+    public bool Add(CharObj charObj)
     {
         bool result = false;
-        charObj = null;
 
-        if (obj == null)
+        if (charObj == null)
         {
             return result;
         }
 
-        m_cache.TryGetValue(serverEntityID, out charObj);
-        if (charObj != null)
+        CharObj _charObj;
+        m_cache.TryGetValue(charObj.ServerEntityID, out _charObj);
+        if (_charObj != null)
         {
             result = true;
             return result;
         }
 
-        charObj = new CharObj();
-        charObj.ServerEntityID = serverEntityID;
-        charObj.GameObject = obj;
-        //charObj.ServerEntityType = type;
-        charObj.Type = type;
-
-        m_cache.Add(serverEntityID, charObj);
+        m_cache.Add(charObj.ServerEntityID, charObj);
 
         result = true;
         return result;

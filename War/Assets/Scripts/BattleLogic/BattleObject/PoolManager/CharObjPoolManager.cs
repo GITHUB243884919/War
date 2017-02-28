@@ -14,8 +14,8 @@ using System.Collections.Generic;
 
 public class CharObjPoolManager
 {
-    Dictionary<BattleObjManager.E_BATTLE_OBJECT_TYPE, QObjPool<GameObject>> m_pools =
-        new Dictionary<BattleObjManager.E_BATTLE_OBJECT_TYPE, QObjPool<GameObject>>();
+    Dictionary<BattleObjManager.E_BATTLE_OBJECT_TYPE, QObjPool<CharObj>> m_pools =
+        new Dictionary<BattleObjManager.E_BATTLE_OBJECT_TYPE, QObjPool<CharObj>>();
 
     private static CharObjPoolManager s_Instance = null;
     public static CharObjPoolManager Instance
@@ -57,10 +57,10 @@ public class CharObjPoolManager
         //    BattleScene2.E_BATTLE_OBJECT_TYPE.SOLDIER, countSoldier);
     }
 
-    public GameObject BorrowObj(BattleObjManager.E_BATTLE_OBJECT_TYPE type)
+    public CharObj BorrowObj(BattleObjManager.E_BATTLE_OBJECT_TYPE type)
     {
-        GameObject obj = null;
-        QObjPool<GameObject> pool = null;
+        CharObj obj = null;
+        QObjPool<CharObj> pool = null;
         m_pools.TryGetValue(type, out pool);
         if (pool == null)
         {
@@ -72,10 +72,10 @@ public class CharObjPoolManager
         return obj;
     }
 
-    public void ReturnObj(GameObject obj, BattleObjManager.E_BATTLE_OBJECT_TYPE type)
+    public void ReturnObj(CharObj obj)
     {
-        QObjPool<GameObject> pool = null;
-        m_pools.TryGetValue(type, out pool);
+        QObjPool<CharObj> pool = null;
+        m_pools.TryGetValue(obj.Type, out pool);
         if (pool == null)
         {
             return;
@@ -86,10 +86,10 @@ public class CharObjPoolManager
 
     private void InitBattleObjPool(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
     {
-        QObjCreatorFactory<GameObject> creatorFactory = new QObjCreatorFactoryForMeshBaker(
+        QObjCreatorFactory<CharObj> creatorFactory = new CharObjCreatorFactory(
             paths, BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK, count);
 
-        QObjPool<GameObject> pool = new QObjPool<GameObject>();
+        QObjPool<CharObj> pool = new QObjPool<CharObj>();
         pool.Init(null, creatorFactory);
 
         m_pools.Add(type, pool);

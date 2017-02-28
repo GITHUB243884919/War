@@ -73,27 +73,26 @@ public class BattleObjManager : MonoBehaviour
         }
 
         //缓存中没有才从对象池中取
-        GameObject obj = CharObjPoolManager.Instance.BorrowObj(type);
-        if (obj == null)
+        charObj = CharObjPoolManager.Instance.BorrowObj(type);
+        if (charObj == null)
         {
             Debug.LogError("CharObjPoolManager.Instance.BorrowObj 取到空Obj" + type);
             return charObj;
         }
         
         //对象池中取的要打上ServerEntityID
-        CharController cctr = obj.GetComponent<CharController>();
-        if (cctr == null)
+        charObj.CharController = charObj.GameObject.GetComponent<CharController>();
+        if (charObj.CharController == null)
         {
             //注意，这里没有取到组件，但是已经从pool借走了！！！
             Debug.LogError("对象上没有持有 CharController组件");
             return charObj;
 
         }
-        cctr.ServerEntityID = serverEntityID;
+        charObj.CharController.ServerEntityID = serverEntityID;
 
         //从对象池中取出的对象要放入缓存中
-        CharObjCache.Instance.Add(serverEntityID,
-            obj, type, out charObj);
+        CharObjCache.Instance.Add(charObj);
 
         return charObj;
     }
@@ -103,7 +102,7 @@ public class BattleObjManager : MonoBehaviour
         //先从缓存中移除
         CharObjCache.Instance.Remove(obj);
         //再还给对象池
-        CharObjPoolManager.Instance.ReturnObj(obj.GameObject, obj.Type);
+        CharObjPoolManager.Instance.ReturnObj(obj);
     }
 
     //public GameObject BorrowBNGObj(string path)

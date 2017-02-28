@@ -23,6 +23,8 @@ public class CharObj
     //角色对应的prefab 坦克，士兵之类的prefab
     public GameObject GameObject { get; set; }
 
+    public CharController CharController { get; set; }
+
     //子对象的pool，<instanceID, path> 就是BNGObjPoolManager管理那些pool
     //这里只缓存名字(路径)
     private Dictionary<int, string> m_childsPools =
