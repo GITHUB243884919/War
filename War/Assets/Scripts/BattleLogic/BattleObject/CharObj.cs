@@ -37,4 +37,32 @@ public class CharObj
         return path;
     }
 
+    //AI
+
+    /// <summary>
+    /// 到达
+    /// </summary>
+    /// <param name="startPoint"></param>
+    /// <param name="endPoint"></param>
+    /// <param name="speed"></param>
+    public void Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
+    {
+        Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
+        CharController.TargetForPosition = startPoint;
+        CharController.TargetForArrive = endPoint;
+        CharController.SpeedForArrive = speed;
+        //OnArrive();
+        CharController.Commond(CharController.E_COMMOND.ARRIVE);
+    }
+
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    public void Attack()
+    {
+        Debug.Log("Attack");
+        CharController.Commond(CharController.E_COMMOND.ATTACK);
+    }
+
+
 }

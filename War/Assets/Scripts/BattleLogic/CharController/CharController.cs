@@ -49,31 +49,6 @@ public class CharController : MonoBehaviour
     public Transform   Transform            { get; private set; }
     public Animator    Animator             { get; private set; }
 
-    //供上层模块调用的接口
-    /// <summary>
-    /// 到达
-    /// </summary>
-    /// <param name="startPoint">起点</param>
-    /// <param name="endPoint">终点</param>
-    /// <param name="speed">速度</param>
-    public void Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
-    {
-        Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
-        TargetForPosition = startPoint;
-        TargetForArrive = endPoint;
-        SpeedForArrive = speed;
-        OnArrive();
-    }
-
-    /// <summary>
-    /// 攻击
-    /// </summary>
-    public void Attack()
-    {
-        Debug.Log("Attack");
-        Commond(E_COMMOND.ATTACK);
-    }
-
     private void Init()
     {
         GameObject = gameObject;
