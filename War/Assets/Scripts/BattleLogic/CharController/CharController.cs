@@ -18,11 +18,11 @@ public class CharController : MonoBehaviour
         //位置相关
         POSITION, //直接定位到某个位置,放在一个看不见的地方就实现了隐藏Vector3(0f, -10f, 0f)
         LOOKAT,   //面朝一个方向，提供目标向量
-        ARRIVE,   //移动到某个位置，提供终点
+        ARRIVE,   //移动到某个位置，提供起点，终点，速度
         STOPMOVE, //停止移动
 
         //特殊类型
-        WAIT,     //等待，需要提供等待多少秒和等待完了后执行什么（E_COMMOND）。如果只是等待那么后续传NONE
+        WAIT,     //等待，需要提供等待多少秒和等待完了后执行什么（E_COMMOND类型）。如果只是等待那么后续传NONE
         
         //以下是动画相关
         IDLE,     //待机

@@ -102,7 +102,7 @@ public class CharObj
     }
 
     /// <summary>
-    /// 
+    /// 死亡，坦克变身为救护车，移动到某点
     /// </summary>
     /// <param name="deadChangeEntityID">变身后的实体ID，服务器定义。坦克死亡后变成救护车</param>
     /// <param name="deadChangeObjType">实体的类型，比如救护车类型定义</param>
