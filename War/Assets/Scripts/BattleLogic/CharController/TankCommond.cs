@@ -38,21 +38,22 @@ public class TankCommond : CharCommond
     {
         Debug.Log("Attack");
         //查找特效transform路径
-        m_effectTrs = m_cctr.Transform.Find(m_effectTrsPath);
-        //
         if(m_effectTrs == null)
         {
+            //Debug.Log("m_effectTrs == null" + m_effectTrsPath);
             GameObject particleObj = BattleObjManager.Instance.
                 BorrowParticleObj(m_effectResPath);
             particleObj.transform.position = Vector3.zero;
             particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
             if (m_effectPointTrs == null)
             {
-                Debug.Log("m_cctr.Transform.position" + m_cctr.Transform.position);
+                //Debug.Log("m_cctr.Transform.position" + m_cctr.Transform.position);
                 m_effectPointTrs = m_cctr.Transform.Find(m_effectPointTrsPath);
             }
             particleObj.transform.SetParent(m_effectPointTrs, false);
+            m_effectTrs = particleObj.transform;
         }
+        //Debug.Log("m_effectTrs " + m_effectTrs.name);
     }
 
     public void Attacked()
@@ -80,7 +81,7 @@ public class TankCommond : CharCommond
     private void InitPath()
     {
         m_effectResPath = "Effect/Tank/Prefab/Tank_dapao_fire";
-        m_effectTrsPath = "Bone01/Bone02/Dummy01/Tank_dapao_fire";
+        //m_effectTrsPath = "Bone01/Bone02/Dummy01/Tank_dapao_fire(Clone)(Clone)";
         m_effectPointTrsPath = "Bone01/Bone02/Dummy01";
     }
 }
