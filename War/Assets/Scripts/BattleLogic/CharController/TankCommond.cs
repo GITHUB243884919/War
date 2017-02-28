@@ -29,14 +29,14 @@ public class TankCommond : CharCommond
         InitPath();
     }
 
-    public void Idle()
+    public void OnIdle()
     {
-        Debug.Log("Idle");
+        Debug.Log("TankCommond.Idle");
     }
 
-    public void Attack()
+    public void OnAttack()
     {
-        Debug.Log("Attack" + Time.realtimeSinceStartup);
+        Debug.Log("TankCommond.Attack" + Time.realtimeSinceStartup);
         //查找特效transform路径
         if(m_effectTrs == null)
         {
@@ -56,9 +56,26 @@ public class TankCommond : CharCommond
         //Debug.Log("m_effectTrs " + m_effectTrs.name);
     }
 
-    public void Attacked()
+    public void OnAttacked()
     {
-        Debug.Log("Attacked");
+        Debug.Log("TankCommond.Attacked");
+    }
+
+    /// <summary>
+    /// 坦克死亡后变成救护车开走
+    /// </summary>
+    public void OnDead()
+    {
+        Debug.Log("TankCommond.OnDead");
+        //自身爆炸
+        //自身隐身
+        //取出变身后的救护车对象
+        BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
+        int serverEntityID = m_cctr.DeadChangeEntityID;
+        CharObj obj = BattleObjManager.Instance.BorrowCharObj(
+            type, serverEntityID, 1);
+
+        obj.Arrive(m_cctr.DeadPosition, m_cctr.DeadTarget, m_cctr.DeadMoveSpeed);
     }
 
 	public override void Update() 
@@ -73,9 +90,10 @@ public class TankCommond : CharCommond
 
     private void InitCommond()
     {
-        m_cctr.RegCommond(CharController.E_COMMOND.IDLE, Idle);
-        m_cctr.RegCommond(CharController.E_COMMOND.ATTACK, Attack);
-        m_cctr.RegCommond(CharController.E_COMMOND.ATTACKED, Attacked);
+        m_cctr.RegCommond(CharController.E_COMMOND.IDLE,     OnIdle);
+        m_cctr.RegCommond(CharController.E_COMMOND.ATTACK,   OnAttack);
+        m_cctr.RegCommond(CharController.E_COMMOND.ATTACKED, OnAttacked);
+        m_cctr.RegCommond(CharController.E_COMMOND.DEAD,     OnDead);
     }
 
     private void InitPath()

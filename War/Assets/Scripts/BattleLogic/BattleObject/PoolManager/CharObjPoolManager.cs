@@ -80,7 +80,8 @@ public class CharObjPoolManager
         {
             return;
         }
-
+        CharObjCreator creator = pool.BAK_CREATOR as CharObjCreator;
+        creator.HideObject(obj);
         pool.ReturnObj(obj);
     }
 

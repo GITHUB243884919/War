@@ -21,8 +21,8 @@ public class CharObjCreator : QObjCreator<CharObj>
     public int m_count;
     
     //初始化生成位置固定,是一个在场景中看不到的地方。
-    private static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
-    private static readonly float   MAX_BOUND_SIDE = 1000f;
+    private  static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
+    private  static readonly float   MAX_BOUND_SIDE = 1000f;
 
     private MB3_MeshBaker m_meshBaker;
 
@@ -104,6 +104,10 @@ public class CharObjCreator : QObjCreator<CharObj>
 
     public override void HideObject(CharObj obj)
     {
+        //停下来
+        obj.StopMove();
+        //关闭所有特效
+        //放到初始位置
         obj.GameObject.transform.position = INIT_POS;
     }
 

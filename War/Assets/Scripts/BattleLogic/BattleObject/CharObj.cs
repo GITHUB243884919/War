@@ -38,6 +38,15 @@ public class CharObj
     }
 
     //API for AI begin
+    /// <summary>
+    /// 瞬间定位
+    /// </summary>
+    /// <param name="position"></param>
+    public void Position(Vector3 position)
+    {
+        CharController.TargetForPosition = position;
+        CharController.Commond(CharController.E_COMMOND.POSITION);
+    }
 
     /// <summary>
     /// 到达
@@ -84,6 +93,32 @@ public class CharObj
         CharController.Commond(CharController.E_COMMOND.ATTACK);
     }
 
+    /// <summary>
+    /// 停止移动
+    /// </summary>
+    public void StopMove()
+    {
+        CharController.Commond(CharController.E_COMMOND.STOPMOVE);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="deadChangeEntityID">变身后的实体ID，服务器定义。坦克死亡后变成救护车</param>
+    /// <param name="deadChangeObjType">实体的类型，比如救护车类型定义</param>
+    /// <param name="deadPosition">死亡位置，在哪里死的</param>
+    /// <param name="deadTarget">死亡后跑到哪里去</param>
+    /// <param name="deadMoveSpeed">跑的速度</param>
+    public void Dead(int deadChangeEntityID, BattleObjManager.E_BATTLE_OBJECT_TYPE deadChangeObjType,
+        Vector3 deadPosition, Vector3 deadTarget, float deadMoveSpeed)
+    {
+        CharController.DeadChangeEntityID = deadChangeEntityID;
+        CharController.DeadPosition       = deadPosition;
+        CharController.DeadTarget         = deadTarget;
+        CharController.DeadMoveSpeed      = deadMoveSpeed;
+        CharController.DeadChangeObjType  = deadChangeObjType;
+        CharController.Commond(CharController.E_COMMOND.DEAD);
+    }
     //API for AI end
 
 

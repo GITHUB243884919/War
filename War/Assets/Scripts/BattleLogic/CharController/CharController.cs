@@ -19,6 +19,7 @@ public class CharController : MonoBehaviour
         POSITION, //直接定位到某个位置,放在一个看不见的地方就实现了隐藏Vector3(0f, -10f, 0f)
         LOOKAT,   //面朝一个方向，提供目标向量
         ARRIVE,   //移动到某个位置，提供终点
+        STOPMOVE, //停止移动
 
         //特殊类型
         WAIT,     //等待，需要提供等待多少秒和等待完了后执行什么（E_COMMOND）。如果只是等待那么后续传NONE
@@ -41,13 +42,25 @@ public class CharController : MonoBehaviour
     //位置数据
     public Vector3     TargetForPosition    { get; set; }
     public Vector3     TargetForArrive      { get; set; }
-    public float       TimeForArrive        { get; set; }
     public float       SpeedForArrive       { get; set; }
     public Vector3     TargetForLookAt      { get; set; }
 
     //等待数据
     public float       WaitForSeconds       { get; set; }
     public E_COMMOND   WaitForCommond       { get; set; }
+
+    //死亡数据
+    //变身后的实体ID，服务器定义。坦克死亡后变成救护车
+    public int         DeadChangeEntityID   { get; set; }
+    //死亡位置，在哪里死的
+    public Vector3     DeadPosition         { get; set; }
+    //死亡后跑到哪里去
+    public Vector3     DeadTarget           { get; set; }
+    //跑的速度
+    public float       DeadMoveSpeed        { get; set; }
+    //实体的类型，比如救护车类型定义
+    public BattleObjManager.E_BATTLE_OBJECT_TYPE DeadChangeObjType { get; set; }
+
 
     public GameObject  GameObject           { get; private set; }
     public Transform   Transform            { get; private set; }
@@ -62,9 +75,10 @@ public class CharController : MonoBehaviour
         RegCommond(E_COMMOND.NONE, OnNone);
         
         //与位置相关
-        RegCommond(E_COMMOND.POSITION, OnPositon);
-        RegCommond(E_COMMOND.ARRIVE, OnArrive);
-        RegCommond(E_COMMOND.LOOKAT, OnLookAt);
+        RegCommond(E_COMMOND.POSITION,   OnPositon);
+        RegCommond(E_COMMOND.LOOKAT,     OnLookAt);
+        RegCommond(E_COMMOND.ARRIVE,     OnArrive);
+        RegCommond(E_COMMOND.STOPMOVE,   OnStopMove);
 
         //等待
         WaitForCommond = E_COMMOND.NONE;
@@ -142,6 +156,13 @@ public class CharController : MonoBehaviour
         MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
         arrive.Active    = true;
         m_steers.Active  = true;
+    }
+
+    private void OnStopMove()
+    {
+        MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
+        arrive.Active    = false;
+        m_steers.Active  = false;
     }
 
     private void OnWait()
