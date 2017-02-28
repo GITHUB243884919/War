@@ -62,7 +62,7 @@ public class Scene_Commond_Test : MonoBehaviour
 
         if (withEffect)
         {
-            obj.Attack();
+            obj.Attack(startPos, endPos, 5f);
         }
 
     }

@@ -37,32 +37,56 @@ public class CharObj
         return path;
     }
 
-    //AI
+    //API for AI begin
 
     /// <summary>
     /// 到达
     /// </summary>
-    /// <param name="startPoint"></param>
-    /// <param name="endPoint"></param>
-    /// <param name="speed"></param>
+    /// <param name="startPoint">起点</param>
+    /// <param name="endPoint">终点</param>
+    /// <param name="speed">速度</param>
     public void Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
     {
         Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
         CharController.TargetForPosition = startPoint;
         CharController.TargetForArrive = endPoint;
         CharController.SpeedForArrive = speed;
-        //OnArrive();
         CharController.Commond(CharController.E_COMMOND.ARRIVE);
     }
 
     /// <summary>
     /// 攻击
     /// </summary>
-    public void Attack()
+    /// <param name="position">自身位置</param>
+    /// <param name="target">目标</param>
+    /// <param name="waitSeconds">等待时间（秒）</param>
+    public void Attack(Vector3 position, Vector3 target, float waitSeconds)
     {
         Debug.Log("Attack");
+        
+        //自己定位
+        CharController.TargetForPosition = position;
+        CharController.Commond(CharController.E_COMMOND.POSITION);
+
+        //面朝目标
+        CharController.TargetForLookAt = target;
+        CharController.Commond(CharController.E_COMMOND.LOOKAT);
+        
+        //0.3秒内的等待不执行
+        if (waitSeconds > 0.3f)
+        {
+            CharController.WaitForSeconds = waitSeconds;
+            CharController.WaitForCommond = CharController.E_COMMOND.ATTACK;
+            CharController.Commond(CharController.E_COMMOND.WAIT);
+            return;
+        }
+
         CharController.Commond(CharController.E_COMMOND.ATTACK);
     }
+
+    //API for AI end
+
+
 
 
 }

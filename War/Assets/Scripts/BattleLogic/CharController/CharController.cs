@@ -13,18 +13,21 @@ public class CharController : MonoBehaviour
     public int m_charType = 0;
     public enum E_COMMOND
     {
-        NONE,
-        //以下是位置相关
+        NONE,     //空命令，什么都不做。
+        
+        //位置相关
         POSITION, //直接定位到某个位置,放在一个看不见的地方就实现了隐藏Vector3(0f, -10f, 0f)
+        LOOKAT,   //面朝一个方向，提供目标向量
         ARRIVE,   //移动到某个位置，提供终点
 
         //特殊类型
         WAIT,     //等待，需要提供等待多少秒和等待完了后执行什么（E_COMMOND）。如果只是等待那么后续传NONE
         
         //以下是动画相关
-        IDLE,
-        ATTACK,
-        ATTACKED
+        IDLE,     //待机
+        ATTACK,   //攻击
+        ATTACKED, //受击
+        DEAD      //死亡
     }
 
     public delegate void CommondCallback();
@@ -40,9 +43,10 @@ public class CharController : MonoBehaviour
     public Vector3     TargetForArrive      { get; set; }
     public float       TimeForArrive        { get; set; }
     public float       SpeedForArrive       { get; set; }
+    public Vector3     TargetForLookAt      { get; set; }
 
     //等待数据
-    public float       WaitForSecond        { get; set; }
+    public float       WaitForSeconds       { get; set; }
     public E_COMMOND   WaitForCommond       { get; set; }
 
     public GameObject  GameObject           { get; private set; }
@@ -60,6 +64,7 @@ public class CharController : MonoBehaviour
         //与位置相关
         RegCommond(E_COMMOND.POSITION, OnPositon);
         RegCommond(E_COMMOND.ARRIVE, OnArrive);
+        RegCommond(E_COMMOND.LOOKAT, OnLookAt);
 
         //等待
         WaitForCommond = E_COMMOND.NONE;
@@ -121,6 +126,12 @@ public class CharController : MonoBehaviour
         Transform.position = TargetForPosition;
     }
 
+    private void OnLookAt()
+    {
+        Debug.Log("OnLookAt");
+        Transform.LookAt(TargetForLookAt);
+    }
+
     private void OnArrive()
     {
         Debug.Log("OnArrive " + Time.realtimeSinceStartup);
@@ -141,7 +152,7 @@ public class CharController : MonoBehaviour
 
     IEnumerator WaitTimer()
     {
-        yield return new WaitForSeconds(WaitForSecond);
+        yield return new WaitForSeconds(WaitForSeconds);
         Commond(WaitForCommond);
     }
 

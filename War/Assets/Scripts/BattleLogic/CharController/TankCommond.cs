@@ -36,7 +36,7 @@ public class TankCommond : CharCommond
 
     public void Attack()
     {
-        Debug.Log("Attack");
+        Debug.Log("Attack" + Time.realtimeSinceStartup);
         //查找特效transform路径
         if(m_effectTrs == null)
         {
