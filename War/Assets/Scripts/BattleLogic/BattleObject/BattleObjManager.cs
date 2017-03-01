@@ -42,15 +42,15 @@ public class BattleObjManager : MonoBehaviour
 
     private void Init()
     {
-        Debug.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
+        //Debug.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjPoolManager.Instance.Init();
-        Debug.Log("end CharObjPoolManager Init " + Time.realtimeSinceStartup);
+        //Debug.Log("end CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjCache.Instance.Init();
-        Debug.Log("CharObjCache Init");
+        //Debug.Log("CharObjCache Init");
         //BNGObjPoolManager.Instance.Init();
         //Debug.Log("BNGObjPoolManager Init");
         ParticleObjPoolManager.Instance.Init();
-        Debug.Log("ParticleObjPoolManager Init");
+        //Debug.Log("ParticleObjPoolManager Init");
     }
 
     /// <summary>
@@ -90,6 +90,7 @@ public class BattleObjManager : MonoBehaviour
 
         }
         charObj.CharController.ServerEntityID = serverEntityID;
+        charObj.CharController.CharType = type;
 
         //从对象池中取出的对象要放入缓存中
         CharObjCache.Instance.Add(charObj);
@@ -131,7 +132,7 @@ public class BattleObjManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("BattleObjManager Start " + Time.realtimeSinceStartup);
+        //Debug.Log("BattleObjManager Start " + Time.realtimeSinceStartup);
         Init();
     } 
 

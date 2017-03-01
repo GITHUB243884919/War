@@ -40,7 +40,7 @@ public class CharObjPoolManager
             "TankRuntime_Bake/TankRuntime_Bake",
             "TankRuntime_Bake/Tank_Seed"
         };
-        Debug.Log("Init Tank pool");
+        //Debug.Log("Init Tank pool");
         InitBattleObjPool(pathsTank,
             BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK, countTank);
 

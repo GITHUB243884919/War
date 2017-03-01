@@ -9,12 +9,11 @@ using System.Collections.Generic;
 
 public class CharController : MonoBehaviour 
 {
-    public int ServerEntityID { get; set; }
-    public int m_charType = 0;
+    //角色能执行的命令
     public enum E_COMMOND
     {
         NONE,     //空命令，什么都不做。
-        
+
         //位置相关
         POSITION, //直接定位到某个位置,放在一个看不见的地方就实现了隐藏Vector3(0f, -10f, 0f)
         LOOKAT,   //面朝一个方向，提供目标向量
@@ -23,7 +22,7 @@ public class CharController : MonoBehaviour
 
         //特殊类型
         WAIT,     //等待，需要提供等待多少秒和等待完了后执行什么（E_COMMOND类型）。如果只是等待那么后续传NONE
-        
+
         //以下是动画相关
         IDLE,     //待机
         ATTACK,   //攻击
@@ -31,13 +30,30 @@ public class CharController : MonoBehaviour
         DEAD      //死亡
     }
 
+    public int ServerEntityID { get; set; }
+    
+    [HideInInspector]
+    public BattleObjManager.E_BATTLE_OBJECT_TYPE m_charType;
+    public BattleObjManager.E_BATTLE_OBJECT_TYPE CharType 
+    {
+        get
+        {
+            return m_charType;
+        }
+        set 
+        {
+            m_commond = CharCommondFactory.CreateCommond(this, value);
+            m_commond.Init();
+        }
+    }
+
     public delegate void CommondCallback();
 
     public Dictionary<E_COMMOND, CommondCallback> m_commondCallbacks =
         new Dictionary<E_COMMOND, CommondCallback>();
 
-    CharCommond        m_commond = null;
-    MoveSteers         m_steers  = null;
+    private CharCommond        m_commond = null;
+    private MoveSteers         m_steers  = null;
 
     //位置数据
     public Vector3     TargetForPosition    { get; set; }
@@ -66,6 +82,11 @@ public class CharController : MonoBehaviour
     public Transform   Transform            { get; private set; }
     public Animator    Animator             { get; private set; }
 
+    //for test begin
+    public float StartArrive { get; set; }
+    //for test end
+
+
     private void Init()
     {
         GameObject = gameObject;
@@ -86,8 +107,8 @@ public class CharController : MonoBehaviour
         
         //m_commond  = new TankCommond(this);
         //m_commond.Init();
-        m_commond = CharCommondFactory.CreateCommond(this, m_charType);
-        m_commond.Init();
+        //m_commond = CharCommondFactory.CreateCommond(this, m_charType);
+        //m_commond.Init();
 
         m_steers   = new MoveSteers(this);
         m_steers.Init();
@@ -148,7 +169,8 @@ public class CharController : MonoBehaviour
 
     private void OnArrive()
     {
-        Debug.Log("OnArrive " + Time.realtimeSinceStartup);
+        //Debug.Log("OnArrive " + Time.realtimeSinceStartup);
+        StartArrive = Time.realtimeSinceStartup;
         //先定位到起点
         OnPositon();
         //转向
@@ -185,7 +207,11 @@ public class CharController : MonoBehaviour
 	
 	void Update () 
     {
-        m_commond.Update();
+        if (m_commond != null)
+        {
+            m_commond.Update();
+        }
+        
         if (m_steers.Active)
         {
             m_steers.Update();

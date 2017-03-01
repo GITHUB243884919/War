@@ -37,7 +37,7 @@ public class MoveSteers
 
     public void Init()
     {
-        Debug.Log("MoveSteers Init");
+        //Debug.Log("MoveSteers Init");
         Active = false;
         m_timer = 0.0f;
 

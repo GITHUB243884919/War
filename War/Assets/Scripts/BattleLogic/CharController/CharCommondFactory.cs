@@ -10,16 +10,18 @@ using System.Collections;
 
 public class CharCommondFactory
 {
-    public static CharCommond CreateCommond(CharController cctr, int charType)
+    public static CharCommond CreateCommond(CharController cctr, 
+        BattleObjManager.E_BATTLE_OBJECT_TYPE charType)
     {
         CharCommond cmd = null;
         switch (charType)
         {
-            case 0:
+            case BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK:
                 cmd = new TankCommond(cctr);
                 break;
             default:
-                cmd = new TankCommond(cctr);
+                //cmd = new TankCommond(cctr);
+                Debug.LogError("CharCommond 的 charType参数不正确 " + charType);
                 break;
         }
 
