@@ -40,13 +40,13 @@ public class CharObjCreator : QObjCreator<CharObj>
     {
         bool retCode        = false;
 
-        GameObject bakerRes = Resources.Load<GameObject>(paths[0]);
-        if (bakerRes == null)
+        m_meshbakerGo = ResourcesManagerMediator.
+            GetGameObjectFromResourcesManager(paths[0]);
+        if (m_meshbakerGo == null)
         {
             Debug.LogError("加载baker生成器资源出错" + paths[0]);
             return;
         }
-        m_meshbakerGo = GameObject.Instantiate<GameObject>(bakerRes);
 
         MB3_TextureBaker textureBaker = m_meshbakerGo.GetComponent<MB3_TextureBaker>();
         m_meshBaker = m_meshbakerGo.GetComponentInChildren<MB3_MeshBaker>();
@@ -58,13 +58,12 @@ public class CharObjCreator : QObjCreator<CharObj>
             return;
         }
 
-        GameObject seedRes = Resources.Load<GameObject>(paths[3]);
-        if (seedRes == null)
+        m_seed = ResourcesManagerMediator.GetGameObjectFromResourcesManager(paths[3]);
+        if (m_seed == null)
         {
             Debug.LogError("加载种子资源失败 " + paths[3]);
             return;
         }
-        m_seed = GameObject.Instantiate<GameObject>(seedRes);
         m_seed.transform.position = INIT_POS;
 
         m_count = count;
@@ -120,15 +119,16 @@ public class CharObjCreator : QObjCreator<CharObj>
     {
         bool result = false;
 
-        Material material = Resources.Load<Material>(paths[1]);
+        Material material = ResourcesManagerMediator.
+            GetNoGameObjectFromResourcesManager<Material>(paths[1]);
         if (material == null)
         {
             Debug.LogError("加载合并材质资源失败" + paths[1]);
             return result;
         }
 
-        MB2_TextureBakeResults textureBakeResults =
-            Resources.Load<MB2_TextureBakeResults>(paths[2]);
+        MB2_TextureBakeResults textureBakeResults = ResourcesManagerMediator.
+            GetNoGameObjectFromResourcesManager<MB2_TextureBakeResults>(paths[2]);
         if (textureBakeResults == null)
         {
             Debug.LogError("加载MB2_TextureBakeResults资源失败" + paths[2]);

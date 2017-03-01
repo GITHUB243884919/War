@@ -31,8 +31,8 @@ public class Scene_Commond_Test : MonoBehaviour
     IEnumerator CreateTanks()
     {
         yield return null;
-        //for (int i = 0; i < 128; i++)
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 128; i++)
+        //for (int i = 0; i < 1; i++)
         {
             //CreateTank_Arrive_Attack(i, false, false);
             //CreateTank_Arrive_Attack(i, true, false);

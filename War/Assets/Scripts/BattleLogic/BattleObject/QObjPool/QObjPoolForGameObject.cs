@@ -22,13 +22,12 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
 
     public QObjCreatorForGameObject(string path, int count)
     {
-        GameObject seedRes = Resources.Load<GameObject>(path);
-        if (seedRes == null)
+        m_seed = ResourcesManagerMediator.GetGameObjectFromResourcesManager(path);
+        if (m_seed == null)
         {
             Debug.LogWarning("读取种子资源出错 " + path);
             return;
         }
-        m_seed = GameObject.Instantiate<GameObject>(seedRes);
 
         m_seed.transform.position = INIT_POS;
 
@@ -55,6 +54,7 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
         for (int i = 0; i < m_count; i++)
         {
             GameObject go = GameObject.Instantiate<GameObject>(m_seed);
+            //HideObject(go);
             go.transform.position = INIT_POS;
             objs[i] = go;
         }
