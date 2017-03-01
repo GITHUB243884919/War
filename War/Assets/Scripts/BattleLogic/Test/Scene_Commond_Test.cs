@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class Scene_Commond_Test : MonoBehaviour
 {
-
+    bool m_withEffect = true;
+    int m_effectCycle = 0;
     void Start()
     {
         Button btn = GetComponent<Button>();
@@ -30,6 +31,7 @@ public class Scene_Commond_Test : MonoBehaviour
 
     IEnumerator CreateTanks()
     {
+        //bool m_withEffect = true;
         yield return null;
         //CreateTank_Arrive_Attack(1, true, false);
         //CreateTank_Arrive_Attack(1, true, false);
@@ -40,6 +42,12 @@ public class Scene_Commond_Test : MonoBehaviour
             //CreateTank_Arrive_Attack(i, true, false);
             CreateTank_Arrive_Attack(i, true, true);
         }
+        m_effectCycle++;
+        if (m_effectCycle > 1)
+        {
+            //m_withEffect = false;
+        }
+        
 
         //CreateTank_Dead(1, 2);
         //CreateTank_Arrive_Attack_LookAt(false, true);
@@ -65,7 +73,8 @@ public class Scene_Commond_Test : MonoBehaviour
             obj.Arrive(startPos, endPos, speed);
         }
 
-        if (withEffect)
+        if (m_withEffect)
+        //if (withEffect)
         {
             obj.Attack(startPos, endPos, 5f);
         }

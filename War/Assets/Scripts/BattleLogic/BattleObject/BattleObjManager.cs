@@ -78,6 +78,7 @@ public class BattleObjManager : MonoBehaviour
         if (charObj != null)
         {
             //Debug.Log("缓存中找到 " + serverEntityID);
+            charObj.CharController.StopWait();
             return charObj;
         }
 
@@ -160,7 +161,7 @@ public class BattleObjManager : MonoBehaviour
         }
 
         timer = 0;
-        if (EffectCount % 128 != 0)
+        if (EffectCount % 32 == 0)
         {
             Debug.Log("EffectCount " + EffectCount);
         }

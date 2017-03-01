@@ -193,12 +193,17 @@ public class CharController : MonoBehaviour
         StartCoroutine("WaitTimer");
     }
 
+    public void StopWait()
+    {
+        StopCoroutine("WaitTimer");
+    }
     IEnumerator WaitTimer()
     {
         yield return new WaitForSeconds(WaitForSeconds);
         Commond(WaitForCommond);
+        //yield return null;
         //for test begin
-        BattleObjManager.Instance.EffectCount++;
+        //BattleObjManager.Instance.EffectCount++;
         //for test end
     }
 
