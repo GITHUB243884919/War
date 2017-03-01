@@ -193,9 +193,14 @@ public class CharController : MonoBehaviour
         StartCoroutine("WaitTimer");
     }
 
-    public void StopWait()
+    public void UnActive()
     {
         StopCoroutine("WaitTimer");
+        if (m_commond != null)
+        {
+            m_commond.SetEffectActive(false);
+        }
+        
     }
     IEnumerator WaitTimer()
     {

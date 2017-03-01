@@ -15,6 +15,11 @@ public abstract class CharCommond
         m_cctr = ctr;
     }
 
+    public virtual void SetEffectActive(bool flag)
+    {
+
+    }
+
     public virtual void Init()
     {
 

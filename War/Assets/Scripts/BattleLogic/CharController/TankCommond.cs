@@ -12,7 +12,7 @@ public class TankCommond : CharCommond
     private string         m_effectResPath      = null;
     //特效挂点transform路径
     private string         m_effectPointPath    = null;
-    private ParticleSystem m_particleSystem     = null;
+    private  ParticleSystem m_particleSystem     = null;
 	public TankCommond(CharController cctr)
         :base(cctr){}
 
@@ -20,6 +20,20 @@ public class TankCommond : CharCommond
     {
         InitCommond();
         InitPath();
+    }
+
+    public override void SetEffectActive(bool flag)
+    {
+        if (m_particleSystem != null)
+        {
+            //m_particleSystem.transform.parent.gameObject.active = flag;
+            m_particleSystem.transform.parent.gameObject.SetActive(flag);
+
+            ParticleSystem.EmissionModule em = m_particleSystem.emission;
+            em.enabled = flag;
+            m_particleSystem.Stop();
+        }
+        
     }
 
     public void OnIdle()
@@ -47,6 +61,9 @@ public class TankCommond : CharCommond
             //for test end
             return;
         }
+        m_particleSystem.transform.parent.gameObject.SetActive(true);
+        ParticleSystem.EmissionModule em = m_particleSystem.emission;
+        em.enabled = true;
         m_particleSystem.Play();
         //for test begin
         BattleObjManager.Instance.EffectCount++;
