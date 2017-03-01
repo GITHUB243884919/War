@@ -189,7 +189,7 @@ public class CharController : MonoBehaviour
 
     private void OnWait()
     {
-        Debug.Log("OnWait " + Time.realtimeSinceStartup);
+        //Debug.Log("OnWait " + Time.realtimeSinceStartup);
         StartCoroutine("WaitTimer");
     }
 
@@ -197,6 +197,9 @@ public class CharController : MonoBehaviour
     {
         yield return new WaitForSeconds(WaitForSeconds);
         Commond(WaitForCommond);
+        //for test begin
+        BattleObjManager.Instance.EffectCount++;
+        //for test end
     }
 
     //Unity

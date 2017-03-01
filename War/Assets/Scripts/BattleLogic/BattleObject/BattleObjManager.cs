@@ -23,7 +23,9 @@ public class BattleObjManager : MonoBehaviour
         TANK,
         SOLDIER
     }
-
+    //for test begin
+    public int EffectCount { get; set; }
+    //for test end
     private static BattleObjManager s_Instance = null;
     public static BattleObjManager Instance
     {
@@ -34,7 +36,9 @@ public class BattleObjManager : MonoBehaviour
                 s_Instance = FindObjectOfType(typeof(BattleObjManager))
                         as BattleObjManager;
                 if (s_Instance == null)
+                {
                     Debug.LogError("场景中没有持有BattleObjManager的对象");
+                }
             }
             return s_Instance;
         }
@@ -42,7 +46,10 @@ public class BattleObjManager : MonoBehaviour
 
     private void Init()
     {
-        //Debug.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
+        //for test begin
+        EffectCount = 0;
+        //for test end
+        Debug.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjPoolManager.Instance.Init();
         //Debug.Log("end CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjCache.Instance.Init();
@@ -137,10 +144,26 @@ public class BattleObjManager : MonoBehaviour
     {
         //Debug.Log("BattleObjManager Start " + Time.realtimeSinceStartup);
         Init();
-    } 
+    }
 
+    //for test begin
+    float timer = 0f;
+    float interval = 0.2f;
+    //for test end
 	void Update() 
     {
-	
+        //for test begin
+        timer += Time.deltaTime;
+        if (timer < interval)
+        {
+            return;
+        }
+
+        timer = 0;
+        if (EffectCount % 128 != 0)
+        {
+            Debug.Log("EffectCount " + EffectCount);
+        }
+        //for test end
 	}
 }

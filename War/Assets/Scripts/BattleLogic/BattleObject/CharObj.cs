@@ -56,7 +56,7 @@ public class CharObj
     /// <param name="speed">速度</param>
     public void Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
     {
-        Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
+        //Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
         CharController.TargetForPosition = startPoint;
         CharController.TargetForArrive = endPoint;
         CharController.SpeedForArrive = speed;

@@ -29,7 +29,7 @@ public class TankCommond : CharCommond
 
     public void OnAttack()
     {
-        Debug.Log("TankCommond.Attack" + Time.realtimeSinceStartup);
+        //Debug.Log("TankCommond.Attack" + Time.realtimeSinceStartup);
         if (m_particleSystem == null)
         {
             GameObject particleObj = BattleObjManager.Instance.
@@ -42,9 +42,15 @@ public class TankCommond : CharCommond
 
             m_particleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
             m_particleSystem.Play();
+            //for test begin
+            BattleObjManager.Instance.EffectCount++;
+            //for test end
             return;
         }
         m_particleSystem.Play();
+        //for test begin
+        BattleObjManager.Instance.EffectCount++;
+        //for test end
     }
 
     public void OnAttacked()
