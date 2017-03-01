@@ -65,10 +65,12 @@ public class BattleObjManager : MonoBehaviour
     {
         CharObj charObj = null;
 
+        //Debug.Log("BorrowCharObj " + serverEntityID);
         //先从缓存中取
         charObj = CharObjCache.Instance.Find(serverEntityID);
         if (charObj != null)
         {
+            //Debug.Log("缓存中找到 " + serverEntityID);
             return charObj;
         }
 
@@ -89,6 +91,7 @@ public class BattleObjManager : MonoBehaviour
             return charObj;
 
         }
+        charObj.ServerEntityID = serverEntityID;
         charObj.CharController.ServerEntityID = serverEntityID;
         charObj.CharController.CharType = type;
 

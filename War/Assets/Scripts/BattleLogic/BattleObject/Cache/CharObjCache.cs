@@ -80,6 +80,7 @@ public class CharObjCache
 
     public CharObj Find(int serverEntityID)
     {
+        //Debug.Log("Find " + serverEntityID);
         CharObj charObj = null;
         m_cache.TryGetValue(serverEntityID, out charObj);
 

@@ -31,16 +31,18 @@ public class Scene_Commond_Test : MonoBehaviour
     IEnumerator CreateTanks()
     {
         yield return null;
-        //for (int i = 0; i < 128; i++)
+        //CreateTank_Arrive_Attack(1, true, false);
+        //CreateTank_Arrive_Attack(1, true, false);
+        for (int i = 0; i < 128; i++)
         //for (int i = 0; i < 1; i++)
-        //{
-        //    //CreateTank_Arrive_Attack(i, false, false);
-        //    //CreateTank_Arrive_Attack(i, true, false);
-        //    CreateTank_Arrive_Attack(i, true, true);
-        //}
+        {
+            //CreateTank_Arrive_Attack(i, false, false);
+            //CreateTank_Arrive_Attack(i, true, false);
+            CreateTank_Arrive_Attack(i, true, true);
+        }
 
         //CreateTank_Dead(1, 2);
-        CreateTank_Arrive_Attack_LookAt(false, true);
+        //CreateTank_Arrive_Attack_LookAt(false, true);
     }
     void CreateTank_Arrive_Attack(int entityID, bool withAI, bool withEffect)
     {
@@ -55,10 +57,11 @@ public class Scene_Commond_Test : MonoBehaviour
         float   time     = 30f;
         float   speed    = (endPos - startPos).magnitude / time;
         CharObj obj      = BattleObjManager.Instance.BorrowCharObj(
-            type, serverEntityID, serverEntityType);
+            type, entityID, serverEntityType);
 
         if (withAI)
         {
+            //obj.Position(startPos);
             obj.Arrive(startPos, endPos, speed);
         }
 
