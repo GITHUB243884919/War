@@ -78,7 +78,7 @@ public class BattleObjManager : MonoBehaviour
         if (charObj != null)
         {
             //Debug.Log("缓存中找到 " + serverEntityID);
-            charObj.CharController.UnActive();
+            charObj.CharController.InActive();
             return charObj;
         }
 

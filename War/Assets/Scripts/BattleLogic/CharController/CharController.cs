@@ -86,7 +86,6 @@ public class CharController : MonoBehaviour
     public float StartArrive { get; set; }
     //for test end
 
-
     private void Init()
     {
         GameObject = gameObject;
@@ -105,13 +104,24 @@ public class CharController : MonoBehaviour
         WaitForCommond = E_COMMOND.NONE;
         RegCommond(E_COMMOND.WAIT, OnWait);
         
-        //m_commond  = new TankCommond(this);
-        //m_commond.Init();
-        //m_commond = CharCommondFactory.CreateCommond(this, m_charType);
-        //m_commond.Init();
-
         m_steers   = new MoveSteers(this);
         m_steers.Init();
+    }
+
+    /// <summary>
+    /// 不活跃操作。
+    /// 停止一切MoveSteer的AI
+    /// 停止一切协程
+    /// 停止一切计时器
+    /// </summary>
+    public void InActive()
+    {
+        OnStopMove();
+        StopCoroutine("WaitTimer");
+        if (m_commond != null)
+        {
+            m_commond.SetEffectActive(false);
+        }
     }
 
     private void Realse()
@@ -193,15 +203,6 @@ public class CharController : MonoBehaviour
         StartCoroutine("WaitTimer");
     }
 
-    public void UnActive()
-    {
-        StopCoroutine("WaitTimer");
-        if (m_commond != null)
-        {
-            m_commond.SetEffectActive(false);
-        }
-        
-    }
     IEnumerator WaitTimer()
     {
         yield return new WaitForSeconds(WaitForSeconds);
