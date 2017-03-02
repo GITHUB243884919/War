@@ -1,9 +1,10 @@
 ﻿/// <summary>
-/// 角色对象数据结构(坦克，士兵等)
+/// 角色对象定义(坦克，士兵等)
 /// 
 /// author: fanzhengyong
 /// date: 2017-02-24
 /// 
+/// 包含了其AI的接口
 /// 
 /// </summary>
 /// 
@@ -29,6 +30,43 @@ public class CharObj
     //这里只缓存名字(路径)
     private Dictionary<int, string> m_childsPools =
         new Dictionary<int, string>();
+
+    public CharObj()
+    {
+        GameObject     = null;
+        CharController = null;
+    }
+
+    /// <summary>
+    /// 检查是否合法
+    /// 必须持有GameObject和CharController属性
+    /// 如果没有CharController就从GameOject取
+    /// </summary>
+    /// <returns></returns>
+    public bool IsValid()
+    {
+        bool result = false;
+
+        if (GameObject == null)
+        {
+            Debug.LogError("CharObj对象上没有持有 GameObject,请联系BattleObjManager作者");
+            return result;
+        }
+
+        if (CharController == null)
+        {
+            CharController = GameObject.GetComponent<CharController>();
+        }
+        if (CharController == null)
+        {
+            Debug.LogError("CharObj对象上没有持有 CharController组件,请联系BattleObjManager作者");
+            return result;
+        }
+
+        result = true;
+
+        return result;
+    }
 
     public string GetChildPool(int instanceID)
     {

@@ -70,7 +70,8 @@ public class BattleObjManager : MonoBehaviour
     public CharObj BorrowCharObj(BattleObjManager.E_BATTLE_OBJECT_TYPE type,
         int serverEntityID, int serverEntityType)
     {
-        CharObj obj = null;
+        bool    retCode = false;
+        CharObj obj     = null;
 
         //Debug.Log("BorrowCharObj " + serverEntityID);
         //先从缓存中取
@@ -86,22 +87,21 @@ public class BattleObjManager : MonoBehaviour
         obj = CharObjPoolManager.Instance.BorrowObj(type);
         if (obj == null)
         {
-            Debug.LogError("CharObjPoolManager.Instance.BorrowObj 取到空Obj" + type);
+            Debug.LogError("CharObjPoolManager.Instance.BorrowObj 取到空Obj " + type.ToString());
             return obj;
         }
-        
-        //对象池中取的要打上ServerEntityID
-        obj.CharController = obj.GameObject.GetComponent<CharController>();
-        if (obj.CharController == null)
-        {
-            //注意，这里没有取到组件，但是已经从pool借走了！！！
-            Debug.LogError("对象上没有持有 CharController组件");
-            return obj;
 
+        retCode = obj.IsValid();
+        if (!retCode)
+        {
+            Debug.LogError("取到CharObj非法，请联系BattleObjManager作者");
+            return obj;
         }
-        obj.ServerEntityID = serverEntityID;
+
+        //为CharObj打上身份证号:）
+        obj.ServerEntityID                = serverEntityID;
         obj.CharController.ServerEntityID = serverEntityID;
-        obj.CharController.CharType = type;
+        obj.CharController.CharType       = type;
 
         //从对象池中取出的对象要放入缓存中
         CharObjCache.Instance.Add(obj);

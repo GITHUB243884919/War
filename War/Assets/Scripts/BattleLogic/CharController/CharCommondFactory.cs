@@ -21,7 +21,7 @@ public class CharCommondFactory
                 break;
             default:
                 //cmd = new TankCommond(cctr);
-                Debug.LogError("CharCommond 的 charType参数不正确 " + charType);
+                Debug.LogError("不存在这类CharCommond无法生成 " + charType.ToString());
                 break;
         }
 
