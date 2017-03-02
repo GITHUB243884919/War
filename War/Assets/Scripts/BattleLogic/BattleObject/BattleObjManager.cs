@@ -142,6 +142,7 @@ public class BattleObjManager : MonoBehaviour
         ParticleObjPoolManager.Instance.ReturnObj(obj, path);
     }
 
+    //Unity
     void Start()
     {
         //Debug.Log("BattleObjManager Start " + Time.realtimeSinceStartup);
@@ -149,7 +150,7 @@ public class BattleObjManager : MonoBehaviour
     }
 
     //for test begin
-    float timer = 0f;
+    float timer    = 0f;
     float interval = 0.2f;
     //for test end
 	void Update() 
@@ -160,8 +161,8 @@ public class BattleObjManager : MonoBehaviour
         {
             return;
         }
-
         timer = 0;
+
         if (EffectCount % 32 == 0)
         {
             Debug.Log("EffectCount " + EffectCount);

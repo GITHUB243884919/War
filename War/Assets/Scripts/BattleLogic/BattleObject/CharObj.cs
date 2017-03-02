@@ -158,8 +158,4 @@ public class CharObj
         CharController.Commond(CharController.E_COMMOND.DEAD);
     }
     //API for AI end
-
-
-
-
 }
