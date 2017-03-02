@@ -16,7 +16,7 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
 
     public static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
 
-    private GameObject m_seed;
+    protected GameObject m_seed;
 
     private bool isInit = false;
 

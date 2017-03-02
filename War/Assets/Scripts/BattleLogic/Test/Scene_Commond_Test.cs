@@ -56,7 +56,7 @@ public class Scene_Commond_Test : MonoBehaviour
     {
         BattleObjManager.E_BATTLE_OBJECT_TYPE type
             = BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK;
-        int serverEntityID = entityID;
+        //int serverEntityID = entityID;
         int serverEntityType = 1;
 
         Vector3 startPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
@@ -70,13 +70,13 @@ public class Scene_Commond_Test : MonoBehaviour
         if (withAI)
         {
             //obj.Position(startPos);
-            obj.Arrive(startPos, endPos, speed);
+            obj.AI_Arrive(startPos, endPos, speed);
         }
 
         if (m_withEffect)
         //if (withEffect)
         {
-            obj.Attack(startPos, endPos, 5f);
+            obj.AI_Attack(startPos, endPos, 5f);
         }
 
     }
@@ -96,10 +96,10 @@ public class Scene_Commond_Test : MonoBehaviour
         //假定服务器规定这段路必须time秒走完
         float   time     = 30f;
         float   speed    = (endPos - startPos).magnitude / time;
-        obj.Position(startPos);
+        obj.AI_Position(startPos);
         //obj.CharController.WaitForSeconds = 5f;
         //obj.CharController.WaitForCommond = CharController.E_COMMOND.NONE;
-        obj.Dead(deadEntityID, type, startPos, endPos, speed);
+        obj.AI_Dead(deadEntityID, type, startPos, endPos, speed);
     }
 
     void CreateTank_Arrive_Attack_LookAt(bool withAI, bool withEffect)
@@ -116,17 +116,17 @@ public class Scene_Commond_Test : MonoBehaviour
         float speed = (endPos - startPos).magnitude / time;
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, serverEntityID, serverEntityType);
-        obj.Position(startPos);
+        obj.AI_Position(startPos);
         Camera.main.GetComponent<Camera>().transform.LookAt(obj.GameObject.transform.position);
         Camera.main.GetComponent<Camera>().fieldOfView = 12f;
         if (withAI)
         {
-            obj.Arrive(startPos, endPos, speed);
+            obj.AI_Arrive(startPos, endPos, speed);
         }
 
         if (withEffect)
         {
-            obj.Attack(startPos, endPos, 5f);
+            obj.AI_Attack(startPos, endPos, 5f);
         }
 
     }

@@ -104,7 +104,7 @@ public class CharObjCreator : QObjCreator<CharObj>
     public override void HideObject(CharObj obj)
     {
         //停下来
-        obj.StopMove();
+        obj.InActive();
         //关闭所有特效
         //放到初始位置
         obj.GameObject.transform.position = INIT_POS;

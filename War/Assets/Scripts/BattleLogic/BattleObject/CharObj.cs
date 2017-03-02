@@ -26,7 +26,7 @@ public class CharObj
 
     public CharController CharController { get; set; }
 
-    //子对象的pool，<instanceID, path> 就是BNGObjPoolManager管理那些pool
+    //子对象的pool，<instanceID, path>
     //这里只缓存名字(路径)
     private Dictionary<int, string> m_childsPools =
         new Dictionary<int, string>();
@@ -68,6 +68,14 @@ public class CharObj
         return result;
     }
 
+    /// <summary>
+    /// 设置成不活跃
+    /// </summary>
+    public void InActive()
+    {
+        CharController.InActive();
+    }
+
     public string GetChildPool(int instanceID)
     {
         string path = null;
@@ -80,7 +88,7 @@ public class CharObj
     /// 瞬间定位
     /// </summary>
     /// <param name="position"></param>
-    public void Position(Vector3 position)
+    public void AI_Position(Vector3 position)
     {
         CharController.TargetForPosition = position;
         CharController.Commond(CharController.E_COMMOND.POSITION);
@@ -92,7 +100,7 @@ public class CharObj
     /// <param name="startPoint">起点</param>
     /// <param name="endPoint">终点</param>
     /// <param name="speed">速度</param>
-    public void Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
+    public void AI_Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
     {
         //Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
         CharController.TargetForPosition = startPoint;
@@ -107,7 +115,7 @@ public class CharObj
     /// <param name="position">自身位置</param>
     /// <param name="target">目标</param>
     /// <param name="waitSeconds">等待时间（秒）</param>
-    public void Attack(Vector3 position, Vector3 target, float waitSeconds)
+    public void AI_Attack(Vector3 position, Vector3 target, float waitSeconds)
     {
         Debug.Log("Attack");
         
@@ -134,7 +142,7 @@ public class CharObj
     /// <summary>
     /// 停止移动
     /// </summary>
-    public void StopMove()
+    public void AI_StopMove()
     {
         CharController.Commond(CharController.E_COMMOND.STOPMOVE);
     }
@@ -147,7 +155,7 @@ public class CharObj
     /// <param name="deadPosition">死亡位置，在哪里死的</param>
     /// <param name="deadTarget">死亡后跑到哪里去</param>
     /// <param name="deadMoveSpeed">跑的速度</param>
-    public void Dead(int deadChangeEntityID, BattleObjManager.E_BATTLE_OBJECT_TYPE deadChangeObjType,
+    public void AI_Dead(int deadChangeEntityID, BattleObjManager.E_BATTLE_OBJECT_TYPE deadChangeObjType,
         Vector3 deadPosition, Vector3 deadTarget, float deadMoveSpeed)
     {
         CharController.DeadChangeEntityID = deadChangeEntityID;

@@ -79,7 +79,7 @@ public class BattleObjManager : MonoBehaviour
         if (obj != null)
         {
             //Debug.Log("缓存中找到 " + serverEntityID);
-            obj.CharController.InActive();
+            obj.InActive();
             return obj;
         }
 
@@ -111,7 +111,7 @@ public class BattleObjManager : MonoBehaviour
 
     public void ReturnCharObj(CharObj obj)
     {
-        obj.CharController.InActive();
+        obj.InActive();
         //先从缓存中移除
         CharObjCache.Instance.Remove(obj);
         //再还给对象池

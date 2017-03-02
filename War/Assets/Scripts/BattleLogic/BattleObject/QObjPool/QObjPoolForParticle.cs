@@ -10,8 +10,6 @@ using System.Collections;
 
 public class QObjPoolForParticle : QObjCreatorForGameObject
 {
-    private GameObject m_seed;
-
     public QObjPoolForParticle(string path, int count)
         :base(path, count){}
 

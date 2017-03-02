@@ -89,7 +89,7 @@ public class TankCommond : CharCommond
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, serverEntityID, 1);
 
-        obj.Arrive(m_cctr.DeadPosition, m_cctr.DeadTarget, m_cctr.DeadMoveSpeed);
+        obj.AI_Arrive(m_cctr.DeadPosition, m_cctr.DeadTarget, m_cctr.DeadMoveSpeed);
     }
 
 	public override void Update() 
