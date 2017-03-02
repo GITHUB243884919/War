@@ -70,47 +70,48 @@ public class BattleObjManager : MonoBehaviour
     public CharObj BorrowCharObj(BattleObjManager.E_BATTLE_OBJECT_TYPE type,
         int serverEntityID, int serverEntityType)
     {
-        CharObj charObj = null;
+        CharObj obj = null;
 
         //Debug.Log("BorrowCharObj " + serverEntityID);
         //先从缓存中取
-        charObj = CharObjCache.Instance.Find(serverEntityID);
-        if (charObj != null)
+        obj = CharObjCache.Instance.Find(serverEntityID);
+        if (obj != null)
         {
             //Debug.Log("缓存中找到 " + serverEntityID);
-            charObj.CharController.InActive();
-            return charObj;
+            obj.CharController.InActive();
+            return obj;
         }
 
         //缓存中没有才从对象池中取
-        charObj = CharObjPoolManager.Instance.BorrowObj(type);
-        if (charObj == null)
+        obj = CharObjPoolManager.Instance.BorrowObj(type);
+        if (obj == null)
         {
             Debug.LogError("CharObjPoolManager.Instance.BorrowObj 取到空Obj" + type);
-            return charObj;
+            return obj;
         }
         
         //对象池中取的要打上ServerEntityID
-        charObj.CharController = charObj.GameObject.GetComponent<CharController>();
-        if (charObj.CharController == null)
+        obj.CharController = obj.GameObject.GetComponent<CharController>();
+        if (obj.CharController == null)
         {
             //注意，这里没有取到组件，但是已经从pool借走了！！！
             Debug.LogError("对象上没有持有 CharController组件");
-            return charObj;
+            return obj;
 
         }
-        charObj.ServerEntityID = serverEntityID;
-        charObj.CharController.ServerEntityID = serverEntityID;
-        charObj.CharController.CharType = type;
+        obj.ServerEntityID = serverEntityID;
+        obj.CharController.ServerEntityID = serverEntityID;
+        obj.CharController.CharType = type;
 
         //从对象池中取出的对象要放入缓存中
-        CharObjCache.Instance.Add(charObj);
+        CharObjCache.Instance.Add(obj);
 
-        return charObj;
+        return obj;
     }
 
-    public void ReturnBattleModelObj(CharObj obj)
+    public void ReturnCharObj(CharObj obj)
     {
+        obj.CharController.InActive();
         //先从缓存中移除
         CharObjCache.Instance.Remove(obj);
         //再还给对象池

@@ -42,8 +42,11 @@ public class CharController : MonoBehaviour
         }
         set 
         {
-            m_commond = CharCommondFactory.CreateCommond(this, value);
-            m_commond.Init();
+            if (m_commond == null)
+            {
+                m_commond = CharCommondFactory.CreateCommond(this, value);
+                m_commond.Init();
+            }
         }
     }
 
