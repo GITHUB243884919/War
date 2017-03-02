@@ -11,6 +11,7 @@ public class MonitorObjInScreen : MonoBehaviour {
     {
         m_cache = CharObjCache.Instance.Cache;
         //Debug.Log("cache count " + m_cache.Count);
+        Debug.Log(Camera.main.WorldToScreenPoint(Camera.main.gameObject.transform.position));
 	}
 	
 	// Update is called once per frame
@@ -39,6 +40,7 @@ public class MonitorObjInScreen : MonoBehaviour {
                 && (objInScreenPos.y >= 0.0f)
                 && (objInScreenPos.y <= Camera.main.pixelHeight)
                 //&& (objInScreenPos.z >= (Camera.main.transform.position.z)
+                && (objInScreenPos.z > 0)
             )
             {
                 Debug.Log(obj.GameObject.name + " 看得到");
@@ -48,7 +50,8 @@ public class MonitorObjInScreen : MonoBehaviour {
             {
                 obj.InActive();
                 Debug.Log(obj.GameObject.name + " 看不到");
-                Debug.Log(obj.GameObject.name + " " + objInScreenPos);
+                Debug.Log(obj.GameObject.name + " screen " + objInScreenPos);
+                Debug.Log(obj.GameObject.name + " world" + obj.GameObject.transform.position);
                 Debug.Log("screen " 
                     + new Vector3(
                         Camera.main.pixelWidth, 
