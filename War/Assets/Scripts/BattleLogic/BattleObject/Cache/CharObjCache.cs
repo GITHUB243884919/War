@@ -86,4 +86,11 @@ public class CharObjCache
 
         return charObj;
     }
+
+    //public Dictionary<int, CharObj> GetCache()
+    //{
+    //    return m_cache
+    //}
+
+    public Dictionary<int, CharObj> Cache { get{return m_cache;} }
 }
