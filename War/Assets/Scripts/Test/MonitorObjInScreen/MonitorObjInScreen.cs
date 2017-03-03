@@ -13,9 +13,12 @@ public class MonitorObjInScreen : MonoBehaviour {
         foreach (KeyValuePair<int, CharObj> pair in m_cache)
         {
             CharObj obj = pair.Value;
+            
+            Vector3 objInScreenPos = Camera.main.GetComponent<Camera>().
+                WorldToScreenPoint(obj.GameObject.transform.position);
 
-            Vector3 objInScreenPos = Camera.main.WorldToScreenPoint(
-                obj.GameObject.transform.position);
+            //Vector3 objInScreenPos = Camera.main.WorldToScreenPoint(
+            //    obj.GameObject.transform.position);
 
             //if ((objInScreenPos.x >= 0.0f)
             //    && (objInScreenPos.x <= Camera.main.pixelWidth)
@@ -62,6 +65,34 @@ public class MonitorObjInScreen : MonoBehaviour {
     {
 
         Monitor();
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("Pressed left click.");
+            Ray ray = Camera.main.GetComponent<Camera>().
+                ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log("Physics picked " + hit.point);
+            }
+            else
+            {
+                Debug.Log("no picked");
+            }
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+            float distance = 0;
+            if (plane.Raycast(ray, out distance))
+            {
+                Debug.Log("Math picked " + ray.GetPoint(distance)); 
+            }
+            else
+            {
+                Debug.Log("no picked");
+            }
+
+        }
+            
+        
 
     }
 }

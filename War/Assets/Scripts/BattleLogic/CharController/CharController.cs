@@ -228,8 +228,8 @@ public class CharController : MonoBehaviour
         {
             m_commond.Update();
         }
-        
-        if (m_steers.Active)
+
+        if ((m_steers != null) && (m_steers.Active))
         {
             m_steers.Update();
         }
@@ -237,7 +237,7 @@ public class CharController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (m_steers.Active)
+        if ((m_steers != null) && (m_steers.Active))
         {
             m_steers.FixedUpdate();
         }
