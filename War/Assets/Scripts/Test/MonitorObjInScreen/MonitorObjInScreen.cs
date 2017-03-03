@@ -33,15 +33,19 @@ public class MonitorObjInScreen : MonoBehaviour {
                 || (objInScreenPos.z < 0)
             )
             {
-                obj.InActive();
+                //obj.InActive();
                 Debug.Log(obj.GameObject.name + " 看不到");
-                Debug.Log(obj.GameObject.name + " screen " + objInScreenPos);
-                Debug.Log(obj.GameObject.name + " world" + obj.GameObject.transform.position);
-                Debug.Log("screen "
-                    + new Vector3(
-                        Camera.main.pixelWidth,
-                        Camera.main.pixelHeight,
-                        Camera.main.transform.position.z));
+                //Debug.Log(obj.GameObject.name + " screen " + objInScreenPos);
+                //Debug.Log(obj.GameObject.name + " world" + obj.GameObject.transform.position);
+                //Debug.Log("screen "
+                //    + new Vector3(
+                //        Camera.main.pixelWidth,
+                //        Camera.main.pixelHeight,
+                //        Camera.main.transform.position.z));
+                //obj.AI_Arrive(obj.GameObject.transform.position,
+                //    new Vector3(320f, 0f, 0f), 5f);
+                obj.AI_Arrive(obj.GameObject.transform.position,
+                    new Vector3(320f, 0f, 0f), 5f);
             }
             else
             {
@@ -55,8 +59,8 @@ public class MonitorObjInScreen : MonoBehaviour {
     {
         m_cache = CharObjCache.Instance.Cache;
         m_lastTime = Time.realtimeSinceStartup;
-        m_offset.x += 50f;
-        m_offset.y += 50f;
+        //m_offset.x += 50f;
+        //m_offset.y += 50f;
         //Debug.Log("offset in world " + Camera.main.ScreenToWorldPoint(m_offset));
 	}
 
