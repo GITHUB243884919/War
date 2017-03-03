@@ -1,5 +1,6 @@
 ﻿/// <summary>
-/// 本来想用屏幕上的4个角上点来确定地面的范围，结果是失败的。
+/// 画出屏幕4个点的世界坐标，用红线连接
+/// 画出屏幕4个点在平面的坐标，用蓝色连接
 /// 
 /// fanzhengyong
 /// 2017-03-02
@@ -95,17 +96,46 @@ public class CameraViewInWorld : MonoBehaviour
 
     void WorldProjectToPlane()
     {
-        m_plane_L_D = m_viewInWorld_L_D;
-        m_plane_L_D.y = 0f;
+        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        float distance = 0;
 
-        m_plane_R_U = m_viewInWorld_R_U;
-        m_plane_R_U.y = 0f;
+        Ray ray_L_D = Camera.main.GetComponent<Camera>().
+            ScreenPointToRay(new Vector3(0f, 0f, 0f));
+        if (plane.Raycast(ray_L_D, out distance))
+        {
+            m_plane_L_D = ray_L_D.GetPoint(distance);
+            Debug.Log("Math L_D " + ray_L_D.GetPoint(distance));
+        }
 
-        m_plane_L_U = m_viewInWorld_L_U;
-        m_plane_L_U.y = 0f;
+        Ray ray_R_U = Camera.main.GetComponent<Camera>().
+            ScreenPointToRay(new Vector3(
+                Camera.main.GetComponent<Camera>().pixelWidth ,
+                Camera.main.GetComponent<Camera>().pixelHeight , 0f));
+        if (plane.Raycast(ray_R_U, out distance))
+        {
+            m_plane_R_U = ray_R_U.GetPoint(distance);
+            Debug.Log("Math R_U " + ray_R_U.GetPoint(distance));
+        }
 
-        m_plane_R_D = m_viewInWorld_R_D;
-        m_plane_R_D.y = 0f;
+        Ray ray_L_U = Camera.main.GetComponent<Camera>().
+            ScreenPointToRay(new Vector3(
+                0,
+                Camera.main.GetComponent<Camera>().pixelHeight, 0f));
+        if (plane.Raycast(ray_L_U, out distance))
+        {
+            m_plane_L_U = ray_L_U.GetPoint(distance);
+            Debug.Log("Math L_U " + ray_L_U.GetPoint(distance));
+        }
+
+        Ray ray_R_D = Camera.main.GetComponent<Camera>().
+            ScreenPointToRay(new Vector3(
+            Camera.main.GetComponent<Camera>().pixelWidth,
+            0f, 0f));
+        if (plane.Raycast(ray_R_D, out distance))
+        {
+            m_plane_R_D = ray_R_D.GetPoint(distance);
+            Debug.Log("Math L_U " + ray_R_D.GetPoint(distance));
+        }
     }
 
     void OnDrawGizmos()
@@ -121,10 +151,12 @@ public class CameraViewInWorld : MonoBehaviour
         Debug.DrawLine(m_viewInWorld_R_U, m_viewInWorld_R_D, Color.red);
         Debug.DrawLine(m_viewInWorld_R_D, m_viewInWorld_L_D, Color.red);
 
-        Debug.DrawLine(m_plane_L_D, m_plane_L_U, Color.green);
-        Debug.DrawLine(m_plane_L_U, m_plane_R_U, Color.green);
-        Debug.DrawLine(m_plane_R_U, m_plane_R_D, Color.green);
-        Debug.DrawLine(m_plane_R_D, m_plane_L_D, Color.green);
+        Debug.DrawLine(m_plane_L_D, m_plane_L_U, Color.cyan);
+        Debug.DrawLine(m_plane_L_U, m_plane_R_U, Color.cyan);
+        Debug.DrawLine(m_plane_R_U, m_plane_R_D, Color.cyan);
+        Debug.DrawLine(m_plane_R_D, m_plane_L_D, Color.cyan);
+
+        //Debug.DrawLine(m_plane_L_D, m_plane_R_U, Color.green);
         
     }
 	
