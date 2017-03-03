@@ -49,7 +49,7 @@ public class BattleObjManager : MonoBehaviour
         //for test begin
         EffectCount = 0;
         //for test end
-        Debug.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
+        //Debug.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjPoolManager.Instance.Init();
         //Debug.Log("end CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjCache.Instance.Init();

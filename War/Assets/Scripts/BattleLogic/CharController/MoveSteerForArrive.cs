@@ -72,7 +72,6 @@ public class MoveSteerForArrive : MoveSteer
 
     void OnDrawGizmos()
     {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawWireSphere(target, slowDownDistance);
+
     }
 }

@@ -170,13 +170,13 @@ public class CharController : MonoBehaviour
 
     private void OnPositon()
     {
-        Debug.Log("OnPositon");
+        //Debug.Log("OnPositon");
         Transform.position = TargetForPosition;
     }
 
     private void OnLookAt()
     {
-        Debug.Log("OnLookAt");
+        //Debug.Log("OnLookAt");
         Transform.LookAt(TargetForLookAt);
     }
 

@@ -117,7 +117,7 @@ public class CharObj
     /// <param name="waitSeconds">等待时间（秒）</param>
     public void AI_Attack(Vector3 position, Vector3 target, float waitSeconds)
     {
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
         
         //自己定位
         CharController.TargetForPosition = position;

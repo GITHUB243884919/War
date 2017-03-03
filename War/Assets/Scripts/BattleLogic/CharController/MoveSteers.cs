@@ -20,13 +20,13 @@ public class MoveSteers
     public Dictionary<E_STEER_TYPE, MoveSteer> m_steers =
         new Dictionary<E_STEER_TYPE, MoveSteer>();
 
-    public float m_interval = 0.2f;
-    public bool m_isPlanar = true;
-    public float m_timer = 0.0f;
-    public bool m_displayTrack = true;
-    public Vector3 m_moveDistance;
-    public Vector3 m_steeringForce;
-    public CharController m_ctr;
+    public float          m_interval      = 0.2f;
+    public bool           m_isPlanar      = true;
+    public float          m_timer         = 0.0f;
+    public bool           m_displayTrack  = true;
+    public Vector3        m_moveDistance  = Vector3.zero;
+    public Vector3        m_steeringForce = Vector3.zero;
+    public CharController m_ctr           = null;
 
     public bool Active { get; set; }
 
@@ -38,7 +38,7 @@ public class MoveSteers
     public void Init()
     {
         //Debug.Log("MoveSteers Init");
-        Active = false;
+        Active  = false;
         m_timer = 0.0f;
 
         MoveSteer steerArrive = new MoveSteerForArrive(this, m_ctr);
