@@ -112,7 +112,7 @@ public class TankCommond : CharCommond
 
     private void InitPath()
     {
-        m_effectResPath      = "Effect/Tank/Prefab/Tank_dapao_fire";
+        m_effectResPath      = "Tank/Prefab/Tank_dapao_fire";
         m_effectPointPath    = "Bone01/Bone02/Dummy01";
     }
 }
