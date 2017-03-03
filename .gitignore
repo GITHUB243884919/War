@@ -5,3 +5,6 @@ Temp
 /War/War.sln
 /War/War.v12.suo
 Build
+obj
+/War/Assembly-CSharp.csproj
+/War/Assembly-CSharp-Editor.csproj
