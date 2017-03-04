@@ -32,6 +32,10 @@ public class CameraViewInWorld : MonoBehaviour
         WorldEffect();
     }
 
+    void FixedUpdate()
+    {
+        WorldProjectToPlane();
+    }
     void GetScreen4ToWorld()
     {
         //1、World Space（世界坐标）：我们在场景中添加物体（如：Cube），他们都是以世界坐标显示在场景中的。
@@ -63,18 +67,18 @@ public class CameraViewInWorld : MonoBehaviour
         //左下 (0，0)
         Vector3 view_L_D = Vector3.zero;
         view_L_D.z = Mathf.Abs(Camera.main.transform.position.z);
-        Debug.Log("view_L_D " + view_L_D);
+        //Debug.Log("view_L_D " + view_L_D);
         m_viewInWorld_L_D = Camera.main.ViewportToWorldPoint(view_L_D);
-        Debug.Log("m_viewInWorld_L_D " + m_viewInWorld_L_D);
+        //Debug.Log("m_viewInWorld_L_D " + m_viewInWorld_L_D);
         GameObject obj_L_D = GameObject.CreatePrimitive(PrimitiveType.Cube);
         obj_L_D.transform.position = m_viewInWorld_L_D;
 
         //右上 (1, 1)
         Vector3 view_R_U = Vector3.one;
         view_R_U.z = Mathf.Abs(Camera.main.transform.position.z);
-        Debug.Log("view_R_U " + view_R_U);
+        //Debug.Log("view_R_U " + view_R_U);
         m_viewInWorld_R_U = Camera.main.ViewportToWorldPoint(view_R_U);
-        Debug.Log("m_viewInWorld_R_U " + m_viewInWorld_R_U);
+        //Debug.Log("m_viewInWorld_R_U " + m_viewInWorld_R_U);
         GameObject obj_R_U = GameObject.CreatePrimitive(PrimitiveType.Cube);
         obj_R_U.transform.position = m_viewInWorld_R_U;
 
@@ -82,9 +86,9 @@ public class CameraViewInWorld : MonoBehaviour
         Vector3 view_L_U = Vector3.zero;
         view_L_U.y = 1f;
         view_L_U.z = Mathf.Abs(Camera.main.transform.position.z);
-        Debug.Log("view_L_U " + view_L_U);
+        //Debug.Log("view_L_U " + view_L_U);
         m_viewInWorld_L_U = Camera.main.ViewportToWorldPoint(view_L_U);
-        Debug.Log("m_viewInWorld_L_U " + m_viewInWorld_L_U);
+        //Debug.Log("m_viewInWorld_L_U " + m_viewInWorld_L_U);
         GameObject obj_L_U = GameObject.CreatePrimitive(PrimitiveType.Cube);
         obj_L_U.transform.position = m_viewInWorld_L_U;
 
@@ -92,9 +96,9 @@ public class CameraViewInWorld : MonoBehaviour
         Vector3 view_R_D = Vector3.zero;
         view_R_D.x = 1f;
         view_R_D.z = Mathf.Abs(Camera.main.transform.position.z);
-        Debug.Log("view_R_D " + view_R_D);
+        //Debug.Log("view_R_D " + view_R_D);
         m_viewInWorld_R_D = Camera.main.ViewportToWorldPoint(view_R_D);
-        Debug.Log("m_viewInWorld_R_D " + m_viewInWorld_R_D);
+        //Debug.Log("m_viewInWorld_R_D " + m_viewInWorld_R_D);
         GameObject obj_R_D = GameObject.CreatePrimitive(PrimitiveType.Cube);
         obj_R_D.transform.position = m_viewInWorld_R_D;
 
@@ -103,14 +107,18 @@ public class CameraViewInWorld : MonoBehaviour
     void WorldProjectToPlane()
     {
         Plane plane = new Plane(Vector3.up, Vector3.zero);
-        float distance = 0;
+        float distance = 0f;
 
         Ray ray_L_D = Camera.main.GetComponent<Camera>().
             ScreenPointToRay(new Vector3(0f, 0f, 0f));
         if (plane.Raycast(ray_L_D, out distance))
         {
             m_plane_L_D = ray_L_D.GetPoint(distance);
-            Debug.Log("Math L_D " + ray_L_D.GetPoint(distance));
+            //Debug.Log("Math L_D " + ray_L_D.GetPoint(distance));
+        }
+        else
+        {
+            Debug.Log("ray_L_D " + "no cast");
         }
 
         Ray ray_R_U = Camera.main.GetComponent<Camera>().
@@ -120,7 +128,11 @@ public class CameraViewInWorld : MonoBehaviour
         if (plane.Raycast(ray_R_U, out distance))
         {
             m_plane_R_U = ray_R_U.GetPoint(distance);
-            Debug.Log("Math R_U " + ray_R_U.GetPoint(distance));
+            //Debug.Log("Math R_U " + ray_R_U.GetPoint(distance));
+        }
+        else
+        {
+            Debug.Log("ray_R_U " + "no cast");
         }
 
         Ray ray_L_U = Camera.main.GetComponent<Camera>().
@@ -130,17 +142,25 @@ public class CameraViewInWorld : MonoBehaviour
         if (plane.Raycast(ray_L_U, out distance))
         {
             m_plane_L_U = ray_L_U.GetPoint(distance);
-            Debug.Log("Math L_U " + ray_L_U.GetPoint(distance));
+            //Debug.Log("Math L_U " + ray_L_U.GetPoint(distance));
+        }
+        else
+        {
+            Debug.Log("ray_L_U " + "no cast");
         }
 
         Ray ray_R_D = Camera.main.GetComponent<Camera>().
             ScreenPointToRay(new Vector3(
-            Camera.main.GetComponent<Camera>().pixelWidth,
-            0f, 0f));
+                Camera.main.GetComponent<Camera>().pixelWidth,
+                0f, 0f));
         if (plane.Raycast(ray_R_D, out distance))
         {
             m_plane_R_D = ray_R_D.GetPoint(distance);
-            Debug.Log("Math L_U " + ray_R_D.GetPoint(distance));
+            //Debug.Log("Math L_U " + ray_R_D.GetPoint(distance));
+        }
+        else
+        {
+            Debug.Log("ray_R_D " + "no cast");
         }
     }
 
