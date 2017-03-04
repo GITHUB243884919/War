@@ -93,16 +93,17 @@ public class CameraPlaneView : MonoBehaviour
         // 下面是获取t的公式
         // 注意，你需要先判断射线与平面是否平行，如果平面和射线平行，那么平面法线和射线方向的点积为0，即除数为0.
         //float t = (Vector3.Dot(normal, planePoint) - Vector3.Dot(normal, ray.origin)) / Vector3.Dot(normal, ray.direction.normalized);
-        if (enter >= 0)
-        {
+        //if (enter >= 0)
+        //{
             intersection = ray.origin + enter * ray.direction.normalized;
+            //intersection = ray.GetPoint(enter);
             return true;
-        }
-        else
-        {
-            intersection = Vector3.zero;
-            return false;
-        }
+        //}
+        //else
+        //{
+        //    intersection = Vector3.zero;
+        //    return false;
+        //}
     }
 
     /// <summary>

@@ -20,10 +20,16 @@ public class CameraViewInWorld : MonoBehaviour
     Vector3 m_plane_L_U       = Vector3.zero;
     Vector3 m_plane_R_D       = Vector3.zero;
 
+    Vector3 m_effect_L_D = Vector3.zero;
+    Vector3 m_effect_R_U = Vector3.zero;
+    Vector3 m_effect_L_U = Vector3.zero;
+    Vector3 m_effect_R_D = Vector3.zero;
+
 	void Start () 
     {
         GetScreen4ToWorld();
         WorldProjectToPlane();
+        WorldEffect();
     }
 
     void GetScreen4ToWorld()
@@ -138,6 +144,41 @@ public class CameraViewInWorld : MonoBehaviour
         }
     }
 
+    void WorldEffect()
+    {
+        float max_z = Mathf.Max(
+            Mathf.Max(m_plane_L_D.z, m_plane_R_U.z),
+            Mathf.Max(m_plane_L_U.z, m_plane_R_D.z));
+
+        float min_z = Mathf.Min(
+            Mathf.Min(m_plane_L_D.z, m_plane_R_U.z),
+            Mathf.Min(m_plane_L_U.z, m_plane_R_D.z));
+
+        float max_x = Mathf.Max(
+            Mathf.Max(m_plane_L_D.x, m_plane_R_U.x),
+            Mathf.Max(m_plane_L_U.x, m_plane_R_D.x));
+
+        float min_x = Mathf.Min(
+            Mathf.Min(m_plane_L_D.x, m_plane_R_U.x),
+            Mathf.Min(m_plane_L_U.x, m_plane_R_D.x));
+
+        m_effect_L_D.x = min_x;
+        m_effect_L_D.z = min_z;
+
+        m_effect_R_U.x = max_x;
+        m_effect_R_U.z = max_z;
+
+        m_effect_L_U.x = min_x;
+        m_effect_L_U.z = max_z;
+
+        m_effect_R_D.x = max_x;
+        m_effect_R_D.z = min_z;
+
+
+
+
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -156,7 +197,10 @@ public class CameraViewInWorld : MonoBehaviour
         Debug.DrawLine(m_plane_R_U, m_plane_R_D, Color.cyan);
         Debug.DrawLine(m_plane_R_D, m_plane_L_D, Color.cyan);
 
-        //Debug.DrawLine(m_plane_L_D, m_plane_R_U, Color.green);
+        Debug.DrawLine(m_effect_L_D, m_effect_L_U, Color.blue);
+        Debug.DrawLine(m_effect_L_U, m_effect_R_U, Color.blue);
+        Debug.DrawLine(m_effect_R_U, m_effect_R_D, Color.blue);
+        Debug.DrawLine(m_effect_R_D, m_effect_L_D, Color.blue);
         
     }
 	
