@@ -27,14 +27,15 @@ public class CameraViewInWorld : MonoBehaviour
 
 	void Start () 
     {
-        GetScreen4ToWorld();
-        WorldProjectToPlane();
-        WorldEffect();
+        //GetScreen4ToWorld();
+        //WorldProjectToPlane();
+        //WorldEffect();
     }
 
     void FixedUpdate()
     {
         WorldProjectToPlane();
+        //WorldEffect();
     }
     void GetScreen4ToWorld()
     {
@@ -116,23 +117,15 @@ public class CameraViewInWorld : MonoBehaviour
             m_plane_L_D = ray_L_D.GetPoint(distance);
             //Debug.Log("Math L_D " + ray_L_D.GetPoint(distance));
         }
-        else
-        {
-            Debug.Log("ray_L_D " + "no cast");
-        }
 
         Ray ray_R_U = Camera.main.GetComponent<Camera>().
             ScreenPointToRay(new Vector3(
-                Camera.main.GetComponent<Camera>().pixelWidth ,
-                Camera.main.GetComponent<Camera>().pixelHeight , 0f));
+                Camera.main.GetComponent<Camera>().pixelWidth,
+                Camera.main.GetComponent<Camera>().pixelHeight, 0f));
         if (plane.Raycast(ray_R_U, out distance))
         {
             m_plane_R_U = ray_R_U.GetPoint(distance);
             //Debug.Log("Math R_U " + ray_R_U.GetPoint(distance));
-        }
-        else
-        {
-            Debug.Log("ray_R_U " + "no cast");
         }
 
         Ray ray_L_U = Camera.main.GetComponent<Camera>().
@@ -144,10 +137,6 @@ public class CameraViewInWorld : MonoBehaviour
             m_plane_L_U = ray_L_U.GetPoint(distance);
             //Debug.Log("Math L_U " + ray_L_U.GetPoint(distance));
         }
-        else
-        {
-            Debug.Log("ray_L_U " + "no cast");
-        }
 
         Ray ray_R_D = Camera.main.GetComponent<Camera>().
             ScreenPointToRay(new Vector3(
@@ -158,9 +147,51 @@ public class CameraViewInWorld : MonoBehaviour
             m_plane_R_D = ray_R_D.GetPoint(distance);
             //Debug.Log("Math L_U " + ray_R_D.GetPoint(distance));
         }
-        else
+
+        ////////////
+        if (
+            (m_plane_L_D == Vector3.zero)
+            || (m_plane_R_D == Vector3.zero)
+        )
         {
-            Debug.Log("ray_R_D " + "no cast");
+            Debug.Log("no effect zone");
+            return;
+        }
+
+        float percentHeight = 0.3f;
+        if ((m_plane_R_U == Vector3.zero)
+            || (m_plane_L_U == Vector3.zero)
+        )
+        {
+            Debug.Log("U not effect");
+            ray_R_U = Camera.main.GetComponent<Camera>().
+            ScreenPointToRay(new Vector3(
+                Camera.main.GetComponent<Camera>().pixelWidth,
+                Camera.main.GetComponent<Camera>().pixelHeight * percentHeight, 
+                0f));
+            if (plane.Raycast(ray_R_U, out distance))
+            {
+                Debug.Log("new RU");
+                m_plane_R_U = ray_R_U.GetPoint(distance);
+                //Debug.Log("Math R_U " + ray_R_U.GetPoint(distance));
+            }
+
+            ray_L_U = Camera.main.GetComponent<Camera>().
+            ScreenPointToRay(new Vector3(
+                0f,
+                Camera.main.GetComponent<Camera>().pixelHeight * percentHeight,
+                0f));
+            if (plane.Raycast(ray_L_U, out distance))
+            {
+                m_plane_L_U = ray_L_U.GetPoint(distance);
+            }
+        }
+
+        if ((m_plane_R_U == Vector3.zero)
+            || (m_plane_L_U == Vector3.zero)
+        )
+        {
+            Debug.Log("new U not effect");
         }
     }
 
@@ -193,10 +224,6 @@ public class CameraViewInWorld : MonoBehaviour
 
         m_effect_R_D.x = max_x;
         m_effect_R_D.z = min_z;
-
-
-
-
     }
 
     void OnDrawGizmos()
