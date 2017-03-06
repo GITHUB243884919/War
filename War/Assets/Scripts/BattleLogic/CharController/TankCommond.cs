@@ -5,15 +5,14 @@
 /// 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TankCommond : CharCommond
 {
-    //特效资源路径
-    private string         m_effectResPath      = null;
-    //特效挂点transform路径
-    private string         m_effectPointPath    = null;
-    private  ParticleSystem m_particleSystem     = null;
-	public TankCommond(CharController cctr)
+    private Dictionary<CharController.E_COMMOND, CharParticleEffect> m_charParticleEffects
+        = new Dictionary<CharController.E_COMMOND, CharParticleEffect>();
+	
+    public TankCommond(CharController cctr)
         :base(cctr){}
 
     public override void Init()
@@ -22,18 +21,23 @@ public class TankCommond : CharCommond
         InitPath();
     }
 
-    public override void SetEffectActive(bool flag)
+    public override void SetEffectInActive()
     {
-        if (m_particleSystem != null)
+        foreach (KeyValuePair<CharController.E_COMMOND, CharParticleEffect> pair in m_charParticleEffects)
         {
-            //m_particleSystem.transform.parent.gameObject.active = flag;
-            m_particleSystem.transform.parent.gameObject.SetActive(flag);
+            if ((pair.Value != null)
+                && (pair.Value.ParticleSystem != null)
+            )
+            {
+                pair.Value.ParticleSystem.transform.
+                    parent.gameObject.SetActive(false);
 
-            ParticleSystem.EmissionModule em = m_particleSystem.emission;
-            em.enabled = flag;
-            m_particleSystem.Stop();
+                ParticleSystem.EmissionModule em = pair.Value.ParticleSystem.emission;
+                em.enabled = false;
+                pair.Value.ParticleSystem.Stop();
+            }
         }
-        
+
     }
 
     public void OnIdle()
@@ -44,36 +48,19 @@ public class TankCommond : CharCommond
     public void OnAttack()
     {
         //Debug.Log("TankCommond.Attack" + Time.realtimeSinceStartup);
-        if (m_particleSystem == null)
-        {
-            GameObject particleObj = BattleObjManager.Instance.
-                BorrowParticleObj(m_effectResPath);
-            particleObj.transform.position = Vector3.zero;
-            particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
 
-            Transform effectPoint = m_cctr.Transform.Find(m_effectPointPath);
-            particleObj.transform.SetParent(effectPoint, false);
+        CharController.E_COMMOND cmd = CharController.E_COMMOND.ATTACK;
+        ShowEffect(cmd);
 
-            m_particleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
-            m_particleSystem.Play();
-            //for test begin
-            BattleObjManager.Instance.EffectCount++;
-            //for test end
-            return;
-        }
-        m_particleSystem.transform.parent.gameObject.SetActive(true);
-        ParticleSystem.EmissionModule em = m_particleSystem.emission;
-        em.enabled = true;
-        m_particleSystem.Play();
-        //for test begin
-        BattleObjManager.Instance.EffectCount++;
-        //for test end
     }
 
     public void OnAttacked()
     {
         Debug.Log("TankCommond.Attacked");
+        CharController.E_COMMOND cmd    = CharController.E_COMMOND.ATTACKED;
+        ShowEffect(cmd);
     }
+
 
     /// <summary>
     /// 坦克死亡后变成救护车开走
@@ -112,7 +99,51 @@ public class TankCommond : CharCommond
 
     private void InitPath()
     {
-        m_effectResPath      = "Tank/Prefab/Tank_dapao_fire";
-        m_effectPointPath    = "Bone01/Bone02/Dummy01";
+        CharParticleEffect effectAttack   = new CharParticleEffect(
+            "Tank/Prefab/Tank_tanke_fire", "Bone01/Bone02/Dummy01");
+        m_charParticleEffects.Add(CharController.E_COMMOND.ATTACK,
+            effectAttack);
+
+        CharParticleEffect effectAttacked = new CharParticleEffect(
+            "Tank/Prefab/Tank_tanke_hit", "Bone01/Bone02/Dummy01");
+        m_charParticleEffects.Add(CharController.E_COMMOND.ATTACKED,
+            effectAttacked);
+    }
+
+    private void ShowEffect(CharController.E_COMMOND cmd)
+    {
+        CharParticleEffect effect = m_charParticleEffects[cmd];
+        if (effect == null)
+        {
+            Debug.LogError("没有这Commond的特效定义 " + cmd.ToString());
+            return;
+        }
+
+        if (effect.ParticleSystem == null)
+        {
+            GameObject particleObj = BattleObjManager.Instance.
+                BorrowParticleObj(effect.ResPath);
+            particleObj.transform.position = Vector3.zero;
+            particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
+
+            Transform effectPoint = m_cctr.Transform.Find(effect.PointPath);
+            particleObj.transform.SetParent(effectPoint, false);
+
+            effect.ParticleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
+            effect.ParticleSystem.Play();
+            //for test begin
+            BattleObjManager.Instance.EffectCount++;
+            //for test end
+            return;
+        }
+
+        effect.ParticleSystem.transform.parent.gameObject.SetActive(true);
+        ParticleSystem.EmissionModule em = effect.ParticleSystem.emission;
+        em.enabled = true;
+        effect.ParticleSystem.Play();
+        //for test begin
+        BattleObjManager.Instance.EffectCount++;
+        //for test end
+
     }
 }

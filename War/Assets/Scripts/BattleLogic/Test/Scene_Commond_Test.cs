@@ -76,7 +76,19 @@ public class Scene_Commond_Test : MonoBehaviour
         if (m_withEffect)
         //if (withEffect)
         {
-            obj.AI_Attack(startPos, endPos, 5f);
+            if (entityID < 32)
+            {
+                obj.AI_Attack(startPos, endPos, 5f);
+                obj.AI_Attacked(startPos);
+            }
+            else if (entityID < 64 )
+            {
+                obj.AI_Attack(startPos, endPos, 5f);
+            }
+            else
+            {
+                obj.AI_Attacked(startPos);
+            }
         }
 
     }

@@ -140,6 +140,18 @@ public class CharObj
     }
 
     /// <summary>
+    /// 受击
+    /// </summary>
+    /// <param name="position">在哪里的挨的打</param>
+    public void AI_Attacked(Vector3 position)
+    {
+        CharController.TargetForPosition = position;
+        CharController.Commond(CharController.E_COMMOND.POSITION);
+
+        CharController.Commond(CharController.E_COMMOND.ATTACKED);
+    }
+
+    /// <summary>
     /// 停止移动
     /// </summary>
     public void AI_StopMove()

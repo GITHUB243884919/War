@@ -123,7 +123,7 @@ public class CharController : MonoBehaviour
         StopCoroutine("WaitTimer");
         if (m_commond != null)
         {
-            m_commond.SetEffectActive(false);
+            m_commond.SetEffectInActive();
         }
     }
 
