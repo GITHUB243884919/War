@@ -109,6 +109,11 @@ public class BattleObjManager : MonoBehaviour
         return obj;
     }
 
+    /// <summary>
+    /// 向BattleManager还CharObj对象
+    /// 还的对象是之前借走的。
+    /// </summary>
+    /// <param name="obj"></param>
     public void ReturnCharObj(CharObj obj)
     {
         obj.InActive();
@@ -116,6 +121,19 @@ public class BattleObjManager : MonoBehaviour
         CharObjCache.Instance.Remove(obj);
         //再还给对象池
         CharObjPoolManager.Instance.ReturnObj(obj);
+    }
+
+    /// <summary>
+    /// 把之前借走的CharObj对象还给BattleObjManager
+    /// </summary>
+    public void ReturnAllBorrowCharObjs()
+    {
+        Dictionary<int, CharObj> cache = CharObjCache.Instance.Cache;
+
+        foreach (KeyValuePair<int, CharObj> pair in cache)
+        {
+            ReturnCharObj(pair.Value);
+        }
     }
 
     //public GameObject BorrowBNGObj(string path)
@@ -130,6 +148,7 @@ public class BattleObjManager : MonoBehaviour
     //    BNGObjPoolManager.Instance.ReturnObj(obj, path);
     //}
 
+    ////////////////////////////////////////////////////////////////////////////////
     public GameObject BorrowParticleObj(string path)
     {
         GameObject obj = null;
