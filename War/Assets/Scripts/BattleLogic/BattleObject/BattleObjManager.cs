@@ -1,15 +1,14 @@
 ﻿/// <summary>
-/// 战斗对象管理
+/// 战斗对象管理，提供对象的借与还
 /// author : fanzhengyong
 /// date  : 2017-02-24
 /// 
-/// 从服务器拿到需要生成坦克的下行消息后，从这个这个类取对象。
-/// 从对象的go上取控制组件CharController
-/// 调用CharController的方法执行对应的AI，比如移动
+/// 从服务器拿到需要生成坦克的下行消息后
+/// 1、从BattleObjManager借一个CharObj对象（函数BorrowCharObj）
+/// 2、对调用CharObj上的AI_XX函数对其进行操作（到达，攻击。。。。详见CharObj的注释）
+/// 3、把不用的CharObj对象还给BattleObjManager(函数ReturnCharObj)
+/// 4、一次性把之前借的CharObj全部归还（ReturnAllBorrowCharObjs）
 /// 
-/// CharObjCache 
-/// CharObjPoolManager
-/// BNGObjPoolManager
 /// </summary>
 /// 
 using UnityEngine;
