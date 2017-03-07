@@ -10,6 +10,11 @@ public class MonitorObjInScreen : MonoBehaviour {
     Vector3 m_offset = Vector3.zero;
     void Monitor()
     {
+        if (m_cache == null)
+        {
+            return;
+        }
+
         foreach (KeyValuePair<int, CharObj> pair in m_cache)
         {
             CharObj obj = pair.Value;
@@ -33,7 +38,7 @@ public class MonitorObjInScreen : MonoBehaviour {
                 || (objInScreenPos.z < 0)
             )
             {
-                //obj.InActive();
+                obj.InActive();
                 Debug.Log(obj.GameObject.name + " 看不到");
                 //Debug.Log(obj.GameObject.name + " screen " + objInScreenPos);
                 //Debug.Log(obj.GameObject.name + " world" + obj.GameObject.transform.position);

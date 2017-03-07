@@ -158,41 +158,41 @@ public class CameraViewInWorld : MonoBehaviour
             return;
         }
 
-        float percentHeight = 0.3f;
-        if ((m_plane_R_U == Vector3.zero)
-            || (m_plane_L_U == Vector3.zero)
-        )
-        {
-            Debug.Log("U not effect");
-            ray_R_U = Camera.main.GetComponent<Camera>().
-            ScreenPointToRay(new Vector3(
-                Camera.main.GetComponent<Camera>().pixelWidth,
-                Camera.main.GetComponent<Camera>().pixelHeight * percentHeight, 
-                0f));
-            if (plane.Raycast(ray_R_U, out distance))
-            {
-                Debug.Log("new RU");
-                m_plane_R_U = ray_R_U.GetPoint(distance);
-                //Debug.Log("Math R_U " + ray_R_U.GetPoint(distance));
-            }
+        //float percentHeight = 0.3f;
+        //if ((m_plane_R_U == Vector3.zero)
+        //    || (m_plane_L_U == Vector3.zero)
+        //)
+        //{
+        //    Debug.Log("U not effect");
+        //    ray_R_U = Camera.main.GetComponent<Camera>().
+        //    ScreenPointToRay(new Vector3(
+        //        Camera.main.GetComponent<Camera>().pixelWidth,
+        //        Camera.main.GetComponent<Camera>().pixelHeight * percentHeight, 
+        //        0f));
+        //    if (plane.Raycast(ray_R_U, out distance))
+        //    {
+        //        Debug.Log("new RU");
+        //        m_plane_R_U = ray_R_U.GetPoint(distance);
+        //        //Debug.Log("Math R_U " + ray_R_U.GetPoint(distance));
+        //    }
 
-            ray_L_U = Camera.main.GetComponent<Camera>().
-            ScreenPointToRay(new Vector3(
-                0f,
-                Camera.main.GetComponent<Camera>().pixelHeight * percentHeight,
-                0f));
-            if (plane.Raycast(ray_L_U, out distance))
-            {
-                m_plane_L_U = ray_L_U.GetPoint(distance);
-            }
-        }
+        //    ray_L_U = Camera.main.GetComponent<Camera>().
+        //    ScreenPointToRay(new Vector3(
+        //        0f,
+        //        Camera.main.GetComponent<Camera>().pixelHeight * percentHeight,
+        //        0f));
+        //    if (plane.Raycast(ray_L_U, out distance))
+        //    {
+        //        m_plane_L_U = ray_L_U.GetPoint(distance);
+        //    }
+        //}
 
-        if ((m_plane_R_U == Vector3.zero)
-            || (m_plane_L_U == Vector3.zero)
-        )
-        {
-            Debug.Log("new U not effect");
-        }
+        //if ((m_plane_R_U == Vector3.zero)
+        //    || (m_plane_L_U == Vector3.zero)
+        //)
+        //{
+        //    Debug.Log("new U not effect");
+        //}
     }
 
     void WorldEffect()

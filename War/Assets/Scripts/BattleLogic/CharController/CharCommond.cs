@@ -8,53 +8,37 @@
 /// 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CharParticleEffect
 {
-    //特效资源路径
-    private string m_resPath   = null;
-
-    //特效挂点transform路径
-    private string m_pointPath = null;
-
     //特效上的粒子特效组件
-    public ParticleSystem ParticleSystem {get; set;}
-
+    public ParticleSystem  ParticleSystem { get; set; }
+    public string          ResPath        { get; set; }
+    public string          PointPath      { get; set; }
     public CharParticleEffect(string resPath, string pointPath)
     {
-        m_resPath   = resPath;
-        m_pointPath = pointPath;
-    }
-
-    public string ResPath 
-    { 
-        get 
-        { 
-            return m_resPath;
-        }
-    }
-
-    public string PointPath
-    {
-        get
-        {
-            return m_pointPath;
-        }
+        ResPath   = resPath;
+        PointPath = pointPath;
     }
 }
 
 public abstract class CharCommond 
 {
     public CharController m_cctr;
-    public CharCommond(CharController ctr)
+
+    protected Dictionary<CharController.E_COMMOND, CharParticleEffect> m_charParticleEffects
+        = new Dictionary<CharController.E_COMMOND, CharParticleEffect>();
+
+    public CharCommond(CharController cctr)
     {
-        if (ctr == null)
+        if (cctr == null)
         {
             Debug.LogWarning("CharController 为空");
             return;
         }
 
-        m_cctr = ctr;
+        m_cctr = cctr;
     }
 
     public virtual void SetEffectInActive()

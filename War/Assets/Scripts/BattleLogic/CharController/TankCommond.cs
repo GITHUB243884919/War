@@ -8,10 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TankCommond : CharCommond
-{
-    private Dictionary<CharController.E_COMMOND, CharParticleEffect> m_charParticleEffects
-        = new Dictionary<CharController.E_COMMOND, CharParticleEffect>();
-	
+{	
     public TankCommond(CharController cctr)
         :base(cctr){}
 
@@ -99,10 +96,17 @@ public class TankCommond : CharCommond
 
     private void InitPath()
     {
-        CharParticleEffect effectAttack   = new CharParticleEffect(
+        CharParticleEffect effectAttack = new CharParticleEffect(
             "Tank/Prefab/Tank_tanke_fire", "Bone01/Bone02/Dummy01");
         m_charParticleEffects.Add(CharController.E_COMMOND.ATTACK,
             effectAttack);
+
+        //CharParticleEffect effectAttack   = new CharParticleEffect(
+        //    "Tank/Prefab/Tank_dapao_fire", "Bone01/Bone02/Dummy01");
+        //m_charParticleEffects.Add(CharController.E_COMMOND.ATTACK,
+        //    effectAttack);
+
+        
 
         CharParticleEffect effectAttacked = new CharParticleEffect(
             "Tank/Prefab/Tank_tanke_hit", "Bone01/Bone02/Dummy01");

@@ -87,6 +87,7 @@ public class Scene_Commond_Test : MonoBehaviour
             }
             else
             {
+                //obj.AI_Attack(startPos, endPos, 5f);
                 obj.AI_Attacked(startPos);
             }
         }

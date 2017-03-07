@@ -119,12 +119,24 @@ public class CharController : MonoBehaviour
     /// </summary>
     public void InActive()
     {
-        OnStopMove();
         StopCoroutine("WaitTimer");
         if (m_commond != null)
         {
             m_commond.SetEffectInActive();
         }
+        OnStopMove();
+
+        TargetForPosition  = Vector3.zero;
+        TargetForArrive    = Vector3.zero;
+        SpeedForArrive     = 0f;
+        TargetForLookAt    = Vector3.zero;    
+        WaitForSeconds     = 0f; 
+        WaitForCommond     = E_COMMOND.NONE;
+        DeadChangeEntityID = 0;
+        DeadPosition       = Vector3.zero;
+        DeadTarget         = Vector3.zero;
+        DeadMoveSpeed      = 0f;
+        
     }
 
     private void Realse()
@@ -176,18 +188,22 @@ public class CharController : MonoBehaviour
 
     private void OnLookAt()
     {
-        //Debug.Log("OnLookAt");
+        Debug.Log("OnLookAt " + TargetForLookAt);
         Transform.LookAt(TargetForLookAt);
     }
 
     private void OnArrive()
     {
-        //Debug.Log("OnArrive " + Time.realtimeSinceStartup);
+        //for test begin
         StartArrive = Time.realtimeSinceStartup;
+        //for test end
+
         //先定位到起点
         OnPositon();
         //转向
+        //Debug.Log("OnArrive LookAt " + TargetForArrive);
         Transform.LookAt(TargetForArrive);
+        
         MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
         arrive.Active    = true;
         m_steers.Active  = true;
