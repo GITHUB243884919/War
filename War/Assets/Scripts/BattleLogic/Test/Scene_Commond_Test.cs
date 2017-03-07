@@ -6,6 +6,7 @@ public class Scene_Commond_Test : MonoBehaviour
 {
     bool m_withEffect = true;
     int m_effectCycle = 0;
+    bool m_wait = false;
     void Start()
     {
         Button btn = GetComponent<Button>();
@@ -22,10 +23,16 @@ public class Scene_Commond_Test : MonoBehaviour
         //{
         //    //CreateTank(i, false, false);
         //    //CreateTank(i, true, false);
-        //    CreateTank(i, true, true);
+        //    CreateTank_Arrive_Attack(i, true, true);
 
         //}
-        //Debug.Log("End click " + Time.realtimeSinceStartup);
+        ////Debug.Log("End click " + Time.realtimeSinceStartup);
+        //m_effectCycle++;
+        //if (m_effectCycle > 1)
+        //{
+        //    //m_withEffect = false;
+        //    m_wait = true;
+        //}
 
     }
 
@@ -41,11 +48,13 @@ public class Scene_Commond_Test : MonoBehaviour
             //CreateTank_Arrive_Attack(i, false, false);
             //CreateTank_Arrive_Attack(i, true, false);
             CreateTank_Arrive_Attack(i, true, true);
+            //yield return null;
         }
         m_effectCycle++;
         if (m_effectCycle > 1)
         {
             //m_withEffect = false;
+            m_wait = true;
         }
         
 
@@ -76,19 +85,24 @@ public class Scene_Commond_Test : MonoBehaviour
         if (m_withEffect)
         //if (withEffect)
         {
+            float waitseconds = 0f;
+            if (m_wait)
+            {
+                waitseconds = 5.0f;
+            }
             if (entityID < 32)
             {
-                obj.AI_Attack(startPos, endPos, 5f);
-                obj.AI_Attacked(startPos);
+                obj.AI_Attack(startPos, endPos, waitseconds);
+                //obj.AI_Attacked(startPos);
             }
             else if (entityID < 64 )
             {
-                obj.AI_Attack(startPos, endPos, 5f);
+                obj.AI_Attack(startPos, endPos, waitseconds);
             }
             else
             {
-                //obj.AI_Attack(startPos, endPos, 5f);
-                obj.AI_Attacked(startPos);
+                obj.AI_Attack(startPos, endPos, waitseconds);
+                //obj.AI_Attacked(startPos);
             }
         }
 

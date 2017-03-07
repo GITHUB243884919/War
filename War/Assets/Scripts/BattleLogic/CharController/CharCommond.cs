@@ -41,8 +41,58 @@ public abstract class CharCommond
         m_cctr = cctr;
     }
 
-    public virtual void SetEffectInActive()
+    public void SetEffectInActive()
     {
+        foreach (KeyValuePair<CharController.E_COMMOND, CharParticleEffect> pair in m_charParticleEffects)
+        {
+            if ((pair.Value != null)
+                && (pair.Value.ParticleSystem != null)
+            )
+            {
+                //pair.Value.ParticleSystem.transform.
+                //    parent.gameObject.SetActive(false);
+
+                //ParticleSystem.EmissionModule em = pair.Value.ParticleSystem.emission;
+                //em.enabled = false;
+                pair.Value.ParticleSystem.Stop();
+            }
+        }
+    }
+
+    protected void ShowEffect(CharController.E_COMMOND cmd)
+    {
+        CharParticleEffect effect = m_charParticleEffects[cmd];
+        if (effect == null)
+        {
+            Debug.LogError("没有这Commond的特效定义 " + cmd.ToString());
+            return;
+        }
+
+        if (effect.ParticleSystem == null)
+        {
+            GameObject particleObj = BattleObjManager.Instance.
+                BorrowParticleObj(effect.ResPath);
+            particleObj.transform.position = Vector3.zero;
+            particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
+
+            Transform effectPoint = m_cctr.Transform.Find(effect.PointPath);
+            particleObj.transform.SetParent(effectPoint, false);
+
+            effect.ParticleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
+            effect.ParticleSystem.Play();
+            //for test begin
+            BattleObjManager.Instance.EffectCount++;
+            //for test end
+            return;
+        }
+
+        //effect.ParticleSystem.transform.parent.gameObject.SetActive(true);
+        //ParticleSystem.EmissionModule em = effect.ParticleSystem.emission;
+        //em.enabled = true;
+        effect.ParticleSystem.Play();
+        //for test begin
+        BattleObjManager.Instance.EffectCount++;
+        //for test end
 
     }
 
