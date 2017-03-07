@@ -88,7 +88,7 @@ public class CharObjPoolManager
     private void InitBattleObjPool(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
     {
         QObjCreatorFactory<CharObj> creatorFactory = new CharObjCreatorFactory(
-            paths, BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK, count);
+            paths, type, count);
 
         QObjPool<CharObj> pool = new QObjPool<CharObj>();
         pool.Init(null, creatorFactory);
