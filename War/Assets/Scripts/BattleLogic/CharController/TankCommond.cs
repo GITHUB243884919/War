@@ -25,10 +25,11 @@ public class TankCommond : CharCommond
 
     public void OnAttack()
     {
-        //Debug.Log("TankCommond.Attack" + Time.realtimeSinceStartup);
+        Debug.Log("TankCommond.Attack " + Time.realtimeSinceStartup);
 
         CharController.E_COMMOND cmd = CharController.E_COMMOND.ATTACK;
-        ShowEffect(cmd);
+        m_cctr.Animator.SetTrigger("Fire");
+        //ShowEffect(cmd);
     }
 
     public void OnAttacked()

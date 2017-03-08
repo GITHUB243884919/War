@@ -8,6 +8,7 @@ public class MonitorObjInScreen : MonoBehaviour {
     private Dictionary<int, CharObj> m_cache = null;
     float   m_lastTime = 0f;
     Vector3 m_offset = Vector3.zero;
+    bool    m_attack = false;
     void Monitor()
     {
         if (m_cache == null)
@@ -40,6 +41,12 @@ public class MonitorObjInScreen : MonoBehaviour {
             {
                 obj.Deactive();
                 Debug.Log(obj.GameObject.name + " 看不到");
+                if (!m_attack)
+                {
+                    Debug.Log("m_attack " + m_attack);
+                    obj.AI_Attack(obj.GameObject.transform.position, new Vector3(320f, 0f, 0f), 1f);
+                    m_attack = true;
+                }
                 //Debug.Log(obj.GameObject.name + " screen " + objInScreenPos);
                 //Debug.Log(obj.GameObject.name + " world" + obj.GameObject.transform.position);
                 //Debug.Log("screen "
@@ -51,6 +58,8 @@ public class MonitorObjInScreen : MonoBehaviour {
                 //    new Vector3(320f, 0f, 0f), 5f);
                 obj.AI_Arrive(obj.GameObject.transform.position,
                     new Vector3(320f, 0f, 0f), 5f);
+
+                
             }
             else
             {

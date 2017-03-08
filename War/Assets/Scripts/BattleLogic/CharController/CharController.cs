@@ -225,8 +225,9 @@ public class CharController : MonoBehaviour
     IEnumerator WaitTimer()
     {
         yield return new WaitForSeconds(WaitForSeconds);
+        Debug.Log("WaitTimer " + WaitForCommond.ToString() + " " + WaitForSeconds);
         Commond(WaitForCommond);
-        //yield return null;
+        yield return null;
         //for test begin
         //BattleObjManager.Instance.EffectCount++;
         //for test end

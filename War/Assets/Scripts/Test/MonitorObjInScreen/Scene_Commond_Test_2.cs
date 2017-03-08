@@ -37,7 +37,7 @@ public class Scene_Commond_Test_2 : MonoBehaviour
         //int serverEntityID = entityID;
         int serverEntityType = 1;
 
-        Vector3 startPos = new Vector3(64f, 0f, 64f);
+        Vector3 startPos = new Vector3(128f, 0f, 128f);
         Vector3 endPos   = new Vector3(320f, 0f, 320f);
         //假定服务器规定这段路必须time秒走完
         float   time     = 30f;
@@ -47,14 +47,15 @@ public class Scene_Commond_Test_2 : MonoBehaviour
 
         if (withAI)
         {
-            //obj.Position(startPos);
+            //obj.AI_Position(startPos);
             obj.AI_Arrive(startPos, endPos, speed);
+            //obj.AI_Attack(startPos, new Vector3(320f, 0f, 0f), 3f);
         }
 
         if (m_withEffect)
         //if (withEffect)
         {
-            obj.AI_Attack(startPos, endPos, 5f);
+            obj.AI_Attack(startPos, endPos, 1f);
         }
 
     }
