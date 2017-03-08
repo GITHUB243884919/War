@@ -117,12 +117,12 @@ public class CharController : MonoBehaviour
     /// 停止一切协程
     /// 停止一切计时器
     /// </summary>
-    public void InActive()
+    public void Deactive()
     {
         StopCoroutine("WaitTimer");
         if (m_commond != null)
         {
-            m_commond.SetEffectInActive();
+            m_commond.SetEffectDeactive();
         }
         OnStopMove();
 

@@ -38,7 +38,7 @@ public class MonitorObjInScreen : MonoBehaviour {
                 || (objInScreenPos.z < 0)
             )
             {
-                obj.InActive();
+                obj.Deactive();
                 Debug.Log(obj.GameObject.name + " 看不到");
                 //Debug.Log(obj.GameObject.name + " screen " + objInScreenPos);
                 //Debug.Log(obj.GameObject.name + " world" + obj.GameObject.transform.position);

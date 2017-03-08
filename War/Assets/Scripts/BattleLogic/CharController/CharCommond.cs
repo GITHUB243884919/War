@@ -41,7 +41,7 @@ public abstract class CharCommond
         m_cctr = cctr;
     }
 
-    public void SetEffectInActive()
+    public void SetEffectDeactive()
     {
         foreach (KeyValuePair<CharController.E_COMMOND, CharParticleEffect> pair in m_charParticleEffects)
         {

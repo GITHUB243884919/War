@@ -71,9 +71,9 @@ public class CharObj
     /// <summary>
     /// 设置成不活跃
     /// </summary>
-    public void InActive()
+    public void Deactive()
     {
-        CharController.InActive();
+        CharController.Deactive();
     }
 
     public string GetChildPool(int instanceID)
