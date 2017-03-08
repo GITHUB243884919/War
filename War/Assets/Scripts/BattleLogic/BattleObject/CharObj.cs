@@ -15,16 +15,16 @@ using System.Collections.Generic;
 public class CharObj
 {
     //服务器定义的唯一编号和类型编号
-    public int ServerEntityID { get; set; }
+    public int             ServerEntityID { get; set; }
     //public int ServerEntityType { get; set; }
+
+    //角色对应的prefab 坦克，士兵之类的prefab
+    public GameObject      GameObject     { get; set; }
+
+    public CharController  CharController { get; set; }
 
     //对象类型
     public BattleObjManager.E_BATTLE_OBJECT_TYPE Type { get; set; }
-
-    //角色对应的prefab 坦克，士兵之类的prefab
-    public GameObject GameObject { get; set; }
-
-    public CharController CharController { get; set; }
 
     //子对象的pool，<instanceID, path>
     //这里只缓存名字(路径)
@@ -90,8 +90,7 @@ public class CharObj
     /// <param name="position"></param>
     public void AI_Position(Vector3 position)
     {
-        CharController.TargetForPosition = position;
-        CharController.Commond(CharController.E_COMMOND.POSITION);
+        CharControllerMediator.AI_Position(CharController, position);
     }
 
     /// <summary>
@@ -102,11 +101,7 @@ public class CharObj
     /// <param name="speed">速度</param>
     public void AI_Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
     {
-        //Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
-        CharController.TargetForPosition = startPoint;
-        CharController.TargetForArrive = endPoint;
-        CharController.SpeedForArrive = speed;
-        CharController.Commond(CharController.E_COMMOND.ARRIVE);
+        CharControllerMediator.AI_Arrive(CharController, startPoint, endPoint, speed);
     }
 
     /// <summary>
@@ -117,26 +112,7 @@ public class CharObj
     /// <param name="waitSeconds">等待时间（秒）</param>
     public void AI_Attack(Vector3 position, Vector3 target, float waitSeconds)
     {
-        //Debug.Log("Attack");
-        
-        //自己定位
-        CharController.TargetForPosition = position;
-        CharController.Commond(CharController.E_COMMOND.POSITION);
-
-        //面朝目标
-        CharController.TargetForLookAt = target;
-        CharController.Commond(CharController.E_COMMOND.LOOKAT);
-        
-        //0.3秒内的等待不执行
-        if (waitSeconds > 0.3f)
-        {
-            CharController.WaitForSeconds = waitSeconds;
-            CharController.WaitForCommond = CharController.E_COMMOND.ATTACK;
-            CharController.Commond(CharController.E_COMMOND.WAIT);
-            return;
-        }
-
-        CharController.Commond(CharController.E_COMMOND.ATTACK);
+        CharControllerMediator.AI_Attack(CharController, position, target, waitSeconds);
     }
 
     /// <summary>
@@ -145,10 +121,7 @@ public class CharObj
     /// <param name="position">在哪里的挨的打</param>
     public void AI_Attacked(Vector3 position)
     {
-        CharController.TargetForPosition = position;
-        CharController.Commond(CharController.E_COMMOND.POSITION);
-
-        CharController.Commond(CharController.E_COMMOND.ATTACKED);
+        CharControllerMediator.AI_Attacked(CharController, position);
     }
 
     /// <summary>
@@ -156,7 +129,7 @@ public class CharObj
     /// </summary>
     public void AI_StopMove()
     {
-        CharController.Commond(CharController.E_COMMOND.STOPMOVE);
+        CharControllerMediator.AI_StopMove(CharController);
     }
 
     /// <summary>
@@ -170,12 +143,8 @@ public class CharObj
     public void AI_Dead(int deadChangeEntityID, BattleObjManager.E_BATTLE_OBJECT_TYPE deadChangeObjType,
         Vector3 deadPosition, Vector3 deadTarget, float deadMoveSpeed)
     {
-        CharController.DeadChangeEntityID = deadChangeEntityID;
-        CharController.DeadPosition       = deadPosition;
-        CharController.DeadTarget         = deadTarget;
-        CharController.DeadMoveSpeed      = deadMoveSpeed;
-        CharController.DeadChangeObjType  = deadChangeObjType;
-        CharController.Commond(CharController.E_COMMOND.DEAD);
+        CharControllerMediator.AI_Dead(CharController, deadChangeEntityID, deadChangeObjType,
+            deadPosition, deadTarget, deadMoveSpeed);
     }
     //API for AI end
 }
