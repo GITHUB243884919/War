@@ -119,7 +119,7 @@ public class CharController : MonoBehaviour
     /// </summary>
     public void Deactive()
     {
-        StopCoroutine("WaitTimer");
+        StopCoroutine(WaitTimer(WaitForCommond, WaitForSeconds));
         if (m_commond != null)
         {
             m_commond.SetEffectDeactive();
@@ -188,7 +188,7 @@ public class CharController : MonoBehaviour
 
     private void OnLookAt()
     {
-        Debug.Log("OnLookAt " + TargetForLookAt);
+        //Debug.Log("OnLookAt " + TargetForLookAt);
         Transform.LookAt(TargetForLookAt);
     }
 
@@ -219,15 +219,16 @@ public class CharController : MonoBehaviour
     private void OnWait()
     {
         //Debug.Log("OnWait " + Time.realtimeSinceStartup);
-        StartCoroutine("WaitTimer");
+        StartCoroutine(WaitTimer(WaitForCommond, WaitForSeconds));
     }
 
-    IEnumerator WaitTimer()
+    IEnumerator WaitTimer(E_COMMOND waitForCommond, float waitForSeconds)
     {
-        yield return new WaitForSeconds(WaitForSeconds);
-        Debug.Log("WaitTimer " + WaitForCommond.ToString() + " " + WaitForSeconds);
-        Commond(WaitForCommond);
-        yield return null;
+        yield return new WaitForSeconds(waitForSeconds);
+        //Debug.Log("WaitTimer " + waitForCommond.ToString() + " " + waitForSeconds);
+
+        Commond(waitForCommond);
+        
         //for test begin
         //BattleObjManager.Instance.EffectCount++;
         //for test end

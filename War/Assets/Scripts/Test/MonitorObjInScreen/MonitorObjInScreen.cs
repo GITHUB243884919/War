@@ -45,6 +45,7 @@ public class MonitorObjInScreen : MonoBehaviour {
                 {
                     Debug.Log("m_attack " + m_attack);
                     obj.AI_Attack(obj.GameObject.transform.position, new Vector3(320f, 0f, 0f), 1f);
+                    Debug.Log("MonitorObjInScreen " + obj.CharController.WaitForCommond.ToString());
                     m_attack = true;
                 }
                 //Debug.Log(obj.GameObject.name + " screen " + objInScreenPos);

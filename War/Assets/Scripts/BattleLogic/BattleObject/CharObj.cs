@@ -112,7 +112,7 @@ public class CharObj
     /// <param name="waitSeconds">等待时间（秒）</param>
     public void AI_Attack(Vector3 position, Vector3 target, float waitSeconds)
     {
-        Debug.Log("CharObj AI_Attack");
+        //Debug.Log("CharObj AI_Attack " + waitSeconds);
         CharControllerMediator.AI_Attack(CharController, position, target, waitSeconds);
     }
 
