@@ -55,8 +55,8 @@ public class MoveSteerForArrive : MoveSteer
         //到了
         if (distance <= m_nearDistance)
         {
-            m_force = Vector3.zero;
-            Active = false;
+            m_force         = Vector3.zero;
+            Active          = false;
             m_steers.Active = false;
 
             //Debug.Log("Arrive 到了终点 " + endPos + " cost seconds " +

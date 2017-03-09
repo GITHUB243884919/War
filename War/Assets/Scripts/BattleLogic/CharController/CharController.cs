@@ -200,10 +200,25 @@ public class CharController : MonoBehaviour
 
         //先定位到起点
         OnPositon();
+
         //转向
         //Debug.Log("OnArrive LookAt " + TargetForArrive);
         Transform.LookAt(TargetForArrive);
-        
+
+        if (SpeedForArrive == 0f)
+        {
+            Debug.LogWarning("速度为0，不会执行 " +
+                MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
+            return;
+        }
+
+        if (TargetForArrive == TargetForPosition)
+        {
+            Debug.LogWarning("起点和终点相同，不会执行 " + 
+                MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
+            return;
+        }
+
         MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
         arrive.Active    = true;
         m_steers.Active  = true;
