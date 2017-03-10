@@ -32,17 +32,12 @@ public class CharObjPoolManager
 
     public  void Init()
     {
-        int countTank = 32;
-        string[] pathsTank = new string[4] 
-        {
-            "TankRuntime_Bake/TankMeshBaker",
-            "TankRuntime_Bake/TankRuntime_Bake-mat",
-            "TankRuntime_Bake/TankRuntime_Bake",
-            "TankRuntime_Bake/Tank_Seed"
-        };
-        //Debug.Log("Init Tank pool");
-        InitBattleObjPool(pathsTank,
-            BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK, countTank);
+        //InitBattleObjPool(
+        //    CharObjPoolConfigerMediator.Instance.
+        //        GetConfiger(BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK).Paths,
+        //    BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK,
+        //    CharObjPoolConfigerMediator.Instance.
+        //        GetConfiger(BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK).Count);
 
         //int countSoldier = 32;
         //string[] pathsSoldier = new string[4] 
@@ -62,6 +57,17 @@ public class CharObjPoolManager
         CharObj obj = null;
         QObjPool<CharObj> pool = null;
         m_pools.TryGetValue(type, out pool);
+        if (pool == null)
+        {
+            InitBattleObjPool(
+                CharObjPoolConfigerMediator.Instance.GetConfiger(type).Paths,
+                type,
+                CharObjPoolConfigerMediator.Instance.GetConfiger(type).Count);
+
+            m_pools.TryGetValue(type, out pool);
+            //return obj;
+        }
+
         if (pool == null)
         {
             return obj;

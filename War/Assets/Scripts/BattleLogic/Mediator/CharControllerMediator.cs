@@ -18,6 +18,14 @@ public class CharControllerMediator
         cctr.Commond(CharController.E_COMMOND.POSITION);
     }
 
+    public static void AI_Open(CharController cctr, Vector3 position, Vector3 lookAt)
+    {
+        cctr.TargetForPosition = position;
+        cctr.TargetForLookAt   = lookAt;
+        cctr.Commond(CharController.E_COMMOND.POSITION);
+        cctr.Commond(CharController.E_COMMOND.LOOKAT);
+    }
+
     public static void AI_Arrive(CharController cctr, Vector3 startPoint, 
         Vector3 endPoint, float speed)
     {
@@ -70,6 +78,10 @@ public class CharControllerMediator
         BattleObjManager.E_BATTLE_OBJECT_TYPE deadChangeObjType,
         Vector3 deadPosition, Vector3 deadTarget, float deadMoveSpeed)
     {
+        //自己定位
+        cctr.TargetForPosition = deadPosition;
+        cctr.Commond(CharController.E_COMMOND.POSITION);
+        //变身
         cctr.DeadChangeEntityID = deadChangeEntityID;
         cctr.DeadPosition       = deadPosition;
         cctr.DeadTarget         = deadTarget;

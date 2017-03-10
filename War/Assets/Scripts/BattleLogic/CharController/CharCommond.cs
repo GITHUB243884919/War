@@ -10,25 +10,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharParticleEffect
-{
-    //特效上的粒子特效组件
-    public ParticleSystem  ParticleSystem { get; set; }
-    public string          ResPath        { get; set; }
-    public string          PointPath      { get; set; }
-    public CharParticleEffect(string resPath, string pointPath)
-    {
-        ResPath   = resPath;
-        PointPath = pointPath;
-    }
-}
-
 public abstract class CharCommond 
 {
     public CharController m_cctr;
 
-    protected Dictionary<CharController.E_COMMOND, CharParticleEffect> m_charParticleEffects
-        = new Dictionary<CharController.E_COMMOND, CharParticleEffect>();
+    protected Dictionary<CharController.E_COMMOND, ParticleSystem> m_charParticleEffects
+        = new Dictionary<CharController.E_COMMOND, ParticleSystem>();
 
     public CharCommond(CharController cctr)
     {
@@ -41,45 +28,54 @@ public abstract class CharCommond
         m_cctr = cctr;
     }
 
-    public void SetEffectDeactive()
+    public void DeactiveEffects()
     {
-        foreach (KeyValuePair<CharController.E_COMMOND, CharParticleEffect> pair in m_charParticleEffects)
+        foreach (KeyValuePair<CharController.E_COMMOND, ParticleSystem> pair in m_charParticleEffects)
         {
-            if ((pair.Value != null)
-                && (pair.Value.ParticleSystem != null)
-            )
+            if (pair.Value != null)
             {
                 //pair.Value.ParticleSystem.transform.
                 //    parent.gameObject.SetActive(false);
 
                 //ParticleSystem.EmissionModule em = pair.Value.ParticleSystem.emission;
                 //em.enabled = false;
-                pair.Value.ParticleSystem.Stop();
+                pair.Value.Stop();
             }
         }
     }
 
-    protected void ShowEffect(CharController.E_COMMOND cmd)
+    public void DeactiveEffect(CharController.E_COMMOND cmd)
     {
-        CharParticleEffect effect = m_charParticleEffects[cmd];
-        if (effect == null)
+        ParticleSystem particleSystem = null;
+        m_charParticleEffects.TryGetValue(cmd, out particleSystem);
+        if (particleSystem != null)
         {
-            Debug.LogError("没有这Commond的特效定义 " + cmd.ToString());
-            return;
+            particleSystem.Stop();
         }
+    }
 
-        if (effect.ParticleSystem == null)
+    public void ActiveEffect(CharController.E_COMMOND cmd)
+    {
+        ParticleSystem particleSystem = null;
+        m_charParticleEffects.TryGetValue(cmd, out particleSystem);
+        if (particleSystem == null)
         {
-            GameObject particleObj = BattleObjManager.Instance.
-                BorrowParticleObj(effect.ResPath);
+            CharParticleConfiger cfg = CharObjParticleConfigerMediator.Instance.GetConfiger(m_cctr.CharType, cmd);
+            if (cfg == null)
+            {
+                return;
+            }
+            GameObject particleObj = BattleObjManager.Instance.BorrowParticleObj(cfg.ResPath); 
+
             particleObj.transform.position = Vector3.zero;
             particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
 
-            Transform effectPoint = m_cctr.Transform.Find(effect.PointPath);
+            Transform effectPoint = m_cctr.Transform.Find(cfg.PointPath);
             particleObj.transform.SetParent(effectPoint, false);
 
-            effect.ParticleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
-            effect.ParticleSystem.Play();
+            particleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
+            m_charParticleEffects.Add(cmd, particleSystem);
+            particleSystem.Play();
             //for test begin
             BattleObjManager.Instance.EffectCount++;
             //for test end
@@ -89,10 +85,30 @@ public abstract class CharCommond
         //effect.ParticleSystem.transform.parent.gameObject.SetActive(true);
         //ParticleSystem.EmissionModule em = effect.ParticleSystem.emission;
         //em.enabled = true;
-        effect.ParticleSystem.Play();
+        particleSystem.Play();
         //for test begin
         BattleObjManager.Instance.EffectCount++;
         //for test end
+
+    }
+
+    public virtual void MoveAnimator()
+    {
+
+    }
+
+    public virtual void StopAnimator()
+    {
+
+    }
+
+    public virtual void MoveEffect()
+    {
+
+    }
+
+    public virtual void StopEffect()
+    {
 
     }
 

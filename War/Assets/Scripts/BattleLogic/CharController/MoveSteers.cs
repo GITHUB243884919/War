@@ -26,13 +26,13 @@ public class MoveSteers
     public bool           m_displayTrack  = true;
     public Vector3        m_moveDistance  = Vector3.zero;
     public Vector3        m_steeringForce = Vector3.zero;
-    public CharController m_ctr           = null;
+    public CharController m_cctr           = null;
 
     public bool Active { get; set; }
 
-    public MoveSteers(CharController ctr)
+    public MoveSteers(CharController cctr)
     {
-        m_ctr = ctr;
+        m_cctr = cctr;
     }
 
     public void Init()
@@ -41,7 +41,7 @@ public class MoveSteers
         Active  = false;
         m_timer = 0.0f;
 
-        MoveSteer steerArrive = new MoveSteerForArrive(this, m_ctr);
+        MoveSteer steerArrive = new MoveSteerForArrive(this, m_cctr);
         m_steers.Add(E_STEER_TYPE.ARRIVE, steerArrive);
         steerArrive.Init();
     }
@@ -80,12 +80,12 @@ public class MoveSteers
         }
 
         m_moveDistance = m_steeringForce * Time.fixedDeltaTime;
-        m_ctr.transform.position += m_moveDistance;
+        m_cctr.transform.position += m_moveDistance;
 
         if (m_displayTrack)
         {
-            Debug.DrawLine(m_ctr.transform.position,
-                m_ctr.transform.position + m_moveDistance, Color.red, 30.0f);
+            Debug.DrawLine(m_cctr.transform.position,
+                m_cctr.transform.position + m_moveDistance, Color.red, 30.0f);
         }
     }
 }

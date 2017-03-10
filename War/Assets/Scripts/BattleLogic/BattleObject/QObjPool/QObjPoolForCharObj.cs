@@ -95,6 +95,13 @@ public class CharObjCreator : QObjCreator<CharObj>
         charObjs[3].GameObject.transform.position 
             = new Vector3(INIT_POS.x, INIT_POS.y, -MAX_BOUND_SIDE);
 
+        //M_Build_Jeep_Seed模型不能合并，先跳过
+        //Debug.Log(m_seed.name);
+        if (m_seed.name == "M_Build_Jeep_Seed(Clone)")
+        {
+            return charObjs;
+        }
+        
         m_meshBaker.AddDeleteGameObjects(goObjs, null, true);
         m_meshBaker.Apply();
 

@@ -58,7 +58,8 @@ public class MoveSteerForArrive : MoveSteer
             m_force         = Vector3.zero;
             Active          = false;
             m_steers.Active = false;
-
+            //m_cctr.m_commond
+            m_cctr.Commond(CharController.E_COMMOND.STOPMOVE);
             //Debug.Log("Arrive 到了终点 " + endPos + " cost seconds " +
             //    (Time.realtimeSinceStartup - m_cctr.StartArrive));
 

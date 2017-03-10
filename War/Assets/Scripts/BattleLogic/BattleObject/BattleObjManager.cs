@@ -19,8 +19,17 @@ public class BattleObjManager : MonoBehaviour
 {
     public enum E_BATTLE_OBJECT_TYPE
     {
+        //测试用
         TANK,
-        SOLDIER
+        SOLDIER,
+        
+        //以下保持和美术资源名字一致，正式资源
+        M_ARM_TANK,            //坦克
+        M_ARM_AIRPLANE_01,     //飞机
+        M_ARM_ENGINEERCAR,     //工程车
+        M_ARM_ENGINEERCORPS,   //士兵
+        M_BUILD_JEEP,          //救护吉普
+        M_ARM_ARTILLERY        //火炮
     }
     //for test begin
     public int EffectCount { get; set; }
@@ -64,7 +73,7 @@ public class BattleObjManager : MonoBehaviour
     /// </summary>
     /// <param name="type"></param>
     /// <param name="serverEntityID"></param>
-    /// <param name="serverEntityType"></param>
+    /// <param name="serverEntityType">暂时冗余参数，目前暂时全部填0</param>
     /// <returns></returns>
     public CharObj BorrowCharObj(BattleObjManager.E_BATTLE_OBJECT_TYPE type,
         int serverEntityID, int serverEntityType)
@@ -99,8 +108,10 @@ public class BattleObjManager : MonoBehaviour
 
         //为CharObj打上身份证号:）
         obj.ServerEntityID                = serverEntityID;
+        obj.Type                          = type;
         obj.CharController.ServerEntityID = serverEntityID;
         obj.CharController.CharType       = type;
+        //Debug.Log(type.ToString());
 
         //从对象池中取出的对象要放入缓存中
         CharObjCache.Instance.Add(obj);

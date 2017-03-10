@@ -25,6 +25,7 @@ public class CharController : MonoBehaviour
 
         //以下是动画相关
         IDLE,     //待机
+        OPEN,     //展开
         ATTACK,   //攻击
         ATTACKED, //受击
         DEAD      //死亡
@@ -47,6 +48,7 @@ public class CharController : MonoBehaviour
                 m_commond = CharCommondFactory.CreateCommond(this, value);
                 m_commond.Init();
             }
+            m_charType = value;
         }
     }
 
@@ -58,6 +60,13 @@ public class CharController : MonoBehaviour
     private CharCommond        m_commond = null;
     private MoveSteers         m_steers  = null;
 
+    public static readonly Vector3 m_hidePoistion = new Vector3(0f, -10f, 0f);
+    public Vector3 HidePosition { 
+        get 
+        { 
+            return m_hidePoistion; 
+        } 
+    }
     //位置数据
     public Vector3     TargetForPosition    { get; set; }
     public Vector3     TargetForArrive      { get; set; }
@@ -122,7 +131,7 @@ public class CharController : MonoBehaviour
         StopCoroutine(WaitTimer(WaitForCommond, WaitForSeconds));
         if (m_commond != null)
         {
-            m_commond.SetEffectDeactive();
+            m_commond.DeactiveEffects();
         }
         OnStopMove();
 
@@ -205,6 +214,12 @@ public class CharController : MonoBehaviour
         //Debug.Log("OnArrive LookAt " + TargetForArrive);
         Transform.LookAt(TargetForArrive);
 
+        //特效
+        //Debug.Log(CharType.ToString());
+        m_commond.MoveEffect();
+        //动画
+        m_commond.MoveAnimator();
+
         if (SpeedForArrive == 0f)
         {
             Debug.LogWarning("速度为0，不会执行 " +
@@ -229,6 +244,8 @@ public class CharController : MonoBehaviour
         MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
         arrive.Active    = false;
         m_steers.Active  = false;
+        m_commond.StopAnimator();
+        m_commond.StopEffect();
     }
 
     private void OnWait()

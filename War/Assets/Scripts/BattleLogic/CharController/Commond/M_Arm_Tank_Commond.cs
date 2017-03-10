@@ -1,15 +1,15 @@
 ﻿/// <summary>
-/// 坦克的命令
+/// M_Arm_Tank坦克的命令
 /// author : fanzhengyong
-/// date  : 2017-02-22
+/// date  : 2017-03-09
 /// 
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TankCommond : CharCommond
-{	
-    public TankCommond(CharController cctr)
+public class M_Arm_Tank_Commond : CharCommond
+{
+    public M_Arm_Tank_Commond(CharController cctr)
         :base(cctr){}
 
     public override void Init()
@@ -20,12 +20,12 @@ public class TankCommond : CharCommond
 
     public void OnIdle()
     {
-        Debug.Log("TankCommond.Idle");
+        Debug.Log("M_Arm_Tank_Commond.Idle");
     }
 
     public void OnAttack()
     {
-        //Debug.Log("TankCommond.Attack " + Time.realtimeSinceStartup);
+        //Debug.Log("M_Arm_Tank_Commond.Attack " + Time.realtimeSinceStartup);
 
         CharController.E_COMMOND cmd = CharController.E_COMMOND.ATTACK;
         m_cctr.Animator.SetTrigger("Fire");
@@ -34,7 +34,7 @@ public class TankCommond : CharCommond
 
     public void OnAttacked()
     {
-        Debug.Log("TankCommond.Attacked");
+        Debug.Log("M_Arm_Tank_Commond.Attacked");
         CharController.E_COMMOND cmd    = CharController.E_COMMOND.ATTACKED;
         ActiveEffect(cmd);
     }
@@ -45,9 +45,11 @@ public class TankCommond : CharCommond
     /// </summary>
     public void OnDead()
     {
-        Debug.Log("TankCommond.OnDead");
+        Debug.Log("M_Arm_Tank_Commond.OnDead");
         //自身爆炸
         //自身隐身
+        m_cctr.TargetForPosition = m_cctr.HidePosition;
+        m_cctr.Commond(CharController.E_COMMOND.POSITION);
         //取出变身后的救护车对象
         BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
         int serverEntityID = m_cctr.DeadChangeEntityID;
@@ -55,6 +57,16 @@ public class TankCommond : CharCommond
             type, serverEntityID, 1);
 
         obj.AI_Arrive(m_cctr.DeadPosition, m_cctr.DeadTarget, m_cctr.DeadMoveSpeed);
+    }
+
+    public override void MoveEffect()
+    {
+        ActiveEffect(CharController.E_COMMOND.ARRIVE);
+    }
+
+    public override void StopEffect()
+    {
+        DeactiveEffect(CharController.E_COMMOND.ARRIVE);
     }
 
 	public override void Update() 
@@ -77,22 +89,7 @@ public class TankCommond : CharCommond
 
     private void InitPath()
     {
-        //CharParticleEffect effectAttack = new CharParticleEffect(
-        //    "Tank/Prefab/Tank_tanke_fire", "Bone01/Bone02/Dummy01");
-        //m_charParticleEffects.Add(CharController.E_COMMOND.ATTACK,
-        //    effectAttack);
 
-        //CharParticleEffect effectAttack = new CharParticleEffect(
-        //    "Tank/Prefab/Tank_dapao_fire", "Bone01/Bone02/Dummy01");
-        //m_charParticleEffects.Add(CharController.E_COMMOND.ATTACK,
-        //    effectAttack);
-
-
-
-        //CharParticleEffect effectAttacked = new CharParticleEffect(
-        //    "Tank/Prefab/Tank_tanke_hit", "Bone01/Bone02/Dummy01");
-        //m_charParticleEffects.Add(CharController.E_COMMOND.ATTACKED,
-        //    effectAttacked);
     }
 
 }

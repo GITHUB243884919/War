@@ -94,6 +94,17 @@ public class CharObj
     }
 
     /// <summary>
+    /// 展开
+    /// </summary>
+    /// <param name="cctr">在哪里展开</param>
+    /// <param name="position">面朝哪里</param>
+    /// <param name="lookAt"></param>
+    public void AI_Open(CharController cctr, Vector3 position, Vector3 lookAt)
+    {
+        CharControllerMediator.AI_Open(cctr, position, lookAt);
+    }
+
+    /// <summary>
     /// 到达
     /// </summary>
     /// <param name="startPoint">起点</param>
@@ -134,7 +145,8 @@ public class CharObj
     }
 
     /// <summary>
-    /// 死亡，坦克变身为救护车，移动到某点
+    /// 死亡，坦克变身为救护车，救护车移动到某点
+    /// 如果没有变身功能的死亡，deadPosition必须填正确，其他参数只要符合参数类型即可，底层代码会忽略这些参数
     /// </summary>
     /// <param name="deadChangeEntityID">变身后的实体ID，服务器定义。坦克死亡后变成救护车</param>
     /// <param name="deadChangeObjType">实体的类型，比如救护车类型定义</param>
