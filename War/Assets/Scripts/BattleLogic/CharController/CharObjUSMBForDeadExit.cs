@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// 死亡动画执行完后的操作
+/// author : fanzhengyong
+/// date  : 2017-03-13
+/// </summary>
+using UnityEngine;
 using System.Collections;
 
 public class CharObjUSMBForDeadExit : StateMachineBehaviour
@@ -16,16 +21,5 @@ public class CharObjUSMBForDeadExit : StateMachineBehaviour
         //救护车出场
         m_deadChangObj.CharController.Commond(m_changCommond);
     }
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        //Debug.Log("OnStateUpdate");
-    }
-    override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        //Debug.Log("OnStateMove");
-    }
-    override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        //Debug.Log("OnStateIK");
-    }
+
 }
