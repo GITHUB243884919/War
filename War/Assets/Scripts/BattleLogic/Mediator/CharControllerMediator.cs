@@ -24,6 +24,7 @@ public class CharControllerMediator
         cctr.TargetForLookAt   = lookAt;
         cctr.Commond(CharController.E_COMMOND.POSITION);
         cctr.Commond(CharController.E_COMMOND.LOOKAT);
+        cctr.Commond(CharController.E_COMMOND.OPEN);
     }
 
     public static void AI_Arrive(CharController cctr, Vector3 startPoint, 

@@ -139,10 +139,10 @@ public class CharObjPoolConfigerMediator
         int armArtilleryCount = 32;
         string[] armArtilleryPaths = new string[4]
         {
-            "RuntimeMeshBaker/M_ArmArtillery/MaterialBaker",
-            "RuntimeMeshBaker/M_ArmArtillery/M_ArmArtillery-mat",
-            "RuntimeMeshBaker/M_ArmArtillery/M_ArmArtillery",
-            "RuntimeMeshBaker/M_ArmArtillery/M_ArmArtillery_Seed"
+            "RuntimeMeshBaker/M_Arm_Artillery/MaterialBaker",
+            "RuntimeMeshBaker/M_Arm_Artillery/M_Arm_Artillery-mat",
+            "RuntimeMeshBaker/M_Arm_Artillery/M_Arm_Artillery",
+            "RuntimeMeshBaker/M_Arm_Artillery/M_Arm_Artillery_Seed"
         };
         AddOneConfig(BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY,
             armArtilleryCount, armArtilleryPaths);

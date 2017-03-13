@@ -9,6 +9,8 @@ using System.Collections.Generic;
 
 public class M_Arm_Engineercar_Commond : CharCommond
 {
+    private CharObjUSMBForDeadExit CharObjUSMBForDeadExit { get; set; }
+
     public M_Arm_Engineercar_Commond(CharController cctr)
         :base(cctr){}
 
@@ -41,20 +43,37 @@ public class M_Arm_Engineercar_Commond : CharCommond
 
 
     /// <summary>
-    /// 坦克死亡后变成救护车开走
+    /// 工程车死亡后变成救护车开走
     /// </summary>
     public void OnDead()
     {
         Debug.Log("M_Arm_Engineercar_Commond.OnDead");
-        //自身爆炸
-        //自身隐身
-        //取出变身后的救护车对象
+        //设置隐身参数
+        if (CharObjUSMBForDeadExit == null)
+        {
+            CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
+        }
+
+        m_cctr.TargetForPosition = m_cctr.HidePosition;
+        CharObjUSMBForDeadExit.m_cctr = m_cctr;
+        CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
+        //设置变身参数
         BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
         int serverEntityID = m_cctr.DeadChangeEntityID;
-        CharObj obj = BattleObjManager.Instance.BorrowCharObj(
-            type, serverEntityID, 1);
 
-        obj.AI_Arrive(m_cctr.DeadPosition, m_cctr.DeadTarget, m_cctr.DeadMoveSpeed);
+        CharObjUSMBForDeadExit.m_deadChangObj = BattleObjManager.Instance.BorrowCharObj(
+            type, serverEntityID, 1);
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.TargetForPosition
+            = m_cctr.DeadPosition;
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.TargetForArrive
+            = m_cctr.DeadTarget;
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.SpeedForArrive
+            = m_cctr.DeadMoveSpeed;
+        CharObjUSMBForDeadExit.m_changCommond = CharController.E_COMMOND.ARRIVE;
+
+        //自身动画
+        m_cctr.Animator.speed = 1f;
+        m_cctr.Animator.SetTrigger("Die");
     }
 
 	public override void Update() 

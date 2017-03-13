@@ -10,6 +10,7 @@ using System.Collections.Generic;
 public class M_Arm_Engineercorps_Commond : CharCommond
 {
     private CharObjUSMBForDeadExit CharObjUSMBForDeadExit { get; set; }
+
     public M_Arm_Engineercorps_Commond(CharController cctr)
         :base(cctr){}
 
@@ -22,6 +23,16 @@ public class M_Arm_Engineercorps_Commond : CharCommond
     public void OnIdle()
     {
         Debug.Log("M_Arm_Engineercorps_Commond.Idle");
+    }
+
+    /// <summary>
+    /// 士兵有展开
+    /// </summary>
+    public void OnOpen()
+    {
+        Debug.Log("M_Arm_Engineercorps_Commond.Open");
+        m_cctr.Animator.speed = 1f;
+        m_cctr.Animator.SetTrigger("Open");
     }
 
     public void OnAttack()
@@ -104,6 +115,7 @@ public class M_Arm_Engineercorps_Commond : CharCommond
     private void InitCommond()
     {
         m_cctr.RegCommond(CharController.E_COMMOND.IDLE,     OnIdle);
+        m_cctr.RegCommond(CharController.E_COMMOND.OPEN,     OnOpen);
         m_cctr.RegCommond(CharController.E_COMMOND.ATTACK,   OnAttack);
         m_cctr.RegCommond(CharController.E_COMMOND.ATTACKED, OnAttacked);
         m_cctr.RegCommond(CharController.E_COMMOND.DEAD,     OnDead);

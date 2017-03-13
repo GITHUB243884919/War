@@ -35,13 +35,18 @@ public class Test_AI_1 : MonoBehaviour
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
         BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
+        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCAR;
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, entityID, 1);
         //CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
         //CharObjAI(obj, CharController.E_COMMOND.ATTACK);
-        CharObjAI(obj, CharController.E_COMMOND.DEAD);
+        //CharObjAI(obj, CharController.E_COMMOND.DEAD);
+        CharObjAI(obj, CharController.E_COMMOND.OPEN);
 
 
     }
@@ -72,6 +77,9 @@ public class Test_AI_1 : MonoBehaviour
     /// <param name="deadMoveSpeed">跑的速度</param>
                 obj.AI_Dead(2, BattleObjManager.E_BATTLE_OBJECT_TYPE.M_BUILD_JEEP, 
                     startPos, endPos, 2f);
+                break;
+            case CharController.E_COMMOND.OPEN:
+                obj.AI_Open(startPos, endPos);
                 break;
             default:
                 break;
