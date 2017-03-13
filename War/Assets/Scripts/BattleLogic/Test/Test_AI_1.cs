@@ -39,9 +39,9 @@ public class Test_AI_1 : MonoBehaviour
             = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, entityID, 1);
-        CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
+        //CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
         //CharObjAI(obj, CharController.E_COMMOND.ATTACK);
-        //CharObjAI(obj, CharController.E_COMMOND.DEAD);
+        CharObjAI(obj, CharController.E_COMMOND.DEAD);
 
 
     }
@@ -49,11 +49,11 @@ public class Test_AI_1 : MonoBehaviour
     void CharObjAI(CharObj obj, CharController.E_COMMOND cmd)
     {
         //Vector3 startPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
-        Vector3 startPos = new Vector3(16f, 0f, 16f);
+        Vector3 startPos = new Vector3(20f, 0f, 20f);
         //Vector3 endPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
-        Vector3 endPos = new Vector3(20f, 0f, 20f);
+        Vector3 endPos = new Vector3(30f, 0f, 30f);
         //假定服务器规定这段路必须time秒走完
-        float time = 5f;
+        float time = 10f;
         float speed = (endPos - startPos).magnitude / time;
         switch (cmd)
         {

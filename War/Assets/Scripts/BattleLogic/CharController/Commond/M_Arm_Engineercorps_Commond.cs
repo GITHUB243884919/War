@@ -42,28 +42,36 @@ public class M_Arm_Engineercorps_Commond : CharCommond
 
 
     /// <summary>
-    /// 坦克死亡后变成救护车开走
+    /// 士兵死亡后变成救护车开走
     /// </summary>
     public void OnDead()
     {
         Debug.Log("M_Arm_Engineercorps_Commond.OnDead");
+        
+        //设置隐身参数
+        CharObjUSMBehaviour USMBehaviour
+            = m_cctr.Animator.GetBehaviour<CharObjUSMBehaviour>();
+        m_cctr.TargetForPosition = m_cctr.HidePosition;
+        USMBehaviour.m_cctr = m_cctr;
+        USMBehaviour.m_commond = CharController.E_COMMOND.POSITION;
+        //设置变身参数
+        BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
+        int serverEntityID = m_cctr.DeadChangeEntityID;
+
+        USMBehaviour.m_deadChangObj = BattleObjManager.Instance.BorrowCharObj(
+            type, serverEntityID, 1);
+        USMBehaviour.m_deadChangObj.CharController.TargetForPosition
+            = m_cctr.DeadPosition;
+        USMBehaviour.m_deadChangObj.CharController.TargetForArrive
+            = m_cctr.DeadTarget;
+        USMBehaviour.m_deadChangObj.CharController.SpeedForArrive
+            = m_cctr.DeadMoveSpeed;
+        USMBehaviour.m_changCommond = CharController.E_COMMOND.ARRIVE;
+
         //自身动画
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Die");
-        //自身爆炸
-        //自身隐身
-        m_cctr.TargetForPosition = m_cctr.HidePosition;
-        m_cctr.WaitForCommond = CharController.E_COMMOND.POSITION;
-        m_cctr.WaitForSeconds = 1.5f;
-        m_cctr.Commond(CharController.E_COMMOND.WAIT);
 
-        //取出变身后的救护车对象
-        BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
-        int serverEntityID = m_cctr.DeadChangeEntityID;
-        CharObj obj = BattleObjManager.Instance.BorrowCharObj(
-            type, serverEntityID, 1);
-
-        obj.AI_Arrive(m_cctr.DeadPosition, m_cctr.DeadTarget, m_cctr.DeadMoveSpeed);
     }
 
     public override void MoveAnimator()
