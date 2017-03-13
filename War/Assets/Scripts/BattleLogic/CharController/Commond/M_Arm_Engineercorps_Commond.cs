@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 public class M_Arm_Engineercorps_Commond : CharCommond
 {
+    private CharObjUSMBForDeadExit CharObjUSMBForDeadExit { get; set; }
     public M_Arm_Engineercorps_Commond(CharController cctr)
         :base(cctr){}
 
@@ -49,24 +50,27 @@ public class M_Arm_Engineercorps_Commond : CharCommond
         Debug.Log("M_Arm_Engineercorps_Commond.OnDead");
         
         //设置隐身参数
-        CharObjUSMBehaviour USMBehaviour
-            = m_cctr.Animator.GetBehaviour<CharObjUSMBehaviour>();
+        if (CharObjUSMBForDeadExit == null )
+        {
+            CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
+        }
+
         m_cctr.TargetForPosition = m_cctr.HidePosition;
-        USMBehaviour.m_cctr = m_cctr;
-        USMBehaviour.m_commond = CharController.E_COMMOND.POSITION;
+        CharObjUSMBForDeadExit.m_cctr = m_cctr;
+        CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
         //设置变身参数
         BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
         int serverEntityID = m_cctr.DeadChangeEntityID;
 
-        USMBehaviour.m_deadChangObj = BattleObjManager.Instance.BorrowCharObj(
+        CharObjUSMBForDeadExit.m_deadChangObj = BattleObjManager.Instance.BorrowCharObj(
             type, serverEntityID, 1);
-        USMBehaviour.m_deadChangObj.CharController.TargetForPosition
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.TargetForPosition
             = m_cctr.DeadPosition;
-        USMBehaviour.m_deadChangObj.CharController.TargetForArrive
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.TargetForArrive
             = m_cctr.DeadTarget;
-        USMBehaviour.m_deadChangObj.CharController.SpeedForArrive
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.SpeedForArrive
             = m_cctr.DeadMoveSpeed;
-        USMBehaviour.m_changCommond = CharController.E_COMMOND.ARRIVE;
+        CharObjUSMBForDeadExit.m_changCommond = CharController.E_COMMOND.ARRIVE;
 
         //自身动画
         m_cctr.Animator.speed = 1f;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharObjUSMBehaviour : StateMachineBehaviour
+public class CharObjUSMBForDeadExit : StateMachineBehaviour
 {
     public CharController m_cctr;
     public CharController.E_COMMOND m_commond;
