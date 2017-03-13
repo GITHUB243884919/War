@@ -23,6 +23,11 @@ public class M_Build_Jeep_Commond : CharCommond
         Debug.Log("M_Build_Jeep_Commond.Idle");
     }
 
+    public void OnOpen()
+    {
+        Debug.Log("M_Build_Jeep_Commond.Open");
+    }
+
     public void OnAttack()
     {
         //Debug.Log("M_Build_Jeep_Commond.Attack " + Time.realtimeSinceStartup);
@@ -70,6 +75,7 @@ public class M_Build_Jeep_Commond : CharCommond
     private void InitCommond()
     {
         m_cctr.RegCommond(CharController.E_COMMOND.IDLE,     OnIdle);
+        m_cctr.RegCommond(CharController.E_COMMOND.OPEN,     OnOpen);
         m_cctr.RegCommond(CharController.E_COMMOND.ATTACK,   OnAttack);
         m_cctr.RegCommond(CharController.E_COMMOND.ATTACKED, OnAttacked);
         m_cctr.RegCommond(CharController.E_COMMOND.DEAD,     OnDead);

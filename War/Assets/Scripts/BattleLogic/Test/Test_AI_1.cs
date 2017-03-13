@@ -33,14 +33,21 @@ public class Test_AI_1 : MonoBehaviour
         int entityID = 0;
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
-        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
-        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+
+        BattleObjManager.E_BATTLE_OBJECT_TYPE type
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
-        BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
+        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
+        
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCAR;
+
+        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_BUILD_JEEP;
+
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, entityID, 1);
         //CharObjAI(obj, CharController.E_COMMOND.ARRIVE);

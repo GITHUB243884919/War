@@ -25,6 +25,12 @@ public class M_Arm_Tank_Commond : CharCommond
         Debug.Log("M_Arm_Tank_Commond.Idle");
     }
 
+    public void OnOpen()
+    {
+        Debug.Log("M_Arm_Tank_Commond.Open");
+    }
+
+
     public void OnAttack()
     {
         //Debug.Log("M_Arm_Tank_Commond.Attack " + Time.realtimeSinceStartup);
@@ -99,6 +105,7 @@ public class M_Arm_Tank_Commond : CharCommond
     private void InitCommond()
     {
         m_cctr.RegCommond(CharController.E_COMMOND.IDLE,     OnIdle);
+        m_cctr.RegCommond(CharController.E_COMMOND.OPEN,     OnOpen);
         m_cctr.RegCommond(CharController.E_COMMOND.ATTACK,   OnAttack);
         m_cctr.RegCommond(CharController.E_COMMOND.ATTACKED, OnAttacked);
         m_cctr.RegCommond(CharController.E_COMMOND.DEAD,     OnDead);
