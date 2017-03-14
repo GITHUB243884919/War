@@ -60,18 +60,60 @@ public class CharController : MonoBehaviour
     private CharCommond        m_commond = null;
     private MoveSteers         m_steers  = null;
 
+    //位置数据
     public static readonly Vector3 m_hidePoistion = new Vector3(0f, -10f, 0f);
-    public Vector3 HidePosition { 
+    public Vector3 HidePosition 
+    { 
         get 
         { 
             return m_hidePoistion; 
         } 
     }
-    //位置数据
-    public Vector3     TargetForPosition    { get; set; }
-    public Vector3     TargetForArrive      { get; set; }
-    public float       SpeedForArrive       { get; set; }
-    public Vector3     TargetForLookAt      { get; set; }
+    public Vector3     OffsetY { get; set; }
+
+    private Vector3    m_targetForPosition = Vector3.zero;
+    public  Vector3    TargetForPosition    
+    { 
+        get
+        {
+            return m_targetForPosition;
+        }
+        set
+        {
+            m_targetForPosition  = value;
+            m_targetForPosition += OffsetY;
+        }
+    }
+
+    private Vector3    m_targetForArrive = Vector3.zero;
+    public  Vector3    TargetForArrive
+    {
+        get
+        {
+            return m_targetForArrive;
+        }
+        set
+        {
+            m_targetForArrive  = value;
+            m_targetForArrive += OffsetY;
+        }
+    }
+    
+    public float        SpeedForArrive       { get; set; }
+
+    private Vector3     m_targetForLookAt = Vector3.zero;
+    public  Vector3     TargetForLookAt
+    {
+        get
+        {
+            return m_targetForLookAt;
+        }
+        set
+        {
+            m_targetForLookAt  = value;
+            m_targetForLookAt += OffsetY;
+        }
+    }
 
     //等待数据
     public float       WaitForSeconds       { get; set; }
@@ -144,8 +186,7 @@ public class CharController : MonoBehaviour
         DeadChangeEntityID = 0;
         DeadPosition       = Vector3.zero;
         DeadTarget         = Vector3.zero;
-        DeadMoveSpeed      = 0f;
-        
+        DeadMoveSpeed      = 0f;  
     }
 
     private void Realse()

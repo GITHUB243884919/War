@@ -21,12 +21,11 @@ public class MoveSteers
         new Dictionary<E_STEER_TYPE, MoveSteer>();
 
     public float          m_interval      = 0.2f;
-    public bool           m_isPlanar      = true;
     public float          m_timer         = 0.0f;
     public bool           m_displayTrack  = true;
     public Vector3        m_moveDistance  = Vector3.zero;
     public Vector3        m_steeringForce = Vector3.zero;
-    public CharController m_cctr           = null;
+    public CharController m_cctr          = null;
 
     public bool Active { get; set; }
 
@@ -80,12 +79,12 @@ public class MoveSteers
         }
 
         m_moveDistance = m_steeringForce * Time.fixedDeltaTime;
-        m_cctr.transform.position += m_moveDistance;
+        m_cctr.Transform.position += m_moveDistance;
 
         if (m_displayTrack)
         {
-            Debug.DrawLine(m_cctr.transform.position,
-                m_cctr.transform.position + m_moveDistance, Color.red, 30.0f);
+            Debug.DrawLine(m_cctr.Transform.position,
+                m_cctr.Transform.position + m_moveDistance, Color.red, 30.0f);
         }
     }
 }

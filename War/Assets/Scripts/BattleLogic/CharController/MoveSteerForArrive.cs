@@ -12,7 +12,7 @@ public class MoveSteerForArrive : MoveSteer
     private bool               m_isPlanar        = true;
 
     //到达区，距离多少算到了，可以设置为0;
-    public float               m_nearDistance    = 0.5f;
+    public float               m_nearDistance    = 0.1f;
     //steer容器
     private MoveSteers         m_steers           = null;
 
@@ -43,12 +43,12 @@ public class MoveSteerForArrive : MoveSteer
         Vector3 startPos = m_cctr.Transform.position;
         Vector3 endPos   = m_cctr.TargetForArrive;
         toTarget         = endPos - startPos;
-        m_force          = toTarget.normalized * m_cctr.SpeedForArrive;            
-        
-        if (m_isPlanar)
-        {
-            toTarget.y = 0;
-        }
+        m_force          = toTarget.normalized * m_cctr.SpeedForArrive;
+
+        //if (m_isPlanar)
+        //{
+        //    toTarget.y = m_cctr.OffsetY.y;
+        //}
 
         float distance = toTarget.magnitude;
 

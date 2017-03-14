@@ -16,6 +16,7 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     {
         InitCommond();
         InitPath();
+        m_cctr.OffsetY = new Vector3(0f, 10f, 0f);
     }
 
     public void OnIdle()
@@ -44,7 +45,6 @@ public class M_Arm_Airplane_01_Commond : CharCommond
         ActiveEffect(cmd);
     }
 
-
     /// <summary>
     /// 飞机死亡是动画
     /// </summary>
@@ -57,6 +57,12 @@ public class M_Arm_Airplane_01_Commond : CharCommond
         m_cctr.WaitForCommond = CharController.E_COMMOND.POSITION;
         m_cctr.WaitForSeconds = 5f;
         m_cctr.Commond(CharController.E_COMMOND.WAIT);
+    }
+
+    public override void MoveAnimator()
+    {
+        m_cctr.Animator.speed = 1f;
+        m_cctr.Animator.SetTrigger("Move");
     }
 
 	public override void Update() 
