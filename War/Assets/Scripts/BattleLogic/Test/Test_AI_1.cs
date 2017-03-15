@@ -31,11 +31,11 @@ public class Test_AI_1 : MonoBehaviour
         //CreateTank_Arrive_Attack_LookAt(false, true);
 
         int entityID = 0;
-        BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
-
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
-        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
+
+        BattleObjManager.E_BATTLE_OBJECT_TYPE type
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
 
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
@@ -55,8 +55,13 @@ public class Test_AI_1 : MonoBehaviour
         //CharObjAI(obj, CharController.E_COMMOND.ATTACK);
         //CharObjAI(obj, CharController.E_COMMOND.DEAD);
         //CharObjAI(obj, CharController.E_COMMOND.OPEN);
+        StartCoroutine(SwitchAI(obj, CharController.E_COMMOND.DEAD));
+    }
 
-
+    IEnumerator SwitchAI(CharObj obj, CharController.E_COMMOND cmd)
+    {
+        yield return new WaitForSeconds(5f);
+        CharObjAI(obj, cmd);
     }
 
     void CharObjAI(CharObj obj, CharController.E_COMMOND cmd)

@@ -66,8 +66,8 @@ public class M_Arm_Engineercorps_Commond : CharCommond
             CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
         }
 
-        m_cctr.TargetForPosition = m_cctr.HidePosition;
-        CharObjUSMBForDeadExit.m_cctr = m_cctr;
+        m_cctr.TargetForPosition         = m_cctr.HidePosition;
+        CharObjUSMBForDeadExit.m_cctr    = m_cctr;
         CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
         //设置变身参数
         BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
@@ -86,7 +86,6 @@ public class M_Arm_Engineercorps_Commond : CharCommond
         //自身动画
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Die");
-
     }
 
     public override void MoveAnimator()

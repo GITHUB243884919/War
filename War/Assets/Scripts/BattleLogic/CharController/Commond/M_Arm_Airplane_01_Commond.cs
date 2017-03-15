@@ -9,6 +9,8 @@ using System.Collections.Generic;
 
 public class M_Arm_Airplane_01_Commond : CharCommond
 {
+    private CharObjUSMBForDeadExit CharObjUSMBForDeadExit { get; set; }
+
     public M_Arm_Airplane_01_Commond(CharController cctr)
         :base(cctr){}
 
@@ -51,12 +53,17 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     public void OnDead()
     {
         Debug.Log("M_Arm_Airplane_01_Commond.OnDead");
+        //设置隐身参数
+        if (CharObjUSMBForDeadExit == null)
+        {
+            CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
+        }
+
+        m_cctr.TargetForPosition         = m_cctr.HidePosition;
+        CharObjUSMBForDeadExit.m_cctr    = m_cctr;
+        CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
+        m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Die");
-        m_cctr.TargetForPosition = m_cctr.HidePosition;
-        //m_cctr.Commond(CharController.E_COMMOND.POSITION);
-        m_cctr.WaitForCommond = CharController.E_COMMOND.POSITION;
-        m_cctr.WaitForSeconds = 5f;
-        m_cctr.Commond(CharController.E_COMMOND.WAIT);
     }
 
     public override void MoveAnimator()
