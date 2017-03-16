@@ -12,7 +12,7 @@ public class MoveSteerForArrive : MoveSteer
     private bool               m_isPlanar        = true;
 
     //到达区，距离多少算到了，可以设置为0;
-    public float               m_nearDistance    = 0.1f;
+    public float               m_nearDistance     = 1f;
     //steer容器
     private MoveSteers         m_steers           = null;
 

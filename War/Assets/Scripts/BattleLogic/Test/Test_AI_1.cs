@@ -51,14 +51,14 @@ public class Test_AI_1 : MonoBehaviour
 
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, entityID, 1);
-        //CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
-        CharObjAI(obj, CharController.E_COMMOND.ATTACK);
+        CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
+        //CharObjAI(obj, CharController.E_COMMOND.ATTACK);
         //CharObjAI(obj, CharController.E_COMMOND.DEAD);
         //CharObjAI(obj, CharController.E_COMMOND.OPEN);
 
         //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACK;
-        CharController.E_COMMOND switchCmd = CharController.E_COMMOND.DEAD;
-        StartCoroutine(SwitchAI(obj, switchCmd));
+        //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.DEAD;
+        //StartCoroutine(SwitchAI(obj, switchCmd));
     }
 
     IEnumerator SwitchAI(CharObj obj, CharController.E_COMMOND cmd)
@@ -74,8 +74,9 @@ public class Test_AI_1 : MonoBehaviour
         //Vector3 endPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
         Vector3 endPos = new Vector3(30f, 0f, 30f);
         //假定服务器规定这段路必须time秒走完
-        float time = 10f;
+        float time = 3f;
         float speed = (endPos - startPos).magnitude / time;
+        Debug.Log("speed " + speed);
         switch (cmd)
         {
             case CharController.E_COMMOND.ARRIVE:
