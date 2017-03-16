@@ -9,6 +9,7 @@
 /// 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CharObjCreator : QObjCreator<CharObj>
 {
@@ -86,14 +87,14 @@ public class CharObjCreator : QObjCreator<CharObj>
         }
 
         //人为调整合并后smr的bound
-        charObjs[0].GameObject.transform.position = 
-            new Vector3(65535f, INIT_POS.y, INIT_POS.z);
+        charObjs[0].GameObject.transform.position =
+            new Vector3(16777216f, INIT_POS.y, INIT_POS.z);
         charObjs[1].GameObject.transform.position
-            = new Vector3(-65535f, INIT_POS.y, INIT_POS.z);
+            = new Vector3(-16777216f, INIT_POS.y, INIT_POS.z);
         charObjs[2].GameObject.transform.position
-            = new Vector3(INIT_POS.x, INIT_POS.y, 65535f);
+            = new Vector3(INIT_POS.x, INIT_POS.y, 16777216f);
         charObjs[3].GameObject.transform.position
-            = new Vector3(INIT_POS.x, INIT_POS.y, -65535f);
+            = new Vector3(INIT_POS.x, INIT_POS.y, -16777216f);
 
         //M_Build_Jeep_Seed模型不能合并，先跳过
         //Debug.Log(m_seed.name);
@@ -101,9 +102,26 @@ public class CharObjCreator : QObjCreator<CharObj>
         {
             return charObjs;
         }
-        
+
         m_meshBaker.AddDeleteGameObjects(goObjs, null, true);
         m_meshBaker.Apply();
+        DigitalOpus.MB.Core.MB3_MeshCombinerSingle meshCombiner
+            = m_meshBaker.meshCombiner as DigitalOpus.MB.Core.MB3_MeshCombinerSingle;
+        GameObject combineGo = meshCombiner.resultSceneObject;
+        //Debug.Log("DigitalOpus.MB.Core.MB3_MeshCombinerSingle " + combineGo.name);
+        //combineGo.name += "11111111";
+
+        //Debug.Log("combineGo " + (combineGo != null));
+        GameObject UIGo = GameObject.Find("Canvas/Button/Text");
+        if (UIGo != null)
+        {
+            Text text = UIGo.GetComponent<Text>();
+            if (text != null)
+            {
+                text.text += (combineGo != null);
+            }
+        }
+
 
         return charObjs;
     }
