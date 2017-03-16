@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class MeshBakerClearManager
+public class MeshBakerManager
 {
     List<GameObject>             m_gos        = new List<GameObject>();
     List<GameObject>             m_seeds     = new List<GameObject>();
@@ -12,14 +12,14 @@ public class MeshBakerClearManager
     List<MB2_TextureBakeResults> m_textures  = new List<MB2_TextureBakeResults>();
     List<Material>               m_materials = new List<Material>();
 
-    private static MeshBakerClearManager s_Instance = null;
-    public static MeshBakerClearManager Instance
+    private static MeshBakerManager s_Instance = null;
+    public static MeshBakerManager Instance
     {
         get
         {
             if (s_Instance == null)
             {
-                s_Instance = new MeshBakerClearManager();
+                s_Instance = new MeshBakerManager();
             }
             return s_Instance;
         }
@@ -41,9 +41,9 @@ public class MeshBakerClearManager
             }
         }
 
-        MeshBakerClearManager.Instance.AddCombine(combineGo);
-        MeshBakerClearManager.Instance.AddSeed(seed);
-        MeshBakerClearManager.Instance.AddBaker(bakerGo);
+        MeshBakerManager.Instance.AddCombine(combineGo);
+        MeshBakerManager.Instance.AddSeed(seed);
+        MeshBakerManager.Instance.AddBaker(bakerGo);
     }
     public void AddGo(GameObject go)
     {

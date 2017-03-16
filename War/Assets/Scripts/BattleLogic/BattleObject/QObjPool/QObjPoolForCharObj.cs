@@ -80,7 +80,7 @@ public class CharObjCreator : QObjCreator<CharObj>
             GameObject go = GameObject.Instantiate<GameObject>(m_seed);
             
 #if _WAR_TEST_
-            MeshBakerClearManager.Instance.AddGo(go);
+            MeshBakerManager.Instance.AddGo(go);
 #endif
             go.transform.position  = INIT_POS;
             goObjs[i]              = go;
@@ -110,7 +110,7 @@ public class CharObjCreator : QObjCreator<CharObj>
         m_meshBaker.Apply();
 
 #if _WAR_TEST_
-        MeshBakerClearManager.Instance.AddCombine(m_meshBaker, m_seed, m_meshbakerGo);
+        MeshBakerManager.Instance.AddCombine(m_meshBaker, m_seed, m_meshbakerGo);
 #endif
         return charObjs;
     }
@@ -158,8 +158,8 @@ public class CharObjCreator : QObjCreator<CharObj>
         textureBaker.textureBakeResults = textureBakeResults;
         meshBaker.textureBakeResults    = textureBakeResults;
 #if _WAR_TEST_
-        MeshBakerClearManager.Instance.AddMaterial(material);
-        MeshBakerClearManager.Instance.AddTexture(textureBakeResults);
+        MeshBakerManager.Instance.AddMaterial(material);
+        MeshBakerManager.Instance.AddTexture(textureBakeResults);
 #endif
         result = true;
         return result;
