@@ -9,7 +9,6 @@
 /// 
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class CharObjCreator : QObjCreator<CharObj>
 {
@@ -111,25 +110,26 @@ public class CharObjCreator : QObjCreator<CharObj>
         m_meshBaker.Apply();
 
 #if _WAR_TEST_
-        DigitalOpus.MB.Core.MB3_MeshCombinerSingle meshCombiner
-            = m_meshBaker.meshCombiner as DigitalOpus.MB.Core.MB3_MeshCombinerSingle;
-        GameObject combineGo = meshCombiner.resultSceneObject;
-        GameObject UIGo = GameObject.Find("Canvas/Button/Text");
-        if (UIGo != null)
-        {
-            Text text = UIGo.GetComponent<Text>();
-            if (text != null)
-            {
-                text.text += (combineGo != null);
-            }
-        }
+        MeshBakerClearManager.Instance.AddCombine(m_meshBaker, m_seed, m_meshbakerGo);
+        //DigitalOpus.MB.Core.MB3_MeshCombinerSingle meshCombiner
+        //    = m_meshBaker.meshCombiner as DigitalOpus.MB.Core.MB3_MeshCombinerSingle;
+        //GameObject combineGo = meshCombiner.resultSceneObject;
+        //GameObject UIGo = GameObject.Find("Canvas/Button/Text");
+        //if (UIGo != null)
+        //{
+        //    Text text = UIGo.GetComponent<Text>();
+        //    if (text != null)
+        //    {
+        //        text.text += (combineGo != null);
+        //    }
+        //}
 
         //MeshBakerClearManager.Instance.Add(combineGo);
-        MeshBakerClearManager.Instance.AddCombine(combineGo);
+        //MeshBakerClearManager.Instance.AddCombine(combineGo);
         //MeshBakerClearManager.Instance.Add(m_seed);
-        MeshBakerClearManager.Instance.AddSeed(m_seed);
-        //MeshBakerClearManager.Instance.Add(m_meshbakerGo);
-        MeshBakerClearManager.Instance.AddBaker(m_meshbakerGo);
+        //MeshBakerClearManager.Instance.AddSeed(m_seed);
+        ////MeshBakerClearManager.Instance.Add(m_meshbakerGo);
+        //MeshBakerClearManager.Instance.AddBaker(m_meshbakerGo);
 #endif
         return charObjs;
     }

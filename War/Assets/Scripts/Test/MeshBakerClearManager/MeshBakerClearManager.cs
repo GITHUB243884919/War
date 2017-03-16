@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class MeshBakerClearManager
 {
@@ -24,6 +25,26 @@ public class MeshBakerClearManager
         }
     }
 
+    public void AddCombine(MB3_MeshBaker meshBaker, GameObject seed, GameObject bakerGo)
+    {
+        DigitalOpus.MB.Core.MB3_MeshCombinerSingle meshCombiner
+            = meshBaker.meshCombiner as DigitalOpus.MB.Core.MB3_MeshCombinerSingle;
+        GameObject combineGo = meshCombiner.resultSceneObject;
+
+        GameObject UIGo = GameObject.Find("Canvas/Button/Text");
+        if (UIGo != null)
+        {
+            Text text = UIGo.GetComponent<Text>();
+            if (text != null)
+            {
+                text.text += (combineGo != null);
+            }
+        }
+
+        MeshBakerClearManager.Instance.AddCombine(combineGo);
+        MeshBakerClearManager.Instance.AddSeed(seed);
+        MeshBakerClearManager.Instance.AddBaker(bakerGo);
+    }
     public void AddGo(GameObject go)
     {
         m_gos.Add(go);

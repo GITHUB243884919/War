@@ -57,7 +57,7 @@ public class Scene_Commond_Test : MonoBehaviour
             m_wait = true;
         }
 #if _WAR_TEST_
-        MeshBakerClearManager.Instance.Realse();
+        //MeshBakerClearManager.Instance.Realse();
 #endif
 
         //CreateTank_Dead(1, 2);
