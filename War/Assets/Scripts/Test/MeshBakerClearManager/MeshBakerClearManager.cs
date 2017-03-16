@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 public class MeshBakerClearManager
 {
-    List<GameObject>             m_gos       = new List<GameObject>();
+    List<GameObject>             m_gos        = new List<GameObject>();
+    List<GameObject>             m_seeds     = new List<GameObject>();
+    List<GameObject>             m_combines  = new List<GameObject>();
+    List<GameObject>             m_bakers    = new List<GameObject>();
     List<MB2_TextureBakeResults> m_textures  = new List<MB2_TextureBakeResults>();
     List<Material>               m_materials = new List<Material>();
 
@@ -21,29 +24,33 @@ public class MeshBakerClearManager
         }
     }
 
-    public void Add(GameObject go)
+    public void AddGo(GameObject go)
     {
         m_gos.Add(go);
     }
+    public void AddSeed(GameObject go)
+    {
+        m_seeds.Add(go);
+    }
 
-    public void Add(MB2_TextureBakeResults texture)
+    public void AddCombine(GameObject go)
+    {
+        m_combines.Add(go);
+    }
+
+    public void AddBaker(GameObject go)
+    {
+        m_bakers.Add(go);
+    }
+
+    public void AddTexture(MB2_TextureBakeResults texture)
     {
         m_textures.Add(texture);
     }
 
-    public void Add(Material material)
+    public void AddMaterial(Material material)
     {
         m_materials.Add(material);
-    }
-
-    public GameObject [] GetObjs()
-    {
-        return m_gos.ToArray();
-    }
-
-    public GameObject[] GetGameObjects()
-    {
-        return m_gos.ToArray();
     }
 
     public MB2_TextureBakeResults[] GetTextures()
@@ -54,6 +61,63 @@ public class MeshBakerClearManager
     public Material [] GetMaterials()
     {
         return m_materials.ToArray();
+    }
+
+    public void Realse()
+    {
+        for (int i = 0; i < m_bakers.Count; i++)
+        {
+            MB3_TextureBaker textureBaker = m_bakers[i].GetComponent<MB3_TextureBaker>();
+            MB3_MeshBaker meshBaker = m_bakers[i].GetComponentInChildren<MB3_MeshBaker>();
+            textureBaker.resultMaterial = null;
+            textureBaker.textureBakeResults = null;
+            meshBaker.textureBakeResults = null;
+        }
+
+        for (int i = 0; i < m_bakers.Count; i++)
+        {
+            Debug.Log("m_bakers " + m_bakers[i].name);
+            GameObject.Destroy(m_bakers[i]);  
+        }
+        m_bakers.Clear();
+
+        for (int i = 0; i < m_seeds.Count; i++)
+        {
+            GameObject.Destroy(m_seeds[i]);  
+        }
+        m_seeds.Clear();
+
+        for (int i = 0; i < m_gos.Count; i++)
+        {
+            Debug.Log("m_gos " + m_gos[i].name);
+            GameObject.Destroy(m_gos[i]);
+        }
+        m_gos.Clear();
+
+        for (int i = 0; i < m_combines.Count; i++)
+        {
+            GameObject.Destroy(m_combines[i]);
+        }
+        m_combines.Clear();
+
+        for (int i = 0; i < m_materials.Count; i++)
+        {
+            Debug.Log("m_materials " + m_materials[i].name);
+            //GameObject.DestroyImmediate(m_materials[i], true);
+            m_materials[i] = null;
+
+        }
+        m_materials.Clear();
+
+        for (int i = 0; i < m_textures.Count; i++)
+        {
+            Debug.Log("m_texturs " + m_textures[i].name);
+            //GameObject.DestroyImmediate(m_textures[i], true);
+            m_textures[i] = null;
+
+        }
+        m_textures.Clear();
+
     }
 
 }

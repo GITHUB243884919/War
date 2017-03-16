@@ -79,6 +79,10 @@ public class CharObjCreator : QObjCreator<CharObj>
         for (int i = 0; i < m_count; i++)
         {
             GameObject go = GameObject.Instantiate<GameObject>(m_seed);
+            
+#if _WAR_TEST_
+            MeshBakerClearManager.Instance.AddGo(go);
+#endif
             go.transform.position  = INIT_POS;
             goObjs[i]              = go;
             CharObj charObj = new CharObj();
@@ -120,9 +124,12 @@ public class CharObjCreator : QObjCreator<CharObj>
             }
         }
 
-        MeshBakerClearManager.Instance.Add(combineGo);
-        MeshBakerClearManager.Instance.Add(m_seed);
-        MeshBakerClearManager.Instance.Add(m_meshbakerGo);
+        //MeshBakerClearManager.Instance.Add(combineGo);
+        MeshBakerClearManager.Instance.AddCombine(combineGo);
+        //MeshBakerClearManager.Instance.Add(m_seed);
+        MeshBakerClearManager.Instance.AddSeed(m_seed);
+        //MeshBakerClearManager.Instance.Add(m_meshbakerGo);
+        MeshBakerClearManager.Instance.AddBaker(m_meshbakerGo);
 #endif
         return charObjs;
     }
@@ -137,6 +144,11 @@ public class CharObjCreator : QObjCreator<CharObj>
     }
 
     public override void RealseObject(CharObj obj)
+    {
+
+    }
+
+    public override void Realse()
     {
 
     }
@@ -165,8 +177,10 @@ public class CharObjCreator : QObjCreator<CharObj>
         textureBaker.textureBakeResults = textureBakeResults;
         meshBaker.textureBakeResults    = textureBakeResults;
 #if _WAR_TEST_
-        MeshBakerClearManager.Instance.Add(material);
-        MeshBakerClearManager.Instance.Add(textureBakeResults);
+        //MeshBakerClearManager.Instance.Add(material);
+        MeshBakerClearManager.Instance.AddMaterial(material);
+        //MeshBakerClearManager.Instance.Add(textureBakeResults);
+        MeshBakerClearManager.Instance.AddTexture(textureBakeResults);
 #endif
         result = true;
         return result;

@@ -57,26 +57,7 @@ public class Scene_Commond_Test : MonoBehaviour
             m_wait = true;
         }
 #if _WAR_TEST_
-        Material[] materials = MeshBakerClearManager.Instance.GetMaterials();
-        for (int i = 0; i < materials.Length; i++)
-        {
-            Debug.Log("materials " + materials[i].name);
-            GameObject.Destroy(materials[i]);
-        }
-
-        MB2_TextureBakeResults[] texturs = MeshBakerClearManager.Instance.GetTextures();
-        for (int i = 0; i < texturs.Length; i++)
-        {
-            Debug.Log("texturs " + texturs[i].name);
-            GameObject.Destroy(texturs[i]);
-        }
-
-        //GameObject[] meshBakerObjs = MeshBakerClearManager.Instance.GetObjs();
-        //for (int i = 0; i < meshBakerObjs.Length; i++)
-        //{
-        //    Debug.Log("meshBakerObjs " + meshBakerObjs[i].name);
-        //    GameObject.Destroy(meshBakerObjs[i]);
-        //}
+        MeshBakerClearManager.Instance.Realse();
 #endif
 
         //CreateTank_Dead(1, 2);
