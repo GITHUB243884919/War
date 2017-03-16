@@ -105,13 +105,11 @@ public class CharObjCreator : QObjCreator<CharObj>
 
         m_meshBaker.AddDeleteGameObjects(goObjs, null, true);
         m_meshBaker.Apply();
+
+#if _WAR_TEST_
         DigitalOpus.MB.Core.MB3_MeshCombinerSingle meshCombiner
             = m_meshBaker.meshCombiner as DigitalOpus.MB.Core.MB3_MeshCombinerSingle;
         GameObject combineGo = meshCombiner.resultSceneObject;
-        //Debug.Log("DigitalOpus.MB.Core.MB3_MeshCombinerSingle " + combineGo.name);
-        //combineGo.name += "11111111";
-
-        //Debug.Log("combineGo " + (combineGo != null));
         GameObject UIGo = GameObject.Find("Canvas/Button/Text");
         if (UIGo != null)
         {
@@ -122,7 +120,10 @@ public class CharObjCreator : QObjCreator<CharObj>
             }
         }
 
-
+        MeshBakerClearManager.Instance.Add(combineGo);
+        MeshBakerClearManager.Instance.Add(m_seed);
+        MeshBakerClearManager.Instance.Add(m_meshbakerGo);
+#endif
         return charObjs;
     }
 
@@ -163,7 +164,10 @@ public class CharObjCreator : QObjCreator<CharObj>
         textureBaker.resultMaterial     = material;
         textureBaker.textureBakeResults = textureBakeResults;
         meshBaker.textureBakeResults    = textureBakeResults;
-
+#if _WAR_TEST_
+        MeshBakerClearManager.Instance.Add(material);
+        MeshBakerClearManager.Instance.Add(textureBakeResults);
+#endif
         result = true;
         return result;
     }
