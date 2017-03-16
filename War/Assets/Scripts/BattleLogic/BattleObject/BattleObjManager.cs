@@ -35,21 +35,21 @@ public class BattleObjManager : MonoBehaviour
     public int EffectCount { get; set; }
     //for test end
     private static BattleObjManager s_Instance = null;
+
     public static BattleObjManager Instance
     {
         get
         {
-            if (s_Instance == null)
-            {
-                s_Instance = FindObjectOfType(typeof(BattleObjManager))
-                        as BattleObjManager;
-                if (s_Instance == null)
-                {
-                    Debug.LogError("场景中没有持有BattleObjManager的对象");
-                }
-            }
-            return s_Instance;
+            return GetInstance();
         }
+    }
+    public static BattleObjManager GetInstance()
+    {
+        if (s_Instance == null)
+        {
+            Debug.LogError("场景中没有持有BattleObjManager的对象");
+        }
+        return s_Instance;
     }
 
     private void Init()
@@ -171,6 +171,10 @@ public class BattleObjManager : MonoBehaviour
         ParticleObjPoolManager.Instance.ReturnObj(obj, path);
     }
 
+    void Awake()
+    {
+        s_Instance = this;
+    }
     //Unity
     void Start()
     {
@@ -194,7 +198,7 @@ public class BattleObjManager : MonoBehaviour
 
         if (EffectCount % 32 == 0)
         {
-            Debug.Log("EffectCount " + EffectCount);
+//            Debug.Log("EffectCount " + EffectCount);
         }
         //for test end
 	}

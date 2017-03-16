@@ -90,4 +90,12 @@ public class CharControllerMediator
         cctr.DeadChangeObjType  = deadChangeObjType;
         cctr.Commond(CharController.E_COMMOND.DEAD);
     }
+
+    public static void AI_LookAt(CharController cctr, Vector3 position, Vector3 lookAt)
+    {
+        cctr.TargetForPosition = position;
+        cctr.TargetForLookAt = lookAt;
+        cctr.Commond(CharController.E_COMMOND.POSITION);
+        cctr.Commond(CharController.E_COMMOND.LOOKAT);
+    }
 }

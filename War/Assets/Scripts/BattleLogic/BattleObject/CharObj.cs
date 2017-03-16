@@ -159,5 +159,15 @@ public class CharObj
         CharControllerMediator.AI_Dead(CharController, deadChangeEntityID, deadChangeObjType,
             deadPosition, deadTarget, deadMoveSpeed);
     }
+
+    /// <summary>
+    /// 朝向设置，可以认为是旋转
+    /// </summary>
+    /// <param name="position">当前的位置</param>
+    /// <param name="lookAt">面朝哪里</param>
+    public void AI_LookAt(Vector3 position, Vector3 lookAt)
+    {
+        CharControllerMediator.AI_LookAt(CharController, position, lookAt);
+    }
     //API for AI end
 }

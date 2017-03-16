@@ -87,13 +87,13 @@ public class CharObjCreator : QObjCreator<CharObj>
 
         //人为调整合并后smr的bound
         charObjs[0].GameObject.transform.position = 
-            new Vector3(MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
-        charObjs[1].GameObject.transform.position 
-            = new Vector3(-MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
-        charObjs[2].GameObject.transform.position 
-            = new Vector3(INIT_POS.x, INIT_POS.y, MAX_BOUND_SIDE);
-        charObjs[3].GameObject.transform.position 
-            = new Vector3(INIT_POS.x, INIT_POS.y, -MAX_BOUND_SIDE);
+            new Vector3(65535f, INIT_POS.y, INIT_POS.z);
+        charObjs[1].GameObject.transform.position
+            = new Vector3(-65535f, INIT_POS.y, INIT_POS.z);
+        charObjs[2].GameObject.transform.position
+            = new Vector3(INIT_POS.x, INIT_POS.y, 65535f);
+        charObjs[3].GameObject.transform.position
+            = new Vector3(INIT_POS.x, INIT_POS.y, -65535f);
 
         //M_Build_Jeep_Seed模型不能合并，先跳过
         //Debug.Log(m_seed.name);
