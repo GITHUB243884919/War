@@ -21,8 +21,10 @@ public class CharObjCreator : QObjCreator<CharObj>
     public int m_count;
     
     //初始化生成位置固定,是一个在场景中看不到的地方。
-    private  static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
-    private  static readonly float   MAX_BOUND_SIDE = 1000f;
+    private  static readonly Vector3 INIT_POS
+        = new Vector3(0f, -10f, 0f);
+    private  static readonly float   MAX_BOUND_SIDE
+        = 100000f;
 
     private MB3_MeshBaker m_meshBaker;
 
@@ -91,13 +93,13 @@ public class CharObjCreator : QObjCreator<CharObj>
 
         //人为调整合并后smr的bound
         charObjs[0].GameObject.transform.position =
-            new Vector3(16777216f, INIT_POS.y, INIT_POS.z);
+            new Vector3(MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
         charObjs[1].GameObject.transform.position
-            = new Vector3(-16777216f, INIT_POS.y, INIT_POS.z);
+            = new Vector3(-MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
         charObjs[2].GameObject.transform.position
-            = new Vector3(INIT_POS.x, INIT_POS.y, 16777216f);
+            = new Vector3(INIT_POS.x, INIT_POS.y, MAX_BOUND_SIDE);
         charObjs[3].GameObject.transform.position
-            = new Vector3(INIT_POS.x, INIT_POS.y, -16777216f);
+            = new Vector3(INIT_POS.x, INIT_POS.y, -MAX_BOUND_SIDE);
 
         //M_Build_Jeep_Seed模型不能合并，先跳过
         //Debug.Log(m_seed.name);
