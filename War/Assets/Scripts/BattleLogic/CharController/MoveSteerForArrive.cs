@@ -9,8 +9,6 @@ using System.Collections;
 
 public class MoveSteerForArrive : MoveSteer
 {
-    private bool               m_isPlanar        = true;
-
     //到达区，距离多少算到了，可以设置为0;
     public float               m_nearDistance     = 1f;
     //steer容器
@@ -18,8 +16,7 @@ public class MoveSteerForArrive : MoveSteer
 
     private Vector3            m_force            = Vector3.zero;
     public CharController      m_cctr             = null;
-    public delegate void       DelegateArrived();
-    public DelegateArrived     m_arrivedCallback = null;
+    private Vector3            m_toTarget         = Vector3.zero;
     public MoveSteerForArrive(MoveSteers steers, CharController cctr)
     {
         m_steers = steers;
@@ -39,40 +36,29 @@ public class MoveSteerForArrive : MoveSteer
             return Vector3.zero;
         }
 
-        Vector3 toTarget = Vector3.zero;
-        Vector3 startPos = m_cctr.Transform.position;
-        Vector3 endPos   = m_cctr.TargetForArrive;
-        toTarget         = endPos - startPos;
-        m_force          = toTarget.normalized * m_cctr.SpeedForArrive;
+        m_toTarget = m_cctr.TargetForArrive - m_cctr.Transform.position;
+        m_force    = m_toTarget.normalized * m_cctr.SpeedForArrive;
 
-        //if (m_isPlanar)
-        //{
-        //    toTarget.y = m_cctr.OffsetY.y;
-        //}
+        if (m_force.magnitude > m_toTarget.magnitude)
+        {
+            m_force = m_toTarget;
+        }
 
-        float distance = toTarget.magnitude;
-
-        //到了
-        if (distance <= m_nearDistance)
+        if (m_toTarget.magnitude <= m_nearDistance)
         {
             m_force         = Vector3.zero;
             Active          = false;
             m_steers.Active = false;
-            //m_cctr.m_commond
             m_cctr.Commond(CharController.E_COMMOND.STOPMOVE);
             //Debug.Log("Arrive 到了终点 " + endPos + " cost seconds " +
             //    (Time.realtimeSinceStartup - m_cctr.StartArrive));
 
-            if (m_arrivedCallback != null)
-            {
-                m_arrivedCallback();
-            }
         }
+
         return m_force;
     }
 
-    void OnDrawGizmos()
-    {
-
-    }
+    //void OnDrawGizmos()
+    //{
+    //}
 }
