@@ -10,7 +10,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class CharControllerMediator
+public static class CharControllerMediator
 {
     public static void AI_Position(CharController cctr, Vector3 position)
     {
