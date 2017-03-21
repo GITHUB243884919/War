@@ -10,7 +10,7 @@ using System.Collections;
 public class MoveSteerForArrive : MoveSteer
 {
     //到达区，距离多少算到了，可以设置为0;
-    public float               m_nearDistance     = 1f;
+    public float               m_nearDistance     = 0f;
     //steer容器
     private MoveSteers         m_steers           = null;
 
@@ -38,7 +38,6 @@ public class MoveSteerForArrive : MoveSteer
 
         m_toTarget = m_cctr.TargetForArrive - m_cctr.Transform.position;
         m_force    = m_toTarget.normalized * m_cctr.SpeedForArrive;
-
         if (m_force.magnitude > m_toTarget.magnitude)
         {
             m_force = m_toTarget;
