@@ -14,22 +14,24 @@ using System.Collections.Generic;
 
 public class CharObj
 {
+    #region 战斗系统的底层接口，非上层模块接口
     //服务器定义的唯一编号和类型编号
     public int             ServerEntityID { get; set; }
+    //预留字段暂时屏蔽
     //public int ServerEntityType { get; set; }
 
     //角色对应的prefab 坦克，士兵之类的prefab
     public GameObject      GameObject     { get; set; }
 
+    //角色控制器
     public CharController  CharController { get; set; }
 
     //对象类型
     public BattleObjManager.E_BATTLE_OBJECT_TYPE Type { get; set; }
 
-    //子对象的pool，<instanceID, path>
-    //这里只缓存名字(路径)
-    private Dictionary<int, string> m_childsPools =
-        new Dictionary<int, string>();
+    //子对象的pool，<GameObject, path>
+    private Dictionary<GameObject, string> m_childsPools =
+        new Dictionary<GameObject, string>();
 
     public CharObj()
     {
@@ -76,13 +78,20 @@ public class CharObj
         CharController.Deactive();
     }
 
-    public string GetChildPool(int instanceID)
+    public void AddToChildsPools(GameObject go, string path)
     {
-        string path = null;
-        m_childsPools.TryGetValue(instanceID, out path);
-        return path;
+        if (!m_childsPools.ContainsKey(go))
+        {
+            m_childsPools.Add(go, path);
+        }
+        else
+        {
+            Debug.LogError("异常，子对象池中已经包含这个对象");
+        }
     }
+    #endregion
 
+    #region 战斗底层系统的上层模块接口
     //API for AI begin
     /// <summary>
     /// 瞬间定位
@@ -170,4 +179,5 @@ public class CharObj
         CharControllerMediator.AI_LookAt(CharController, position, lookAt);
     }
     //API for AI end
+    #endregion
 }

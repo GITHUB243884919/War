@@ -31,6 +31,7 @@ public class BattleObjManager : MonoBehaviour
         M_BUILD_JEEP,          //救护吉普
         M_ARM_ARTILLERY        //火炮
     }
+    #region 战斗系统的底层接口，非上层模块接口
     //for test begin
     public int EffectCount { get; set; }
     //for test end
@@ -67,12 +68,14 @@ public class BattleObjManager : MonoBehaviour
         ParticleObjPoolManager.Instance.Init();
         //Debug.Log("ParticleObjPoolManager Init");
     }
+    #endregion
 
+    #region 战斗底层系统的上层应用接口
     /// <summary>
     /// 在场景取一个对象必须是已知类型，服务器的两个编号的
     /// </summary>
     /// <param name="type"></param>
-    /// <param name="serverEntityID"></param>
+    /// <param name="serverEntityID">服务器战斗对象唯一编号</param>
     /// <param name="serverEntityType">暂时冗余参数，目前暂时全部填0</param>
     /// <returns></returns>
     public CharObj BorrowCharObj(BattleObjManager.E_BATTLE_OBJECT_TYPE type,
@@ -82,7 +85,6 @@ public class BattleObjManager : MonoBehaviour
         CharObj obj     = null;
 
         //Debug.Log("BorrowCharObj " + serverEntityID);
-        //先从缓存中取
         obj = CharObjCache.Instance.Find(serverEntityID);
         if (obj != null)
         {
@@ -91,7 +93,6 @@ public class BattleObjManager : MonoBehaviour
             return obj;
         }
 
-        //缓存中没有才从对象池中取
         obj = CharObjPoolManager.Instance.BorrowObj(type);
         if (obj == null)
         {
@@ -102,18 +103,17 @@ public class BattleObjManager : MonoBehaviour
         retCode = obj.IsValid();
         if (!retCode)
         {
-            Debug.LogError("取到CharObj非法，请联系BattleObjManager作者");
+            Debug.LogError("取到CharObj非法");
             return obj;
         }
 
-        //为CharObj打上身份证号:）
         obj.ServerEntityID                = serverEntityID;
         obj.Type                          = type;
         obj.CharController.ServerEntityID = serverEntityID;
         obj.CharController.CharType       = type;
+        obj.CharController.CharObj        = obj;
         //Debug.Log(type.ToString());
 
-        //从对象池中取出的对象要放入缓存中
         CharObjCache.Instance.Add(obj);
 
         return obj;
@@ -127,9 +127,9 @@ public class BattleObjManager : MonoBehaviour
     public void ReturnCharObj(CharObj obj)
     {
         obj.Deactive();
-        //先从缓存中移除
+        
         CharObjCache.Instance.Remove(obj);
-        //再还给对象池
+        
         CharObjPoolManager.Instance.ReturnObj(obj);
     }
 
@@ -145,7 +145,7 @@ public class BattleObjManager : MonoBehaviour
             ReturnCharObj(pair.Value);
         }
     }
-
+    #endregion
     //public GameObject BorrowBNGObj(string path)
     //{
     //    GameObject obj = null;
@@ -159,6 +159,7 @@ public class BattleObjManager : MonoBehaviour
     //}
 
     ////////////////////////////////////////////////////////////////////////////////
+    #region 战斗系统的底层接口，非上层模块接口
     public GameObject BorrowParticleObj(string path)
     {
         GameObject obj = null;
@@ -170,6 +171,7 @@ public class BattleObjManager : MonoBehaviour
     {
         ParticleObjPoolManager.Instance.ReturnObj(obj, path);
     }
+    #endregion
 
     void Awake()
     {

@@ -48,7 +48,7 @@ public class ParticleObjPoolManager
             retCode = pool.Init(creator, null);
             if (!retCode)
             {
-                Debug.LogError("QObjPool 初始失败 " + path);
+                Debug.LogError(path + " 的QObjPool 初始失败");
                 return obj;
             }
             m_pools.Add(path, pool);

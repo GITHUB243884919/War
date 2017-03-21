@@ -65,7 +65,8 @@ public abstract class CharCommond
             {
                 return;
             }
-            GameObject particleObj = BattleObjManager.Instance.BorrowParticleObj(cfg.ResPath); 
+            GameObject particleObj = BattleObjManager.Instance.BorrowParticleObj(cfg.ResPath);
+            m_cctr.CharObj.AddToChildsPools(particleObj, cfg.ResPath);
 
             particleObj.transform.position = Vector3.zero;
             particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));

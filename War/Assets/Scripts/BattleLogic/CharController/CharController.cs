@@ -32,6 +32,7 @@ public class CharController : MonoBehaviour
     }
 
     public int ServerEntityID { get; set; }
+    public CharObj CharObj { get; set; }
     
     [HideInInspector]
     public BattleObjManager.E_BATTLE_OBJECT_TYPE m_charType;
