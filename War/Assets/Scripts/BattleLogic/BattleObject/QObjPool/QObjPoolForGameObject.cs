@@ -25,7 +25,7 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
         m_seed = ResourcesManagerMediator.GetGameObjectFromResourcesManager(path);
         if (m_seed == null)
         {
-            Debug.LogWarning("读取种子资源出错 " + path);
+            Debug.LogError("读取种子资源出错 " + path);
             return;
         }
 
