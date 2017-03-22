@@ -132,10 +132,9 @@ public abstract class CharCommond
     {
         m_cctr = null;
 
-        foreach(KeyValuePair<CharController.E_COMMOND, ParticleSystem> pair
-            in m_charParticleEffects)
+        foreach (CharController.E_COMMOND cmd in m_charParticleEffects.Keys)
         {
-            m_charParticleEffects[pair.Key] = null;
+            m_charParticleEffects[cmd] = null;
         }
         m_charParticleEffects.Clear();
         m_charParticleEffects = null;
