@@ -82,6 +82,12 @@ public class M_Arm_Airplane_01_Commond : CharCommond
 
     }
 
+    public override void Release()
+    {
+        base.Release();
+        CharObjUSMBForDeadExit = null;
+    }
+
     private void InitCommond()
     {
         m_cctr.RegCommond(CharController.E_COMMOND.IDLE,     OnIdle);

@@ -111,6 +111,12 @@ public class M_Arm_Engineercorps_Commond : CharCommond
 
     }
 
+    public override void Release()
+    {
+        base.Release();
+        CharObjUSMBForDeadExit = null;
+    }
+
     private void InitCommond()
     {
         m_cctr.RegCommond(CharController.E_COMMOND.IDLE,     OnIdle);

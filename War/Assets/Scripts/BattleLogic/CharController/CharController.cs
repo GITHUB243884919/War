@@ -190,13 +190,18 @@ public class CharController : MonoBehaviour
         DeadMoveSpeed      = 0f;  
     }
 
-    private void Realse()
+    private void Release()
     {
         GameObject = null;
         Transform  = null;
         Animator   = null;
+        CharObj    = null;
+
+        m_steers.Release();
+        m_steers = null;
 
         m_commondCallbacks.Clear();
+        m_commondCallbacks = null;
     }
 
     public void Commond(E_COMMOND commond)
@@ -337,6 +342,6 @@ public class CharController : MonoBehaviour
 
     void OnDestroy()
     {
-        Realse();
+        Release();
     }
 }

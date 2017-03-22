@@ -127,4 +127,17 @@ public abstract class CharCommond
     {
 
     }
+
+    public virtual void Release()
+    {
+        m_cctr = null;
+
+        foreach(KeyValuePair<CharController.E_COMMOND, ParticleSystem> pair
+            in m_charParticleEffects)
+        {
+            m_charParticleEffects[pair.Key] = null;
+        }
+        m_charParticleEffects.Clear();
+        m_charParticleEffects = null;
+    }
 }

@@ -87,4 +87,14 @@ public class MoveSteers
                 m_cctr.Transform.position + m_moveDistance, Color.red, 30.0f);
         }
     }
+
+    public void Release()
+    {
+        foreach (KeyValuePair<E_STEER_TYPE, MoveSteer> pair in m_steers)
+        {
+            m_steers[pair.Key].Release();
+        }
+        m_steers.Clear();
+        m_steers = null;
+    }
 }

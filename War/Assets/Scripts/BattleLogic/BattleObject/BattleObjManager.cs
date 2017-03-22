@@ -173,11 +173,17 @@ public class BattleObjManager : MonoBehaviour
     }
     #endregion
 
+    private void Release()
+    {
+        s_Instance = null;
+    }
+
+    #region Unity interface
     void Awake()
     {
         s_Instance = this;
     }
-    //Unity
+
     void Start()
     {
         //Debug.Log("BattleObjManager Start " + Time.realtimeSinceStartup);
@@ -204,4 +210,10 @@ public class BattleObjManager : MonoBehaviour
         }
         //for test end
 	}
+
+    void OnDestroy()
+    {
+        Release();
+    }
+    #endregion
 }
