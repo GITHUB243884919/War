@@ -22,7 +22,7 @@ public class MoveSteers
 
     public float          m_interval      = 0.2f;
     public float          m_timer         = 0.0f;
-    public bool           m_displayTrack  = true;
+    public bool           m_displayTrack  = false;
     public Vector3        m_moveDistance  = Vector3.zero;
     public Vector3        m_steeringForce = Vector3.zero;
     public CharController m_cctr          = null;
