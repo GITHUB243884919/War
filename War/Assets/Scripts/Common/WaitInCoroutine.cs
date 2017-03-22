@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Assertions.Comparers;
-
-/// <summary>
+﻿/// <summary>
 /// 协程中的等待缓存
 /// author : fanzhengyong
 /// date  : 2017-03-22
@@ -10,6 +6,10 @@ using UnityEngine.Assertions.Comparers;
 /// 用WaitInCoroutine.XX
 /// 代替 WaitForEndOfFrame，WaitForFixedUpdate， WaitForSeconds
 /// </summary>
+/// 
+using System.Collections.Generic;
+using UnityEngine;
+
 public static class WaitInCoroutine
 {
     public static bool        s_enabled          = true;
@@ -19,35 +19,36 @@ public static class WaitInCoroutine
     static Dictionary<float, WaitForSeconds>     s_waitForSeconds
         = new Dictionary<float, WaitForSeconds>();
 
-    public static WaitForEndOfFrame EndOfFrame
-    {
-        get 
-        {
-            s_internalCounter++;
-            if (s_enabled)
-            {
-                return s_endOfFrame;
-            }
-            return new WaitForEndOfFrame(); 
-        }
-    }
-
-    public static WaitForFixedUpdate FixedUpdate
-    {
-        get 
-        {
-            s_internalCounter++;
-            if (s_enabled)
-            {
-                return s_fixedUpdate;
-            }
-            return new WaitForFixedUpdate();
-        }
-    }
-
-    public static WaitForSeconds GetWaitForSeconds(float seconds)
+    public static WaitForEndOfFrame WaitForEndOfFrame()
     {
         s_internalCounter++;
+        if (s_enabled)
+        {
+            return s_endOfFrame;
+        }
+        return new WaitForEndOfFrame(); 
+    }
+
+    public static WaitForFixedUpdate WaitForFixedUpdate()
+    {
+        s_internalCounter++;
+        if (s_enabled)
+        {
+            return s_fixedUpdate;
+        }
+        return new WaitForFixedUpdate();
+    }
+
+    public static WaitForSeconds WaitForSeconds(float seconds)
+    {
+        s_internalCounter++;
+
+        float _seconds = seconds;
+        if (_seconds < 0f)
+        {
+            Debug.LogError("WaitForSeconds seconds < 0");
+            _seconds = 0f;
+        }
 
         if (!s_enabled)
         {
