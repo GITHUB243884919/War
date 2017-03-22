@@ -60,15 +60,15 @@ public class MoveSteers
         m_timer = 0;
 
         m_steeringForce = Vector3.zero;
-        Profiler.BeginSample("开始计算所有给力函数");
-        foreach (KeyValuePair<E_STEER_TYPE, MoveSteer> pair in m_steers)
+        //Profiler.BeginSample("开始计算所有给力函数");
+        foreach (MoveSteer moveSteer in m_steers.Values)
         {
-            if (pair.Value.Active)
+            if (moveSteer.Active)
             {
-                m_steeringForce += pair.Value.Force() * pair.Value.m_weight;
+                m_steeringForce += moveSteer.Force() * moveSteer.m_weight;
             }
         }
-        Profiler.EndSample();
+        //Profiler.EndSample();
     }
 
     public void FixedUpdate()
@@ -90,9 +90,9 @@ public class MoveSteers
 
     public void Release()
     {
-        foreach (KeyValuePair<E_STEER_TYPE, MoveSteer> pair in m_steers)
+        foreach(MoveSteer moveSteer in m_steers.Values)
         {
-            m_steers[pair.Key].Release();
+            moveSteer.Release();
         }
         m_steers.Clear();
         m_steers = null;

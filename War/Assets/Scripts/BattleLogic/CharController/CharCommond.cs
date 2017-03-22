@@ -30,16 +30,11 @@ public abstract class CharCommond
 
     public void DeactiveEffects()
     {
-        foreach (KeyValuePair<CharController.E_COMMOND, ParticleSystem> pair in m_charParticleEffects)
+        foreach (ParticleSystem particleSystem in m_charParticleEffects.Values)
         {
-            if (pair.Value != null)
+            if (particleSystem != null)
             {
-                //pair.Value.ParticleSystem.transform.
-                //    parent.gameObject.SetActive(false);
-
-                //ParticleSystem.EmissionModule em = pair.Value.ParticleSystem.emission;
-                //em.enabled = false;
-                pair.Value.Stop();
+                particleSystem.Stop();
             }
         }
     }

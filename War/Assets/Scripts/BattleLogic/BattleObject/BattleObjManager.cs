@@ -140,9 +140,9 @@ public class BattleObjManager : MonoBehaviour
     {
         Dictionary<int, CharObj> cache = CharObjCache.Instance.Cache;
 
-        foreach (KeyValuePair<int, CharObj> pair in cache)
+        foreach (CharObj charObj in cache.Values)
         {
-            ReturnCharObj(pair.Value);
+            ReturnCharObj(charObj);
         }
     }
     #endregion
