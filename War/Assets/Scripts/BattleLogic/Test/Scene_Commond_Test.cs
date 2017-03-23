@@ -62,6 +62,10 @@ public class Scene_Commond_Test : MonoBehaviour
 
         //CreateTank_Dead(1, 2);
         //CreateTank_Arrive_Attack_LookAt(false, true);
+        yield return new WaitForSeconds(5f);
+        Debug.Log("begin return " + Time.realtimeSinceStartup);
+        BattleObjManager.Instance.ReturnAllBorrowCharObjs();
+        Debug.Log("end return " + Time.realtimeSinceStartup);
     }
     void CreateTank_Arrive_Attack(int entityID, bool withAI, bool withEffect)
     {

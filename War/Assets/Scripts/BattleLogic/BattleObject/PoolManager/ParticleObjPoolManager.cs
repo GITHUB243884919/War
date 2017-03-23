@@ -71,5 +71,4 @@ public class ParticleObjPoolManager
 
         pool.ReturnObj(obj);
     }
-
 }

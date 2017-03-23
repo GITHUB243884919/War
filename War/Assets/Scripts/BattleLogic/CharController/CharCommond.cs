@@ -126,11 +126,6 @@ public abstract class CharCommond
     public virtual void Release()
     {
         m_cctr = null;
-
-        foreach (CharController.E_COMMOND cmd in m_charParticleEffects.Keys)
-        {
-            m_charParticleEffects[cmd] = null;
-        }
         m_charParticleEffects.Clear();
         m_charParticleEffects = null;
     }
