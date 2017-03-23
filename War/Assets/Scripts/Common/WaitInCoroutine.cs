@@ -70,10 +70,6 @@ public static class WaitInCoroutine
         s_endOfFrame  = null;
         s_fixedUpdate = null;
         
-        foreach (float seconds in s_waitForSeconds.Keys)
-        {
-            s_waitForSeconds[seconds] = null;
-        }
         s_waitForSeconds.Clear();
         s_waitForSeconds = null;
     }
