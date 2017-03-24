@@ -52,6 +52,10 @@ public static class CharControllerMediator
         //面朝目标
         cctr.TargetForLookAt = target;
         cctr.Commond(CharController.E_COMMOND.LOOKAT);
+        //RuntimeAnimatorController bak = cctr.Animator.runtimeAnimatorController;
+        //cctr.Animator.runtimeAnimatorController = null;
+        //cctr.Transform.Find("Bone01/Bone02").Rotate(90f, 0f, 0f);
+        //cctr.Animator.runtimeAnimatorController = bak;
 
         //0.3秒内的等待不执行
         if (waitSeconds > 0.3f)

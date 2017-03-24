@@ -56,13 +56,14 @@ public class Test_AI_1 : MonoBehaviour
         //CharObjAI(obj, CharController.E_COMMOND.DEAD);
         //CharObjAI(obj, CharController.E_COMMOND.OPEN);
 
-        //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACK;
+        CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACK;
         //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.DEAD;
-        //StartCoroutine(SwitchAI(obj, switchCmd));
+        StartCoroutine(SwitchAI(obj, switchCmd));
     }
 
     IEnumerator SwitchAI(CharObj obj, CharController.E_COMMOND cmd)
     {
+        //obj.GameObject.transform.LookAt(new Vector3(32, 0f, 0f));
         yield return new WaitForSeconds(5f);
         CharObjAI(obj, cmd);
     }
