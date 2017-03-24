@@ -21,7 +21,7 @@ public class CharObjCreator : QObjCreator<CharObj>
     public int m_count;
     
     //初始化生成位置固定,是一个在场景中看不到的地方。
-    private  static readonly Vector3 INIT_POS
+    public  static readonly Vector3 INIT_POS
         = new Vector3(0f, -10f, 0f);
     private  static readonly float   MAX_BOUND_SIDE
         = 100000f;

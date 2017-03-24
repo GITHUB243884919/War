@@ -103,6 +103,14 @@ public class CharObj
     }
 
     /// <summary>
+    /// 隐身
+    /// </summary>
+    public void AI_Hide()
+    {
+        CharControllerMediator.AI_Position(CharController, CharObjCreator.INIT_POS);
+    }
+
+    /// <summary>
     /// 展开
     /// </summary>
     /// <param name="cctr">在哪里展开</param>
