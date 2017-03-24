@@ -16,12 +16,12 @@ public class CharObjPoolConfiger
     {
         if (paths.Length != 4)
         {
-            Debug.LogError("CharObjPool 的参数错误");
+            LogMediator.LogError("CharObjPool 的参数错误");
             return;
         }
         if (count < 4)
         {
-            Debug.LogError("CharObjPool 的参数错误");
+            LogMediator.LogError("CharObjPool 的参数错误");
             return;
         }
 
@@ -146,8 +146,6 @@ public class CharObjPoolConfigerMediator
         };
         AddOneConfig(BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY,
             armArtilleryCount, armArtilleryPaths);
-
-
     }
 
     private void AddOneConfig(BattleObjManager.E_BATTLE_OBJECT_TYPE type,
@@ -165,7 +163,7 @@ public class CharObjPoolConfigerMediator
 
         if (cfg == null)
         {
-            Debug.LogError("没有这类对象的pool参数 " + type.ToString());
+            LogMediator.LogError("没有这类对象的pool参数 " + type.ToString());
         }
 
         return cfg;

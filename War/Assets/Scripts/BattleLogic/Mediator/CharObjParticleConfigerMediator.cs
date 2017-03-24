@@ -104,14 +104,14 @@ public class CharObjParticleConfigerMediator
         m_cfgs.TryGetValue(type, out effects);
         if (effects == null)
         {
-            Debug.LogError("没有这类CharObj的特效配置 " + type.ToString());
+            LogMediator.LogError("没有这类CharObj的特效配置 " + type.ToString());
             return cfg;
         }
 
         effects.TryGetValue(commond, out cfg);
         if (cfg == null)
         {
-            Debug.LogError("没有这类CharObj对应的Commond的特效配置 "
+            LogMediator.LogError("没有这类CharObj对应的Commond的特效配置 "
                 + type.ToString() + " " + commond.ToString());
         }
 
