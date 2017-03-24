@@ -40,6 +40,7 @@ public class M_Arm_Artillery_Commond : CharCommond
         //Debug.Log("M_Arm_Artillery_Commond.Attack " + Time.realtimeSinceStartup);
 
         CharController.E_COMMOND cmd = CharController.E_COMMOND.ATTACK;
+        m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Fire");
         ActiveEffect(cmd);
     }

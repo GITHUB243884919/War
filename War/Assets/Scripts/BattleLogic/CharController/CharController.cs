@@ -190,6 +190,25 @@ public class CharController : MonoBehaviour
         DeadMoveSpeed      = 0f;  
     }
 
+    /// <summary>
+    /// 切换命令时的准备
+    /// 停止协程
+    /// 停止动画
+    /// 停止特效
+    /// </summary>
+    public void PrepareSwitchCommond()
+    {
+        StopCoroutine(WaitTimer(WaitForCommond, WaitForSeconds));
+        if (Animator != null)
+        {
+            Animator.speed = 0f;
+        }
+        if (m_commond != null)
+        {
+            m_commond.DeactiveEffects();
+        }
+    }
+
     private void Release()
     {
         GameObject = null;

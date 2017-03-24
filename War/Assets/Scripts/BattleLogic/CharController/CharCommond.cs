@@ -64,11 +64,17 @@ public abstract class CharCommond
             m_cctr.CharObj.AddToChildsPools(particleObj, cfg.ResPath);
 
             particleObj.transform.position = Vector3.zero;
-            particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
-
+            //particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
+            
             Transform effectPoint = m_cctr.Transform.Find(cfg.PointPath);
+            if (effectPoint == null)
+            {
+                LogMediator.LogError(m_cctr.CharObj.Type.ToString() 
+                    +  " 根据配置没有找到挂点 " + cfg.PointPath);
+            }
+            
             particleObj.transform.SetParent(effectPoint, false);
-
+            
             particleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
             m_charParticleEffects.Add(cmd, particleSystem);
             particleSystem.Play();
@@ -85,7 +91,6 @@ public abstract class CharCommond
         //for test begin
         BattleObjManager.Instance.EffectCount++;
         //for test end
-
     }
 
     public virtual void MoveAnimator()

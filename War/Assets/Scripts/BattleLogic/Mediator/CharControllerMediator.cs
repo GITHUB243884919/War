@@ -14,12 +14,14 @@ public static class CharControllerMediator
 {
     public static void AI_Position(CharController cctr, Vector3 position)
     {
+        cctr.PrepareSwitchCommond();
         cctr.TargetForPosition = position;
         cctr.Commond(CharController.E_COMMOND.POSITION);
     }
 
     public static void AI_Open(CharController cctr, Vector3 position, Vector3 lookAt)
     {
+        cctr.PrepareSwitchCommond();
         cctr.TargetForPosition = position;
         cctr.TargetForLookAt   = lookAt;
         cctr.Commond(CharController.E_COMMOND.POSITION);
@@ -31,6 +33,7 @@ public static class CharControllerMediator
         Vector3 endPoint, float speed)
     {
         //Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
+        cctr.PrepareSwitchCommond();
         cctr.TargetForPosition = startPoint;
         cctr.TargetForArrive   = endPoint;
         cctr.SpeedForArrive    = speed;
@@ -41,7 +44,7 @@ public static class CharControllerMediator
         Vector3 target, float waitSeconds)
     {
         //Debug.Log("Attack");
-
+        cctr.PrepareSwitchCommond();
         //自己定位
         cctr.TargetForPosition = position;
         cctr.Commond(CharController.E_COMMOND.POSITION);
@@ -64,14 +67,15 @@ public static class CharControllerMediator
 
     public static void AI_Attacked(CharController cctr, Vector3 position)
     {
+        cctr.PrepareSwitchCommond();
         cctr.TargetForPosition = position;
         cctr.Commond(CharController.E_COMMOND.POSITION);
-
         cctr.Commond(CharController.E_COMMOND.ATTACKED);
     }
 
     public static void AI_StopMove(CharController cctr)
     {
+        cctr.PrepareSwitchCommond();
         cctr.Commond(CharController.E_COMMOND.STOPMOVE);
     }
 

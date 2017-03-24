@@ -33,6 +33,7 @@ public class M_Build_Jeep_Commond : CharCommond
         //Debug.Log("M_Build_Jeep_Commond.Attack " + Time.realtimeSinceStartup);
 
         CharController.E_COMMOND cmd = CharController.E_COMMOND.ATTACK;
+        m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Fire");
         ActiveEffect(cmd);
     }
@@ -41,9 +42,9 @@ public class M_Build_Jeep_Commond : CharCommond
     {
         Debug.Log("M_Build_Jeep_Commond.Attacked");
         CharController.E_COMMOND cmd    = CharController.E_COMMOND.ATTACKED;
+        m_cctr.Animator.speed = 1f;
         ActiveEffect(cmd);
     }
-
 
     /// <summary>
     /// 坦克死亡后变成救护车开走
