@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 1239330628
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 68fb8c1b4576e680b2ba9e4249169cb2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: dcc569f5e6b792668077bdd8d1276d82
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d41887b1546f5c44ab54e7e65aad3bc, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Tank/M_Arm_Tank.asset
+Dependencies:
+- D:/fzy/work/code/War/War/Assets/StreamingAssets/runtimemeshbaker/m_arm_tank/m_arm_tank-mat
