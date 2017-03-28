@@ -19,23 +19,36 @@ public class CustomExportAssetbundle
         GenDetailFile();
     }
 
+    [MenuItem("自定义菜单/清除Assetbundle（调试用）")]
+    static private void ClearAssetBundles()
+    {
+        //清理资源上的AB名字
+        UntagAssetBundles();
+    }
+
     private static void UntagAssetBundles()
     {
-        TagAssetBundle.UntagAssetBundles(
+        TagAssetBundle.UntagInDirectory(
             "Assets/Resources/RuntimeMeshBaker/M_Arm_Tank", "");
+
+        //TagAssetBundle.UntagAssetBundles(
+        //    "Assets/Resources/TestAB", "");
     }
     private static void TagAssetBundles()
     {
         TagAssetBundle.TagInDirectory(
             "Assets/Resources/RuntimeMeshBaker/M_Arm_Tank", "", true);
+
+        //TagAssetBundle.TagInDirectory(
+        //    "Assets/Resources/TestAB", "", true);
     }
 
     private static void GenAssetBundles()
     {
         BuildAssetBundleOptions buildAssetBundleOptions =
-            BuildAssetBundleOptions.DisableWriteTypeTree     |
+            BuildAssetBundleOptions.DisableWriteTypeTree |
             BuildAssetBundleOptions.DeterministicAssetBundle |
-            BuildAssetBundleOptions.ForceRebuildAssetBundle  |
+            BuildAssetBundleOptions.ForceRebuildAssetBundle |
             BuildAssetBundleOptions.ChunkBasedCompression;
         //BuildTarget buildTarget = GetBuildTarget();
         BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;

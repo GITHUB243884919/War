@@ -4,18 +4,18 @@ AssetBundleManifest:
     Info_0:
       Name: runtimemeshbaker/m_arm_tank/materialbaker
       Dependencies:
-        Dependency_0: runtimemeshbaker/m_arm_tank/m_arm_tank
-        Dependency_1: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
+        Dependency_0: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
+        Dependency_1: runtimemeshbaker/m_arm_tank/m_arm_tank
     Info_1:
+      Name: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
+      Dependencies: {}
+    Info_2:
       Name: runtimemeshbaker/m_arm_tank/m_arm_tank
       Dependencies:
         Dependency_0: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
-    Info_2:
+    Info_3:
       Name: runtimemeshbaker/m_arm_tank/m_arm_tank_org
       Dependencies: {}
-    Info_3:
-      Name: runtimemeshbaker/m_arm_tank/m_arm_tank_seed
-      Dependencies: {}
     Info_4:
-      Name: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
+      Name: runtimemeshbaker/m_arm_tank/m_arm_tank_seed
       Dependencies: {}

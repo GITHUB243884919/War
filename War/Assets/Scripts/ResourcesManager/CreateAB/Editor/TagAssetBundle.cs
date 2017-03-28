@@ -7,7 +7,7 @@ using System.IO;
 public static class TagAssetBundle
 {
     public static void TagInDirectory(
-        string path, string filter = "", bool useFileName = false)
+        string path, string filter, bool useFileName)
     {
         //Debug.LogFormat("Build Texture Bundle {0}", path);
         string assetName = GenAssetBundleName(path);
@@ -75,15 +75,16 @@ public static class TagAssetBundle
         if (!assetName.Equals(importer.assetBundleName))
         {
             importer.assetBundleName = assetName;
-            if (!string.IsNullOrEmpty(variantName))
-            {
-                importer.assetBundleVariant = variantName;
-            }
+            //暂时不设置Variant
+            //if (!string.IsNullOrEmpty(variantName))
+            //{
+            //    importer.assetBundleVariant = variantName;
+            //}
             importer.SaveAndReimport();
         }
     }
 
-    public static void UntagAssetBundles(string path, string filter)
+    public static void UntagInDirectory(string path, string filter)
     {
         Debug.LogFormat("Clear Bundle {0}", path);
 
@@ -102,7 +103,7 @@ public static class TagAssetBundle
         var dirs = AssetDatabase.GetSubFolders(path);
         foreach (var dir in dirs)
         {
-            UntagAssetBundles(dir, filter);
+            UntagInDirectory(dir, filter);
         }
 
     }

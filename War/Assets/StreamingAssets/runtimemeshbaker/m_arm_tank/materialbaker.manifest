@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1247294171
+CRC: 4196925835
 Hashes:
   AssetFileHash:
     serializedVersion: 2
@@ -28,5 +28,5 @@ ClassTypes:
 Assets:
 - Assets/Resources/RuntimeMeshBaker/M_Arm_Tank/MaterialBaker.prefab
 Dependencies:
-- D:/fzy/work/code/War/War/Assets/StreamingAssets/runtimemeshbaker/m_arm_tank/m_arm_tank
 - D:/fzy/work/code/War/War/Assets/StreamingAssets/runtimemeshbaker/m_arm_tank/m_arm_tank-mat
+- D:/fzy/work/code/War/War/Assets/StreamingAssets/runtimemeshbaker/m_arm_tank/m_arm_tank
