@@ -2,20 +2,21 @@ ManifestFileVersion: 0
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: runtimemeshbaker/m_arm_tank/materialbaker
-      Dependencies:
-        Dependency_0: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
-        Dependency_1: runtimemeshbaker/m_arm_tank/m_arm_tank
+      Name: runtimemeshbaker/m_arm_airplane_01
+      Dependencies: {}
     Info_1:
-      Name: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
+      Name: runtimemeshbaker/m_arm_artillery
       Dependencies: {}
     Info_2:
-      Name: runtimemeshbaker/m_arm_tank/m_arm_tank
-      Dependencies:
-        Dependency_0: runtimemeshbaker/m_arm_tank/m_arm_tank-mat
+      Name: runtimemeshbaker/m_arm_engineercar
+      Dependencies: {}
     Info_3:
-      Name: runtimemeshbaker/m_arm_tank/m_arm_tank_org
+      Name: runtimemeshbaker/m_arm_engineercorps
       Dependencies: {}
     Info_4:
-      Name: runtimemeshbaker/m_arm_tank/m_arm_tank_seed
+      Name: runtimemeshbaker/m_arm_tank
       Dependencies: {}
+    Info_5:
+      Name: runtimemeshbaker/m_build_jeep
+      Dependencies:
+        Dependency_0: runtimemeshbaker/m_arm_tank

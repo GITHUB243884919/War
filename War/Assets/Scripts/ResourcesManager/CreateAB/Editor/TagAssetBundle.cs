@@ -6,6 +6,12 @@ using System.IO;
 
 public static class TagAssetBundle
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="filter"></param>
+    /// <param name="useFileName">true是文件名命名，false是目录名命名</param>
     public static void TagInDirectory(
         string path, string filter, bool useFileName)
     {
@@ -86,7 +92,7 @@ public static class TagAssetBundle
 
     public static void UntagInDirectory(string path, string filter)
     {
-        Debug.LogFormat("Clear Bundle {0}", path);
+        //Debug.LogFormat("Clear Bundle {0}", path);
 
         var files = GetAssetFiles(path, filter);
 

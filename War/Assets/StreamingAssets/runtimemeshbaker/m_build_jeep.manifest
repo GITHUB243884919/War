@@ -1,0 +1,59 @@
+ManifestFileVersion: 0
+CRC: 2656699984
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f236a0bf6e00be20a4a159abd808b329
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: bac4f3e78fe68f5673f6a5012c449b8a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: a97974931c5043247b11cd77898c1702, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2fb2e0d8bc810bb48b63c91af80d5f17, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d41887b1546f5c44ab54e7e65aad3bc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0d43c5bcf1a79694788b651f774dd7ce, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 077f80fe3940dc7468ecec90989abe66, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8d917e757dd799142b2e3b1a841b8990, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/RuntimeMeshBaker/M_Build_Jeep/M_Build_Jeep-mat.mat
+- Assets/Resources/RuntimeMeshBaker/M_Build_Jeep/MaterialBaker.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Build_Jeep/M_Build_Jeep_Seed.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Build_Jeep/M_Build_Jeep_Org.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Build_Jeep/M_Build_Jeep.asset
+Dependencies:
+- D:/fzy/work/code/War/War/Assets/StreamingAssets/runtimemeshbaker/m_arm_tank

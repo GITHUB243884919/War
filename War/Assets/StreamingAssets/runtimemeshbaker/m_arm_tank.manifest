@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1990927758
+CRC: 2292843167
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 829eabb37111db71bd4bd5571ee62267
+    Hash: f35d604837c28864ee7df3896dea48cd
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 100ce7228a374ec5a9f4dd76be4d5262
+    Hash: 9c9a959a6b1c5748f8a81d16731f2dc4
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -30,13 +30,25 @@ ClassTypes:
 - Class: 95
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: a97974931c5043247b11cd77898c1702, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: e46b80956126bb347bc583a50e2fe058, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 2fb2e0d8bc810bb48b63c91af80d5f17, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d41887b1546f5c44ab54e7e65aad3bc, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 0d43c5bcf1a79694788b651f774dd7ce, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 077f80fe3940dc7468ecec90989abe66, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
 Assets:
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Tank/M_Arm_Tank_ORG.prefab
 - Assets/Resources/RuntimeMeshBaker/M_Arm_Tank/M_Arm_Tank_Seed.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Tank/MaterialBaker.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Tank/M_Arm_Tank-mat.mat
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Tank/M_Arm_Tank.asset
 Dependencies: []

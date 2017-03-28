@@ -1,0 +1,56 @@
+ManifestFileVersion: 0
+CRC: 3390884052
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0d0f2ae068b602852b19d17cd2e81c03
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9f44557bd8c3034145b6997dbb524cfe
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: a97974931c5043247b11cd77898c1702, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e46b80956126bb347bc583a50e2fe058, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2fb2e0d8bc810bb48b63c91af80d5f17, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d41887b1546f5c44ab54e7e65aad3bc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0d43c5bcf1a79694788b651f774dd7ce, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 077f80fe3940dc7468ecec90989abe66, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8d917e757dd799142b2e3b1a841b8990, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Airplane_01/M_Arm_Airplane_01_Org.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Airplane_01/M_Arm_Airplane_01_Seed.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Airplane_01/MaterialBaker.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Airplane_01/M_Arm_Airplane_01-mat.mat
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Airplane_01/M_Arm_Airplane_01.asset
+Dependencies: []

@@ -1,0 +1,54 @@
+ManifestFileVersion: 0
+CRC: 3750697818
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a431f1d2f49e53d40b1d62de6950f666
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9c9a959a6b1c5748f8a81d16731f2dc4
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: a97974931c5043247b11cd77898c1702, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e46b80956126bb347bc583a50e2fe058, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2fb2e0d8bc810bb48b63c91af80d5f17, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d41887b1546f5c44ab54e7e65aad3bc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0d43c5bcf1a79694788b651f774dd7ce, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 077f80fe3940dc7468ecec90989abe66, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Artillery/M_Arm_Artillery-mat.mat
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Artillery/M_Arm_Artillery_Org.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Artillery/MaterialBaker.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Artillery/M_Arm_Artillery_Seed.prefab
+- Assets/Resources/RuntimeMeshBaker/M_Arm_Artillery/M_Arm_Artillery.asset
+Dependencies: []

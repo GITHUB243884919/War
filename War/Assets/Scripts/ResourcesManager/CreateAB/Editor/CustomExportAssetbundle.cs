@@ -18,8 +18,9 @@ public class CustomExportAssetbundle
         //为资源更新记录AssetBundle详单
         GenDetailFile();
     }
-
+#if _WAR_TEST_
     [MenuItem("自定义菜单/清除Assetbundle（调试用）")]
+#endif
     static private void ClearAssetBundles()
     {
         //清理资源上的AB名字
@@ -28,19 +29,31 @@ public class CustomExportAssetbundle
 
     private static void UntagAssetBundles()
     {
-        TagAssetBundle.UntagInDirectory(
-            "Assets/Resources/RuntimeMeshBaker/M_Arm_Tank", "");
+        //AssetDatabase.RemoveUnusedAssetBundleNames();
+
+        //TagAssetBundle.UntagInDirectory(
+        //    "Assets/Resources/RuntimeMeshBaker/M_Arm_Tank", "");
 
         //TagAssetBundle.UntagAssetBundles(
         //    "Assets/Resources/TestAB", "");
+
+        TagAssetBundle.UntagInDirectory(
+            "Assets/Resources/RuntimeMeshBaker", "");
+
+        AssetDatabase.RemoveUnusedAssetBundleNames();
     }
     private static void TagAssetBundles()
     {
-        TagAssetBundle.TagInDirectory(
-            "Assets/Resources/RuntimeMeshBaker/M_Arm_Tank", "", true);
+        //TagAssetBundle.TagInDirectory(
+        //    "Assets/Resources/RuntimeMeshBaker/M_Arm_Tank", "", true);
 
         //TagAssetBundle.TagInDirectory(
         //    "Assets/Resources/TestAB", "", true);
+
+        TagAssetBundle.TagInDirectory(
+            "Assets/Resources/RuntimeMeshBaker", "", false);
+
+        AssetDatabase.RemoveUnusedAssetBundleNames();
     }
 
     private static void GenAssetBundles()
@@ -69,8 +82,8 @@ public class CustomExportAssetbundle
         StreamWriter swAssetList = new StreamWriter(fsAssetList);
         string lineBundleList = "";
         string lineAssetList = "";
-        var bundles = AssetDatabase.GetAllAssetBundleNames();
-        foreach (var bundle in bundles)
+        string [] bundles = AssetDatabase.GetAllAssetBundleNames();
+        foreach (string bundle in bundles)
         {
             uint crc;
             BuildPipeline.GetCRCForAssetBundle(Application.dataPath + "/StreamingAssets/" + bundle, out crc);
