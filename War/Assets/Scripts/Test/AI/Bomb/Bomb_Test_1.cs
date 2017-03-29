@@ -18,16 +18,25 @@ public class Bomb_Test_1 : MonoBehaviour
     private Vector3 m_moveDistance = Vector3.zero;
     private float   m_realInterval = 0f;
     private readonly float G = 9.8f;
-
+    public AudioClip m_clip_1 = null;
+    public AudioClip m_clip_2 = null;
     void Start()
     {
         m_toTargetDir = (m_target - transform.position).normalized;
         //transform.LookAt(m_target);
-        AudioSource audioSource = GetComponent<AudioSource>();
-        audioSource.Play();
-        audioSource.PlayDelayed(10f);
+
+        //AudioSource audioSource = GetComponent<AudioSource>();
+        //audioSource.Play();
+        //audioSource.PlayDelayed(10f);
         //如果多段音效需要增加多个AudioSource，然后用map存起来，用key去控制播放哪个。
         //比如key就是某动作的枚举编号
+        //这个办法很挫
+        //用下面两种方法之一
+        //1.PlayOneShot
+        //audioSource.PlayOneShot(m_clip_1);
+        //2.PlayClipAtPoint
+        AudioSource.PlayClipAtPoint(m_clip_1, transform.position);
+        AudioSource.PlayClipAtPoint(m_clip_2, transform.position); 
     }
 
     void Update()

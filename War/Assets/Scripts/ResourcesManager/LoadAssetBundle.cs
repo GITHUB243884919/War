@@ -2,9 +2,43 @@
 using System.Collections;
 using System.IO;
 using System.Text;
-public class LoadAssetFromLocalAssetBundle<T> where T : Object
+
+public class ResourcesManager : MonoBehaviour
+{
+    private static ResourcesManager s_instance = null;
+
+    public static ResourcesManager Instance 
+    {
+        get 
+        {
+            if (s_instance == null)
+            {
+                LogMediator.LogError("没有持有ResourcesManager的对象");
+            }
+            return s_instance;
+        }
+    }
+    void Release()
+    {
+        s_instance = null;
+    }
+
+    void Awake()
+    {
+        s_instance = this;
+    }
+
+    void OnDestroy()
+    {
+        Release();
+    }
+}
+
+public class GetAssetFromLocalAssetBundle<T> where T : Object
 {
     public static StringBuilder m_path = new StringBuilder();
+
+    public delegate void OnAfterGetAsset(T t);
     
     /// <summary>
     /// 1.查找Asset对应的Assetbundle文件名
@@ -18,7 +52,13 @@ public class LoadAssetFromLocalAssetBundle<T> where T : Object
     /// </summary>
     /// <param name="assetName"></param>
     /// <returns></returns>
-    IEnumerator Load(string assetName)
+    /// 
+    void GetAsset(string assetName, OnAfterGetAsset callback)
+    {
+        ResourcesManager.Instance.StartCoroutine(Load(assetName, callback));
+    }
+
+    IEnumerator Load(string assetName, OnAfterGetAsset callback)
     {
         //暂时将assetName 设置成path
         m_path.Remove(0, m_path.Length);
@@ -42,10 +82,29 @@ public class LoadAssetFromLocalAssetBundle<T> where T : Object
             LogMediator.LogError("加载Asset失败 " + assetName);
             yield break;
         }
-        
-        T prefab = bundleRequest.asset as T;
+
+        callback(bundleRequest.asset as T);
+        //T prefab = bundleRequest.asset as T;
         //GameObject.Instantiate(prefab);
 
         //assetBundle.Unload(false);
+    }
+
+    public string GetAssetBundleName(string assetName)
+    {
+        string bundleName = "";
+        return bundleName;
+    }
+
+    public AssetBundle GetAssetBundle(string bundlePath)
+    {
+        AssetBundle bundle = null;
+        return bundle;
+    }
+
+    public T GetAsset(AssetBundle assetBundle)
+    {
+        T t = default(T);
+        return t;
     }
 }
