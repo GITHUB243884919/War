@@ -19,6 +19,11 @@ public class Bomb_Test_1 : MonoBehaviour
     {
         m_toTargetDir = (m_target - transform.position).normalized;
         //transform.LookAt(m_target);
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
+        audioSource.PlayDelayed(10f);
+        //如果多段音效需要增加多个AudioSource，然后用map存起来，用key去控制播放哪个。
+        //比如key就是某动作的枚举编号
     }
 
     void Update()
