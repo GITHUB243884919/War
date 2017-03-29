@@ -2,7 +2,8 @@
 using System.Collections;
 
 /// <summary>
-/// 导弹运动脚本.
+/// 导弹运动算法
+/// 先匀速运动到两点间的一个点，这个点是整个路径中y最大的点，然后再匀速运动到目标点
 /// </summary>
 public class Missile_Test_1 : MonoBehaviour
 {

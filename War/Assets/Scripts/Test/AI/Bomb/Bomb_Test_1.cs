@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 轰炸算法实现
+/// 按重力加速度往下运动
+/// </summary>
 public class Bomb_Test_1 : MonoBehaviour 
 {
     public  Vector3 m_target = Vector3.zero;
