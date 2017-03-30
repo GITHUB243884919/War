@@ -105,8 +105,7 @@ public class CharController : MonoBehaviour
         WaitForCommond = E_COMMOND.NONE;
         RegCommond(E_COMMOND.WAIT, OnWait);
 
-        m_steers = new MoveSteers(this, PositionData);
-        //m_steers = new MoveSteers(PositionData);
+        m_steers = new MoveSteers(PositionData, OnStopMove);
         m_steers.Init();
     }
 
@@ -250,6 +249,7 @@ public class CharController : MonoBehaviour
 
     private void OnStopMove()
     {
+        //LogMediator.Log("CharController OnStopMove");
         MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
         arrive.Active    = false;
         m_steers.Active  = false;
@@ -269,10 +269,6 @@ public class CharController : MonoBehaviour
         //Debug.Log("WaitTimer " + waitForCommond.ToString() + " " + waitForSeconds);
 
         Commond(waitForCommond);
-        
-        //for test begin
-        //BattleObjManager.Instance.EffectCount++;
-        //for test end
     }
 
     //Unity

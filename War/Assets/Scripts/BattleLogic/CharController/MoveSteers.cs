@@ -20,21 +20,22 @@ public class MoveSteers
     public Dictionary<E_STEER_TYPE, MoveSteer> m_steers =
         new Dictionary<E_STEER_TYPE, MoveSteer>();
 
+    public delegate void  StopMoveCallback();
+    public StopMoveCallback m_stopMoveCallback;
+
     public float          m_interval      = 0.2f;
     public float          m_timer         = 0.0f;
     public bool           m_displayTrack  = false;
     public Vector3        m_moveDistance  = Vector3.zero;
     public Vector3        m_steeringForce = Vector3.zero;
-    public CharController m_cctr          = null;
     public PositionData   m_positionData  = null;
 
     public bool Active { get; set; }
 
-    public MoveSteers(CharController cctr, PositionData positionData)
-    //public MoveSteers(PositionData positionData)
+    public MoveSteers(PositionData positionData, StopMoveCallback callback)
     {
-        m_cctr         = cctr;
         m_positionData = positionData;
+        m_stopMoveCallback = callback;
     }
 
     public void Init()
@@ -43,7 +44,7 @@ public class MoveSteers
         Active  = false;
         m_timer = 0.0f;
 
-        MoveSteer steerArrive = new MoveSteerForArrive(this, m_cctr);
+        MoveSteer steerArrive = new MoveSteerForArrive(this);
         m_steers.Add(E_STEER_TYPE.ARRIVE, steerArrive);
         steerArrive.Init();
     }
@@ -82,12 +83,11 @@ public class MoveSteers
         }
 
         m_moveDistance = m_steeringForce * Time.fixedDeltaTime;
-        //m_cctr.Transform.position += m_moveDistance;
         m_positionData.Transform.position += m_moveDistance;
 
         if (m_displayTrack)
         {
-            LogMediator.DrawLine(m_cctr.Transform.position,
+            LogMediator.DrawLine(m_positionData.Transform.position,
                 m_positionData.Transform.position + m_moveDistance, Color.red, 30.0f);
         }
     }
