@@ -58,7 +58,7 @@ public class CharController : MonoBehaviour
         new Dictionary<E_COMMOND, CommondCallback>();
 
     private CharCommond        m_commond = null;
-    private MoveSteers         m_steers  = null;
+    public  MoveSteers         m_steers  = null;
 
     //位置数据
     public PositionData m_positionData = new PositionData();

@@ -35,7 +35,7 @@ public class MoveSteers
     public MoveSteers(PositionData positionData, StopMoveCallback callback)
     {
         m_positionData = positionData;
-        m_stopMoveCallback = callback;
+        m_stopMoveCallback += callback;
     }
 
     public void Init()
@@ -103,5 +103,7 @@ public class MoveSteers
 
         m_positionData.Release();
         m_positionData = null;
+
+        m_stopMoveCallback = null;
     }
 }

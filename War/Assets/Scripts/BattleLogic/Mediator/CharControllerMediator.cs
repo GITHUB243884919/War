@@ -30,13 +30,14 @@ public static class CharControllerMediator
     }
 
     public static void AI_Arrive(CharController cctr, Vector3 startPoint, 
-        Vector3 endPoint, float speed)
+        Vector3 endPoint, float speed, MoveSteers.StopMoveCallback callback = null)
     {
         //Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
         cctr.PrepareSwitchCommond();
         cctr.m_positionData.TargetForPosition = startPoint;
         cctr.m_positionData.TargetForArrive = endPoint;
         cctr.m_positionData.SpeedForArrive = speed;
+        cctr.m_steers.m_stopMoveCallback += callback;
         cctr.Commond(CharController.E_COMMOND.ARRIVE);
     }
 

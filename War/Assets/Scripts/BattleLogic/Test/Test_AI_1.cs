@@ -68,6 +68,11 @@ public class Test_AI_1 : MonoBehaviour
         CharObjAI(obj, cmd);
     }
 
+    void ArriveCallback()
+    {
+        LogMediator.Log("ArriveCallback");
+    }
+
     void CharObjAI(CharObj obj, CharController.E_COMMOND cmd)
     {
         //Vector3 startPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
@@ -82,7 +87,7 @@ public class Test_AI_1 : MonoBehaviour
         switch (cmd)
         {
             case CharController.E_COMMOND.ARRIVE:
-                obj.AI_Arrive(startPos, endPos, speed);
+                obj.AI_Arrive(startPos, endPos, speed, ArriveCallback);
                 break;
             case CharController.E_COMMOND.ATTACK:
                 obj.AI_Attack(startPos, endPos, 1f);
