@@ -18,7 +18,7 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     {
         InitCommond();
         InitPath();
-        m_cctr.OffsetY = new Vector3(0f, 10f, 0f);
+        m_cctr.m_positionData.Offset = new Vector3(0f, 10f, 0f);
     }
 
     public void OnIdle()
@@ -60,7 +60,7 @@ public class M_Arm_Airplane_01_Commond : CharCommond
             CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
         }
 
-        m_cctr.TargetForPosition         = m_cctr.HidePosition;
+        m_cctr.m_positionData.TargetForPosition = CharObj.INIT_POS;
         CharObjUSMBForDeadExit.m_cctr    = m_cctr;
         CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
         m_cctr.Animator.speed = 1f;

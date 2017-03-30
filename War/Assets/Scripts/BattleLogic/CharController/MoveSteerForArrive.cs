@@ -11,15 +11,15 @@ public class MoveSteerForArrive : MoveSteer
 {
     //到达区，距离多少算到了，可以设置为0;
     public float               m_nearDistance     = 0f;
-    //steer容器
-    private MoveSteers         m_steers           = null;
+    ////steer容器
+    //private MoveSteers         m_steers           = null;
 
     private Vector3            m_force            = Vector3.zero;
     public CharController      m_cctr             = null;
     private Vector3            m_toTarget         = Vector3.zero;
     public MoveSteerForArrive(MoveSteers steers, CharController cctr)
+        : base(steers)
     {
-        m_steers = steers;
         m_cctr   = cctr;
     }
 
@@ -36,8 +36,11 @@ public class MoveSteerForArrive : MoveSteer
             return Vector3.zero;
         }
 
-        m_toTarget = m_cctr.TargetForArrive - m_cctr.Transform.position;
-        m_force    = m_toTarget.normalized * m_cctr.SpeedForArrive;
+        //m_toTarget = m_cctr.TargetForArrive - m_cctr.Transform.position;
+        m_toTarget = m_steers.m_positionData.TargetForArrive -
+            m_steers.m_positionData.Transform.position;
+        //m_force    = m_toTarget.normalized * m_cctr.SpeedForArrive;
+        m_force = m_toTarget.normalized * m_steers.m_positionData.SpeedForArrive;
         if (m_force.magnitude > m_toTarget.magnitude)
         {
             m_force = m_toTarget;

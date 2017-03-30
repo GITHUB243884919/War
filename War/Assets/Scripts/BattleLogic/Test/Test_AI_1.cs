@@ -56,8 +56,8 @@ public class Test_AI_1 : MonoBehaviour
         //CharObjAI(obj, CharController.E_COMMOND.DEAD);
         //CharObjAI(obj, CharController.E_COMMOND.OPEN);
 
-        CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACK;
-        //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.DEAD;
+        //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACK;
+        CharController.E_COMMOND switchCmd = CharController.E_COMMOND.DEAD;
         StartCoroutine(SwitchAI(obj, switchCmd));
     }
 

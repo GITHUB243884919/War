@@ -65,8 +65,8 @@ public class M_Arm_Artillery_Commond : CharCommond
             CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
         }
 
-        m_cctr.TargetForPosition = m_cctr.HidePosition;
-        CharObjUSMBForDeadExit.m_cctr = m_cctr;
+        m_cctr.m_positionData.TargetForPosition = CharObj.INIT_POS;
+        CharObjUSMBForDeadExit.m_cctr    = m_cctr;
         CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
         //设置变身参数
         BattleObjManager.E_BATTLE_OBJECT_TYPE type = m_cctr.DeadChangeObjType;
@@ -74,11 +74,11 @@ public class M_Arm_Artillery_Commond : CharCommond
 
         CharObjUSMBForDeadExit.m_deadChangObj = BattleObjManager.Instance.BorrowCharObj(
             type, serverEntityID, 1);
-        CharObjUSMBForDeadExit.m_deadChangObj.CharController.TargetForPosition
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.m_positionData.TargetForPosition
             = m_cctr.DeadPosition;
-        CharObjUSMBForDeadExit.m_deadChangObj.CharController.TargetForArrive
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.m_positionData.TargetForArrive
             = m_cctr.DeadTarget;
-        CharObjUSMBForDeadExit.m_deadChangObj.CharController.SpeedForArrive
+        CharObjUSMBForDeadExit.m_deadChangObj.CharController.m_positionData.SpeedForArrive
             = m_cctr.DeadMoveSpeed;
         CharObjUSMBForDeadExit.m_changCommond = CharController.E_COMMOND.ARRIVE;
 

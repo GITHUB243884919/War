@@ -14,16 +14,17 @@ using System.Collections;
 public class CharObjCreator : QObjCreator<CharObj>
 {
     //被生成并克隆的对象，称为种子。春天把一个坦克埋进去，到秋天长出好多坦克:)
-    private GameObject m_seed;
-    private GameObject m_meshbakerGo;
+    private GameObject    m_seed          = null;
+    private GameObject    m_meshbakerGo   = null;
+    private MB3_MeshBaker m_meshBaker     = null;
     //private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
     
     //一次生成的对象个数
     public int m_count;
     
-    private  static readonly float   MAX_BOUND_SIDE = 100000f;
+    private  static readonly float  MAX_BOUND_SIDE  = 100000f;
 
-    private static readonly Vector3 SMR_BOUND_MAX_X = 
+    private static readonly Vector3 SMR_BOUND_MAX_X =
         new Vector3(MAX_BOUND_SIDE, CharObj.INIT_POS.y, CharObj.INIT_POS.z);
 
     private static readonly Vector3 SMR_BOUND_MIN_X = 
@@ -34,8 +35,6 @@ public class CharObjCreator : QObjCreator<CharObj>
 
     private static readonly Vector3 SMR_BOUND_MIN_Z = 
         new Vector3(CharObj.INIT_POS.x, CharObj.INIT_POS.y, -MAX_BOUND_SIDE);
-
-    private MB3_MeshBaker m_meshBaker;
 
     /// <summary>
     /// </summary>
@@ -94,10 +93,10 @@ public class CharObjCreator : QObjCreator<CharObj>
             MeshBakerManager.Instance.AddGo(go);
 #endif
             go.transform.position = CharObj.INIT_POS;
-            goObjs[i]              = go;
-            CharObj charObj = new CharObj();
-            charObj.GameObject = goObjs[i];
-            charObjs[i] = charObj;
+            goObjs[i]             = go;
+            CharObj charObj       = new CharObj();
+            charObj.GameObject    = goObjs[i];
+            charObjs[i]           = charObj;
         }
 
         //人为调整合并后smr的bound

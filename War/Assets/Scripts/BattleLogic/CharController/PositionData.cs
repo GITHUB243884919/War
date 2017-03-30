@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// 位置数据类
+/// author : fanzhengyong
+/// date  : 2017-03-30
+/// </summary>
+/// 
+using UnityEngine;
 using System.Collections;
 
 public class PositionData 
@@ -48,5 +54,11 @@ public class PositionData
             m_targetForLookAt = value;
             m_targetForLookAt += Offset;
         }
+    }
+
+    public void Release()
+    {
+        GameObject = null;
+        Transform  = null;
     }
 }

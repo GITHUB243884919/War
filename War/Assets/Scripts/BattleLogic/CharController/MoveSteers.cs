@@ -26,12 +26,15 @@ public class MoveSteers
     public Vector3        m_moveDistance  = Vector3.zero;
     public Vector3        m_steeringForce = Vector3.zero;
     public CharController m_cctr          = null;
+    public PositionData   m_positionData  = null;
 
     public bool Active { get; set; }
 
-    public MoveSteers(CharController cctr)
+    public MoveSteers(CharController cctr, PositionData positionData)
+    //public MoveSteers(PositionData positionData)
     {
-        m_cctr = cctr;
+        m_cctr         = cctr;
+        m_positionData = positionData;
     }
 
     public void Init()
@@ -79,12 +82,13 @@ public class MoveSteers
         }
 
         m_moveDistance = m_steeringForce * Time.fixedDeltaTime;
-        m_cctr.Transform.position += m_moveDistance;
+        //m_cctr.Transform.position += m_moveDistance;
+        m_positionData.Transform.position += m_moveDistance;
 
         if (m_displayTrack)
         {
             LogMediator.DrawLine(m_cctr.Transform.position,
-                m_cctr.Transform.position + m_moveDistance, Color.red, 30.0f);
+                m_positionData.Transform.position + m_moveDistance, Color.red, 30.0f);
         }
     }
 
@@ -96,5 +100,8 @@ public class MoveSteers
         }
         m_steers.Clear();
         m_steers = null;
+
+        m_positionData.Release();
+        m_positionData = null;
     }
 }

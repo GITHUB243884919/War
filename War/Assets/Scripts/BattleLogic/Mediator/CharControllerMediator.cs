@@ -15,15 +15,15 @@ public static class CharControllerMediator
     public static void AI_Position(CharController cctr, Vector3 position)
     {
         cctr.PrepareSwitchCommond();
-        cctr.TargetForPosition = position;
+        cctr.m_positionData.TargetForPosition = position;
         cctr.Commond(CharController.E_COMMOND.POSITION);
     }
 
     public static void AI_Open(CharController cctr, Vector3 position, Vector3 lookAt)
     {
         cctr.PrepareSwitchCommond();
-        cctr.TargetForPosition = position;
-        cctr.TargetForLookAt   = lookAt;
+        cctr.m_positionData.TargetForPosition = position;
+        cctr.m_positionData.TargetForLookAt = lookAt;
         cctr.Commond(CharController.E_COMMOND.POSITION);
         cctr.Commond(CharController.E_COMMOND.LOOKAT);
         cctr.Commond(CharController.E_COMMOND.OPEN);
@@ -34,9 +34,9 @@ public static class CharControllerMediator
     {
         //Debug.Log("Arrive " + startPoint + " " + endPoint + " " + Time.realtimeSinceStartup);
         cctr.PrepareSwitchCommond();
-        cctr.TargetForPosition = startPoint;
-        cctr.TargetForArrive   = endPoint;
-        cctr.SpeedForArrive    = speed;
+        cctr.m_positionData.TargetForPosition = startPoint;
+        cctr.m_positionData.TargetForArrive = endPoint;
+        cctr.m_positionData.SpeedForArrive = speed;
         cctr.Commond(CharController.E_COMMOND.ARRIVE);
     }
 
@@ -46,11 +46,11 @@ public static class CharControllerMediator
         //Debug.Log("Attack");
         cctr.PrepareSwitchCommond();
         //自己定位
-        cctr.TargetForPosition = position;
+        cctr.m_positionData.TargetForPosition = position;
         cctr.Commond(CharController.E_COMMOND.POSITION);
 
         //面朝目标
-        cctr.TargetForLookAt = target;
+        cctr.m_positionData.TargetForLookAt = target;
         cctr.Commond(CharController.E_COMMOND.LOOKAT);
         //RuntimeAnimatorController bak = cctr.Animator.runtimeAnimatorController;
         //cctr.Animator.runtimeAnimatorController = null;
@@ -72,7 +72,7 @@ public static class CharControllerMediator
     public static void AI_Attacked(CharController cctr, Vector3 position)
     {
         cctr.PrepareSwitchCommond();
-        cctr.TargetForPosition = position;
+        cctr.m_positionData.TargetForPosition = position;
         cctr.Commond(CharController.E_COMMOND.POSITION);
         cctr.Commond(CharController.E_COMMOND.ATTACKED);
     }
@@ -88,7 +88,7 @@ public static class CharControllerMediator
         Vector3 deadPosition, Vector3 deadTarget, float deadMoveSpeed)
     {
         //自己定位
-        cctr.TargetForPosition = deadPosition;
+        cctr.m_positionData.TargetForPosition = deadPosition;
         cctr.Commond(CharController.E_COMMOND.POSITION);
         //变身
         cctr.DeadChangeEntityID = deadChangeEntityID;
@@ -101,8 +101,8 @@ public static class CharControllerMediator
 
     public static void AI_LookAt(CharController cctr, Vector3 position, Vector3 lookAt)
     {
-        cctr.TargetForPosition = position;
-        cctr.TargetForLookAt = lookAt;
+        cctr.m_positionData.TargetForPosition = position;
+        cctr.m_positionData.TargetForLookAt = lookAt;
         cctr.Commond(CharController.E_COMMOND.POSITION);
         cctr.Commond(CharController.E_COMMOND.LOOKAT);
     }

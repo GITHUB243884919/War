@@ -11,7 +11,13 @@ using System.Collections;
 public abstract class MoveSteer
 {
 
-    public float m_weight = 1.0f;
+    public float      m_weight = 1.0f;
+
+    public MoveSteers m_steers = null;
+    public MoveSteer(MoveSteers steers)
+    {
+        m_steers = steers;
+    }
     
     /// <summary>
     /// 初始化
@@ -22,6 +28,7 @@ public abstract class MoveSteer
     }
 
     public bool Active { get; set; }
+
     /// <summary>
     /// 给力函数，派生类按各自的需求实现逻辑，计算出需要施加的力
     /// </summary>

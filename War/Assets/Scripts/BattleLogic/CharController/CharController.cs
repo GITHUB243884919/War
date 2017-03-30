@@ -32,7 +32,7 @@ public class CharController : MonoBehaviour
     }
 
     private CharObj m_charObj = null;
-    public CharObj CharObj 
+    public CharObj  CharObj 
     {
         get
         {
@@ -61,59 +61,8 @@ public class CharController : MonoBehaviour
     private MoveSteers         m_steers  = null;
 
     //位置数据
-    public Vector3 HidePosition 
-    { 
-        get 
-        {
-            return CharObj.INIT_POS; 
-        } 
-    }
-
-    public  Vector3    OffsetY { get; set; }
-
-    private Vector3    m_targetForPosition = Vector3.zero;
-    public  Vector3    TargetForPosition    
-    { 
-        get
-        {
-            return m_targetForPosition;
-        }
-        set
-        {
-            m_targetForPosition  = value;
-            m_targetForPosition += OffsetY;
-        }
-    }
-
-    private Vector3    m_targetForArrive = Vector3.zero;
-    public  Vector3    TargetForArrive
-    {
-        get
-        {
-            return m_targetForArrive;
-        }
-        set
-        {
-            m_targetForArrive  = value;
-            m_targetForArrive += OffsetY;
-        }
-    }
-    
-    public float        SpeedForArrive       { get; set; }
-
-    private Vector3     m_targetForLookAt = Vector3.zero;
-    public  Vector3     TargetForLookAt
-    {
-        get
-        {
-            return m_targetForLookAt;
-        }
-        set
-        {
-            m_targetForLookAt  = value;
-            m_targetForLookAt += OffsetY;
-        }
-    }
+    public PositionData m_positionData = new PositionData();
+    public PositionData PositionData{ get{return m_positionData;} }
 
     //等待数据
     public float       WaitForSeconds       { get; set; }
@@ -139,7 +88,9 @@ public class CharController : MonoBehaviour
     private void Init()
     {
         GameObject = gameObject;
+        PositionData.GameObject = GameObject;
         Transform  = transform;
+        PositionData.Transform = Transform;
         Animator   = GetComponent<Animator>();
 
         RegCommond(E_COMMOND.NONE, OnNone);
@@ -153,8 +104,9 @@ public class CharController : MonoBehaviour
         //等待
         WaitForCommond = E_COMMOND.NONE;
         RegCommond(E_COMMOND.WAIT, OnWait);
-        
-        m_steers   = new MoveSteers(this);
+
+        m_steers = new MoveSteers(this, PositionData);
+        //m_steers = new MoveSteers(PositionData);
         m_steers.Init();
     }
 
@@ -173,10 +125,10 @@ public class CharController : MonoBehaviour
         }
         OnStopMove();
 
-        TargetForPosition  = Vector3.zero;
-        TargetForArrive    = Vector3.zero;
-        SpeedForArrive     = 0f;
-        TargetForLookAt    = Vector3.zero;    
+        m_positionData.TargetForPosition  = Vector3.zero;
+        m_positionData.TargetForArrive    = Vector3.zero;
+        m_positionData.SpeedForArrive     = 0f;
+        m_positionData.TargetForLookAt    = Vector3.zero;    
         WaitForSeconds     = 0f; 
         WaitForCommond     = E_COMMOND.NONE;
         DeadChangeEntityID = 0;
@@ -253,13 +205,13 @@ public class CharController : MonoBehaviour
     private void OnPositon()
     {
         //LogMediator.Log("OnPositon");
-        Transform.position = TargetForPosition;
+        Transform.position = m_positionData.TargetForPosition;
     }
 
     private void OnLookAt()
     {
         //LogMediator.Log("OnLookAt " + TargetForLookAt);
-        Transform.LookAt(TargetForLookAt);
+        Transform.LookAt(m_positionData.TargetForLookAt);
     }
 
     private void OnArrive()
@@ -269,7 +221,7 @@ public class CharController : MonoBehaviour
 
         //转向
         //LogMediator.Log("OnArrive LookAt " + TargetForArrive);
-        Transform.LookAt(TargetForArrive);
+        Transform.LookAt(m_positionData.TargetForArrive);
 
         //特效
         //LogMediator.Log(CharType.ToString());
@@ -277,14 +229,14 @@ public class CharController : MonoBehaviour
         //动画
         m_commond.MoveAnimator();
 
-        if (SpeedForArrive == 0f)
+        if (m_positionData.SpeedForArrive == 0f)
         {
             LogMediator.LogWarning("速度为0，不会执行 " +
                 MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
             return;
         }
 
-        if (TargetForArrive == TargetForPosition)
+        if (m_positionData.TargetForArrive == m_positionData.TargetForPosition)
         {
             LogMediator.LogWarning("起点和终点相同，不会执行 " + 
                 MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
