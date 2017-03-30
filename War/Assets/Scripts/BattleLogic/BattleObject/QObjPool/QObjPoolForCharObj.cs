@@ -3,8 +3,9 @@
 /// author : fanzhengyong
 /// date  : 2017-02-22
 /// 
-/// 本质上是QObjPool的一种GameObject版本的实现
-/// 使用方使用的还是QObjPool，所以也要遵循QObjPool的借和还的规则。不能在外面删，只能还回来！！！
+/// QObjPool是T类型的，所以也支持自定义类型，这是CharObj版本的实现
+/// 使用方使用的任然是QObjPool，所以也要遵循QObjPool的借和还的规则。
+/// 不能在外面删，只能还回来！！！
 /// </summary>
 /// 
 using UnityEngine;
@@ -20,11 +21,19 @@ public class CharObjCreator : QObjCreator<CharObj>
     //一次生成的对象个数
     public int m_count;
     
-    //初始化生成位置固定,是一个在场景中看不到的地方。
-    public  static readonly Vector3 INIT_POS
-        = new Vector3(0f, -10f, 0f);
-    private  static readonly float   MAX_BOUND_SIDE
-        = 100000f;
+    private  static readonly float   MAX_BOUND_SIDE = 100000f;
+
+    private static readonly Vector3 SMR_BOUND_MAX_X = 
+        new Vector3(MAX_BOUND_SIDE, CharObj.INIT_POS.y, CharObj.INIT_POS.z);
+
+    private static readonly Vector3 SMR_BOUND_MIN_X = 
+        new Vector3(-MAX_BOUND_SIDE, CharObj.INIT_POS.y, CharObj.INIT_POS.z);
+
+    private static readonly Vector3 SMR_BOUND_MAX_Z = 
+        new Vector3(CharObj.INIT_POS.x, CharObj.INIT_POS.y, MAX_BOUND_SIDE);
+
+    private static readonly Vector3 SMR_BOUND_MIN_Z = 
+        new Vector3(CharObj.INIT_POS.x, CharObj.INIT_POS.y, -MAX_BOUND_SIDE);
 
     private MB3_MeshBaker m_meshBaker;
 
@@ -66,7 +75,7 @@ public class CharObjCreator : QObjCreator<CharObj>
             Debug.LogError("加载种子资源失败 " + paths[3]);
             return;
         }
-        m_seed.transform.position = INIT_POS;
+        m_seed.transform.position = CharObj.INIT_POS;
 
         m_count = count;
     }
@@ -84,7 +93,7 @@ public class CharObjCreator : QObjCreator<CharObj>
 #if _WAR_TEST_
             MeshBakerManager.Instance.AddGo(go);
 #endif
-            go.transform.position  = INIT_POS;
+            go.transform.position = CharObj.INIT_POS;
             goObjs[i]              = go;
             CharObj charObj = new CharObj();
             charObj.GameObject = goObjs[i];
@@ -92,14 +101,10 @@ public class CharObjCreator : QObjCreator<CharObj>
         }
 
         //人为调整合并后smr的bound
-        charObjs[0].GameObject.transform.position =
-            new Vector3(MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
-        charObjs[1].GameObject.transform.position
-            = new Vector3(-MAX_BOUND_SIDE, INIT_POS.y, INIT_POS.z);
-        charObjs[2].GameObject.transform.position
-            = new Vector3(INIT_POS.x, INIT_POS.y, MAX_BOUND_SIDE);
-        charObjs[3].GameObject.transform.position
-            = new Vector3(INIT_POS.x, INIT_POS.y, -MAX_BOUND_SIDE);
+        charObjs[0].GameObject.transform.position = SMR_BOUND_MAX_X;
+        charObjs[1].GameObject.transform.position = SMR_BOUND_MIN_X;
+        charObjs[2].GameObject.transform.position = SMR_BOUND_MAX_Z;
+        charObjs[3].GameObject.transform.position = SMR_BOUND_MIN_Z;
 
         //M_Build_Jeep_Seed模型不能合并，先跳过
         //Debug.Log(m_seed.name);
@@ -123,7 +128,7 @@ public class CharObjCreator : QObjCreator<CharObj>
         obj.Deactive();
         //关闭所有特效
         //放到初始位置
-        obj.GameObject.transform.position = INIT_POS;
+        obj.GameObject.transform.position = CharObj.INIT_POS;
     }
 
     public override void RealseObject(CharObj obj)

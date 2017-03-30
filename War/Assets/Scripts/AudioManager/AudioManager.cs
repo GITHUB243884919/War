@@ -11,12 +11,10 @@ public class AudioManager
 {
     private static AudioManager s_instance = null;
 
-    private Dictionary<string, AudioClip> m_audioClips = 
+    private Dictionary<string, AudioClip> m_audioClips =
         new Dictionary<string, AudioClip>();
-
     private Queue<string> m_audioNames = new Queue<string>();
-    private static readonly int MAX_CACHE = 8;
-    private int m_count = 0;
+    private static readonly int MAX_COUNT = 8;
     public static AudioManager Instance
     {
         get
@@ -35,11 +33,15 @@ public class AudioManager
 
         m_audioClips.Clear();
         m_audioClips = null;
+        m_audioNames.Clear();
+        m_audioNames = null;
     }
+
     public void PlayAudio(string path, Vector3 position)
     {
-        bool retCode = false;
+        bool      retCode   = false;
         AudioClip audioClip = null;
+
         retCode = m_audioClips.TryGetValue(path, out audioClip);
         if (!retCode)
         {
@@ -50,8 +52,8 @@ public class AudioManager
                 LogMediator.LogError("没有找到声音资源 " + path);
                 return;
             }
-            m_audioClips.Add(path, audioClip);
-            m_count++;
+
+            AddAudioClip(path, audioClip);
         }
 
         if (audioClip == null)
@@ -60,7 +62,17 @@ public class AudioManager
             return;
         }
 
-        
         AudioSource.PlayClipAtPoint(audioClip, position);
+    }
+
+    private void AddAudioClip(string path, AudioClip audioClip)
+    {
+        if (m_audioClips.Count == MAX_COUNT)
+        {
+            m_audioClips.Remove(m_audioNames.Dequeue());
+        }
+
+        m_audioClips.Add(path, audioClip);
+        m_audioNames.Enqueue(path);
     }
 }

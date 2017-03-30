@@ -23,6 +23,8 @@ public class CharObj
     //角色对应的prefab 坦克，士兵之类的prefab
     public GameObject      GameObject     { get; set; }
 
+    public static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
+
     //角色控制器
     public CharController  CharController { get; set; }
 
@@ -107,7 +109,7 @@ public class CharObj
     /// </summary>
     public void AI_Hide()
     {
-        CharControllerMediator.AI_Position(CharController, CharObjCreator.INIT_POS);
+        CharControllerMediator.AI_Position(CharController, INIT_POS);
     }
 
     /// <summary>

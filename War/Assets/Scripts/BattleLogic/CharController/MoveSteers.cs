@@ -36,7 +36,7 @@ public class MoveSteers
 
     public void Init()
     {
-        //Debug.Log("MoveSteers Init");
+        //LogMediator.Log("MoveSteers Init");
         Active  = false;
         m_timer = 0.0f;
 
@@ -83,7 +83,7 @@ public class MoveSteers
 
         if (m_displayTrack)
         {
-            Debug.DrawLine(m_cctr.Transform.position,
+            LogMediator.DrawLine(m_cctr.Transform.position,
                 m_cctr.Transform.position + m_moveDistance, Color.red, 30.0f);
         }
     }

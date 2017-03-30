@@ -32,7 +32,7 @@ public class MoveSteerForArrive : MoveSteer
     {
         if (!Active)
         {
-            Debug.Log("MoveSteerForArrive 未激活");
+            LogMediator.Log("MoveSteerForArrive 未激活");
             return Vector3.zero;
         }
 
@@ -49,7 +49,7 @@ public class MoveSteerForArrive : MoveSteer
             Active          = false;
             m_steers.Active = false;
             m_cctr.Commond(CharController.E_COMMOND.STOPMOVE);
-            //Debug.Log("Arrive 到了终点 " + endPos + " cost seconds " +
+            //LogMediator.Log("Arrive 到了终点 " + endPos + " cost seconds " +
             //    (Time.realtimeSinceStartup - m_cctr.StartArrive));
 
         }

@@ -69,4 +69,13 @@ public static class LogMediator
 #endif
     }
 
+    public static void DrawLine(Vector3 start, Vector3 end, Color color, float duration)
+    {
+#if UNITY_EDITOR
+        if (m_enable)
+        {
+            Debug.DrawLine(start, end, color, duration);
+        }
+#endif
+    }
 }

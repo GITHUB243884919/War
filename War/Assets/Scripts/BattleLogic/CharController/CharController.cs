@@ -64,8 +64,8 @@ public class CharController : MonoBehaviour
     public Vector3 HidePosition 
     { 
         get 
-        { 
-            return CharObjCreator.INIT_POS; 
+        {
+            return CharObj.INIT_POS; 
         } 
     }
 
@@ -135,10 +135,6 @@ public class CharController : MonoBehaviour
     public GameObject  GameObject           { get; private set; }
     public Transform   Transform            { get; private set; }
     public Animator    Animator             { get; private set; }
-
-    //for test begin
-    public float StartArrive { get; set; }
-    //for test end
 
     private void Init()
     {
@@ -268,10 +264,6 @@ public class CharController : MonoBehaviour
 
     private void OnArrive()
     {
-        //for test begin
-        StartArrive = Time.realtimeSinceStartup;
-        //for test end
-
         //先定位到起点
         OnPositon();
 
