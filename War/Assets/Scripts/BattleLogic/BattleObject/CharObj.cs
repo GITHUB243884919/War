@@ -113,9 +113,8 @@ public class CharObj
     /// <summary>
     /// 展开
     /// </summary>
-    /// <param name="cctr">在哪里展开</param>
-    /// <param name="position">面朝哪里</param>
-    /// <param name="lookAt"></param>
+    /// <param name="position">在哪里展开</param>
+    /// <param name="lookAt">面朝哪里</param>
     public void AI_Open(Vector3 position, Vector3 lookAt)
     {
         CharControllerMediator.AI_Open(CharController, position, lookAt);

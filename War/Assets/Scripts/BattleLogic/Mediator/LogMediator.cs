@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// Log中介
 /// author: fanzhengyong
-/// date: 2017-02-24
+/// date: 2017-03-24
 /// </summary>
 using UnityEngine;
 using System.Collections;
