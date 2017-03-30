@@ -32,9 +32,7 @@ public class BattleObjManager : MonoBehaviour
         M_ARM_ARTILLERY        //火炮
     }
     #region 战斗系统的底层接口，非上层模块接口
-    //for test begin
-    public int EffectCount { get; set; }
-    //for test end
+
     private static BattleObjManager s_Instance = null;
 
     public static BattleObjManager Instance
@@ -55,18 +53,15 @@ public class BattleObjManager : MonoBehaviour
 
     private void Init()
     {
-        //for test begin
-        EffectCount = 0;
-        //for test end
-        //Debug.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
+        //LogMediator.Log("begin CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjPoolManager.Instance.Init();
-        //Debug.Log("end CharObjPoolManager Init " + Time.realtimeSinceStartup);
+        //LogMediator.Log("end CharObjPoolManager Init " + Time.realtimeSinceStartup);
         CharObjCache.Instance.Init();
-        //Debug.Log("CharObjCache Init");
+        //LogMediator.Log("CharObjCache Init");
         //BNGObjPoolManager.Instance.Init();
-        //Debug.Log("BNGObjPoolManager Init");
+        //LogMediator.Log("BNGObjPoolManager Init");
         ParticleObjPoolManager.Instance.Init();
-        //Debug.Log("ParticleObjPoolManager Init");
+        //LogMediator.Log("ParticleObjPoolManager Init");
     }
     #endregion
 
@@ -84,11 +79,11 @@ public class BattleObjManager : MonoBehaviour
         bool    retCode = false;
         CharObj obj     = null;
 
-        //Debug.Log("BorrowCharObj " + serverEntityID);
+        //LogMediator.Log("BorrowCharObj " + serverEntityID);
         obj = CharObjCache.Instance.Find(serverEntityID);
         if (obj != null)
         {
-            //Debug.Log("缓存中找到 " + serverEntityID);
+            //LogMediator.Log("缓存中找到 " + serverEntityID);
             obj.Deactive();
             return obj;
         }
@@ -96,23 +91,21 @@ public class BattleObjManager : MonoBehaviour
         obj = CharObjPoolManager.Instance.BorrowObj(type);
         if (obj == null)
         {
-            Debug.LogError("CharObjPoolManager.Instance.BorrowObj 取到空Obj " + type.ToString());
+            LogMediator.LogError("CharObjPoolManager.Instance.BorrowObj 取到空Obj " + type.ToString());
             return obj;
         }
 
         retCode = obj.IsValid();
         if (!retCode)
         {
-            Debug.LogError("取到CharObj非法");
+            LogMediator.LogError("取到CharObj非法");
             return obj;
         }
 
         obj.ServerEntityID                = serverEntityID;
         obj.Type                          = type;
-        obj.CharController.ServerEntityID = serverEntityID;
-        obj.CharController.CharType       = type;
         obj.CharController.CharObj        = obj;
-        //Debug.Log(type.ToString());
+        //LogMediator.Log(type.ToString());
 
         CharObjCache.Instance.Add(obj);
 
@@ -171,12 +164,12 @@ public class BattleObjManager : MonoBehaviour
     {
         ParticleObjPoolManager.Instance.ReturnObj(obj, path);
     }
-    #endregion
 
     private void Release()
     {
         s_Instance = null;
     }
+    #endregion
 
     #region Unity interface
     void Awake()
@@ -186,30 +179,9 @@ public class BattleObjManager : MonoBehaviour
 
     void Start()
     {
-        //Debug.Log("BattleObjManager Start " + Time.realtimeSinceStartup);
+        //LogMediator.Log("BattleObjManager Start " + Time.realtimeSinceStartup);
         Init();
     }
-
-    //for test begin
-    float timer    = 0f;
-    float interval = 0.2f;
-    //for test end
-	void Update() 
-    {
-        //for test begin
-        timer += Time.deltaTime;
-        if (timer < interval)
-        {
-            return;
-        }
-        timer = 0;
-
-        if (EffectCount % 32 == 0)
-        {
-//            Debug.Log("EffectCount " + EffectCount);
-        }
-        //for test end
-	}
 
     void OnDestroy()
     {

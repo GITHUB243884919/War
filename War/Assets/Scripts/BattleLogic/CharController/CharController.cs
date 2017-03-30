@@ -31,25 +31,24 @@ public class CharController : MonoBehaviour
         DEAD      //死亡
     }
 
-    public int ServerEntityID { get; set; }
-    public CharObj CharObj { get; set; }
-    
-    [HideInInspector]
-    public BattleObjManager.E_BATTLE_OBJECT_TYPE m_charType;
-    public BattleObjManager.E_BATTLE_OBJECT_TYPE CharType 
+    private CharObj m_charObj = null;
+    public CharObj CharObj 
     {
         get
         {
-            return m_charType;
+            return m_charObj;
         }
-        set 
+        set
         {
-            if (m_commond == null)
+            m_charObj = value;
+            if (
+                (m_commond == null)
+                && (m_charObj != null)
+            )
             {
-                m_commond = CharCommondFactory.CreateCommond(this, value);
+                m_commond = CharCommondFactory.CreateCommond(this, m_charObj.Type);
                 m_commond.Init();
             }
-            m_charType = value;
         }
     }
 
@@ -62,15 +61,15 @@ public class CharController : MonoBehaviour
     private MoveSteers         m_steers  = null;
 
     //位置数据
-    public static readonly Vector3 m_hidePoistion = new Vector3(0f, -10f, 0f);
     public Vector3 HidePosition 
     { 
         get 
         { 
-            return m_hidePoistion; 
+            return CharObjCreator.INIT_POS; 
         } 
     }
-    public Vector3     OffsetY { get; set; }
+
+    public  Vector3    OffsetY { get; set; }
 
     private Vector3    m_targetForPosition = Vector3.zero;
     public  Vector3    TargetForPosition    
@@ -229,10 +228,10 @@ public class CharController : MonoBehaviour
         m_commondCallbacks.TryGetValue(commond, out callback);
         if (callback == null)
         {
-            Debug.LogWarning("CharController不存在Commond " + commond);
+            LogMediator.LogWarning("CharController不存在Commond " + commond);
             return;
         }
-        //Debug.Log("Commond = " + commond + " " + TargetForArrive 
+        //LogMediator.Log("Commond = " + commond + " " + TargetForArrive 
         //    + " Time " + Time.realtimeSinceStartup);
         callback();
     }
@@ -243,7 +242,7 @@ public class CharController : MonoBehaviour
         m_commondCallbacks.TryGetValue(commond, out _callback);
         if (_callback != null)
         {
-            Debug.LogWarning("CharController已存在Commond " + commond);
+            LogMediator.LogWarning("CharController已存在Commond " + commond);
             return;
         }
 
@@ -252,18 +251,18 @@ public class CharController : MonoBehaviour
 
     private void OnNone()
     {
-        Debug.Log("OnNone " + Time.realtimeSinceStartup);
+        LogMediator.Log("OnNone " + Time.realtimeSinceStartup);
     }
 
     private void OnPositon()
     {
-        //Debug.Log("OnPositon");
+        //LogMediator.Log("OnPositon");
         Transform.position = TargetForPosition;
     }
 
     private void OnLookAt()
     {
-        //Debug.Log("OnLookAt " + TargetForLookAt);
+        //LogMediator.Log("OnLookAt " + TargetForLookAt);
         Transform.LookAt(TargetForLookAt);
     }
 
@@ -277,25 +276,25 @@ public class CharController : MonoBehaviour
         OnPositon();
 
         //转向
-        //Debug.Log("OnArrive LookAt " + TargetForArrive);
+        //LogMediator.Log("OnArrive LookAt " + TargetForArrive);
         Transform.LookAt(TargetForArrive);
 
         //特效
-        //Debug.Log(CharType.ToString());
+        //LogMediator.Log(CharType.ToString());
         m_commond.MoveEffect();
         //动画
         m_commond.MoveAnimator();
 
         if (SpeedForArrive == 0f)
         {
-            Debug.LogWarning("速度为0，不会执行 " +
+            LogMediator.LogWarning("速度为0，不会执行 " +
                 MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
             return;
         }
 
         if (TargetForArrive == TargetForPosition)
         {
-            Debug.LogWarning("起点和终点相同，不会执行 " + 
+            LogMediator.LogWarning("起点和终点相同，不会执行 " + 
                 MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
             return;
         }

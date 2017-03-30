@@ -55,7 +55,8 @@ public abstract class CharCommond
         m_charParticleEffects.TryGetValue(cmd, out particleSystem);
         if (particleSystem == null)
         {
-            CharParticleConfiger cfg = CharObjParticleConfigerMediator.Instance.GetConfiger(m_cctr.CharType, cmd);
+            CharParticleConfiger cfg = CharObjParticleConfigerMediator.Instance.GetConfiger(
+                m_cctr.CharObj.Type, cmd);
             if (cfg == null)
             {
                 return;
@@ -64,7 +65,6 @@ public abstract class CharCommond
             m_cctr.CharObj.AddToChildsPools(particleObj, cfg.ResPath);
 
             particleObj.transform.position = Vector3.zero;
-            //particleObj.transform.Rotate(new Vector3(0f, -90f, 0f));
             
             Transform effectPoint = m_cctr.Transform.Find(cfg.PointPath);
             if (effectPoint == null)
@@ -78,9 +78,6 @@ public abstract class CharCommond
             particleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
             m_charParticleEffects.Add(cmd, particleSystem);
             particleSystem.Play();
-            //for test begin
-            BattleObjManager.Instance.EffectCount++;
-            //for test end
             return;
         }
 
@@ -88,9 +85,6 @@ public abstract class CharCommond
         //ParticleSystem.EmissionModule em = effect.ParticleSystem.emission;
         //em.enabled = true;
         particleSystem.Play();
-        //for test begin
-        BattleObjManager.Instance.EffectCount++;
-        //for test end
     }
 
     public virtual void MoveAnimator()
