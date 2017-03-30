@@ -20,3 +20,9 @@ AssetBundleManifest:
       Name: runtimemeshbaker/m_build_jeep
       Dependencies:
         Dependency_0: runtimemeshbaker/m_arm_tank
+    Info_6:
+      Name: bundleinfo/bundlelist.bundle
+      Dependencies: {}
+    Info_7:
+      Name: bundleinfo/assetlist.bundle
+      Dependencies: {}

@@ -13,10 +13,21 @@ public class CustomExportAssetbundle
         TagAssetBundles();
         
         //打出AB包
-        GenAssetBundles();
+        BuildAssetBundleOptions buildAssetBundleOptions =
+            BuildAssetBundleOptions.DisableWriteTypeTree |
+            BuildAssetBundleOptions.DeterministicAssetBundle |
+            BuildAssetBundleOptions.ForceRebuildAssetBundle |
+            BuildAssetBundleOptions.ChunkBasedCompression;
+        string outputPath = Application.dataPath + "/StreamingAssets";
+        GenAssetBundles(buildAssetBundleOptions, outputPath);
 
         //为资源更新记录AssetBundle详单
-        GenDetailFile();
+        buildAssetBundleOptions =
+            BuildAssetBundleOptions.DisableWriteTypeTree |
+            BuildAssetBundleOptions.DeterministicAssetBundle |
+            //BuildAssetBundleOptions.ForceRebuildAssetBundle |
+            BuildAssetBundleOptions.ChunkBasedCompression;
+        GenDetailFile(buildAssetBundleOptions, outputPath);
     }
 #if _WAR_TEST_
     [MenuItem("自定义菜单/清除Assetbundle（调试用）")]
@@ -56,20 +67,21 @@ public class CustomExportAssetbundle
         AssetDatabase.RemoveUnusedAssetBundleNames();
     }
 
-    private static void GenAssetBundles()
+    private static void GenAssetBundles(BuildAssetBundleOptions options, string outputPath)
     {
-        BuildAssetBundleOptions buildAssetBundleOptions =
-            BuildAssetBundleOptions.DisableWriteTypeTree |
-            BuildAssetBundleOptions.DeterministicAssetBundle |
-            BuildAssetBundleOptions.ForceRebuildAssetBundle |
-            BuildAssetBundleOptions.ChunkBasedCompression;
+        //BuildAssetBundleOptions buildAssetBundleOptions =
+        //    BuildAssetBundleOptions.DisableWriteTypeTree |
+        //    BuildAssetBundleOptions.DeterministicAssetBundle |
+        //    BuildAssetBundleOptions.ForceRebuildAssetBundle |
+        //    BuildAssetBundleOptions.ChunkBasedCompression;
+        BuildAssetBundleOptions buildAssetBundleOptions = options;
         //BuildTarget buildTarget = GetBuildTarget();
         BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
-        string outputPath = Application.dataPath + "/StreamingAssets";
+        //string outputPath = Application.dataPath + "/StreamingAssets";
         BuildPipeline.BuildAssetBundles(outputPath, buildAssetBundleOptions, buildTarget);
     }
 
-    private static void GenDetailFile()
+    private static void GenDetailFile(BuildAssetBundleOptions options, string outputPath)
     {
         string bundleListPath = "Resources/bundlelist.txt";
         string assetListPath  = "Resources/assetlist.txt";
@@ -130,14 +142,15 @@ public class CustomExportAssetbundle
 
         //把详单打成AB
         //Debug.Log("bundleListPath:" + bundleListPath);
-        //var importer = AssetImporter.GetAtPath("Assets/" + bundleListPath);
-        //importer.assetBundleName = "bundleinfo/bundlelist.bundle";
-        //var importer2 = AssetImporter.GetAtPath("Assets/" + assetListPath);
-        //importer2.assetBundleName = "bundleinfo/assetlist.bundle";
+        var importer = AssetImporter.GetAtPath("Assets/" + bundleListPath);
+        importer.assetBundleName = "bundleinfo/bundlelist.bundle";
+        var importer2 = AssetImporter.GetAtPath("Assets/" + assetListPath);
+        importer2.assetBundleName = "bundleinfo/assetlist.bundle";
         //BuildPipeline.BuildAssetBundles(
-        //    tagetPath, BuildAssetBundleOptions.UncompressedAssetBundle 
-        //    | BuildAssetBundleOptions.CollectDependencies, 
+        //    tagetPath, BuildAssetBundleOptions.UncompressedAssetBundle
+        //    | BuildAssetBundleOptions.CollectDependencies,
         //    GetBuildTarget());
+        GenAssetBundles(options, outputPath);
     }
 
     //    static private BuildTarget GetBuildTarget()

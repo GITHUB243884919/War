@@ -2,37 +2,69 @@
 using System.Collections;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 
-public class ResourcesManager : MonoBehaviour
-{
-    private static ResourcesManager s_instance = null;
+//public class ResourcesManager : MonoBehaviour
+//{
+//    private static ResourcesManager s_instance = null;
 
-    public static ResourcesManager Instance 
-    {
-        get 
-        {
-            if (s_instance == null)
-            {
-                LogMediator.LogError("没有持有ResourcesManager的对象");
-            }
-            return s_instance;
-        }
-    }
-    void Release()
-    {
-        s_instance = null;
-    }
+//    public static ResourcesManager Instance 
+//    {
+//        get 
+//        {
+//            if (s_instance == null)
+//            {
+//                LogMediator.LogError("没有持有ResourcesManager的对象");
+//            }
+//            return s_instance;
+//        }
+//    }
 
-    void Awake()
-    {
-        s_instance = this;
-    }
+//    void Init()
+//    {
 
-    void OnDestroy()
-    {
-        Release();
-    }
-}
+//    }
+
+//    private Dictionary<string, string> m_assetsDict = new Dictionary<string, string>();
+//    private void InitAssetsDict()
+//    {
+//        Debug.Log("InitAssetsDict");
+//        string bundlePath = GetBundlePathWithOutWWW("bundleinfo/assetlist.bundle");
+//        if (!File.Exists(bundlePath))
+//        {
+//            return;
+//        }
+
+//        AssetBundle assetListBundle = AssetBundle.LoadFromFile(bundlePath);
+//        TextAsset assetListAsset = assetListBundle.LoadAsset<TextAsset>("assetlist");
+//        using (StringReader sr = new StringReader(assetListAsset.text))
+//        {
+//            string line = null;
+//            while ((line = sr.ReadLine()) != null)
+//            {
+//                string[] split = line.Split(',');
+//                Debug.Log(split[0] + " " + split[1]);
+//                m_assetsDict.Add(split[0], split[1]);
+//            }
+
+//        }
+
+//    }
+//    void Release()
+//    {
+//        s_instance = null;
+//    }
+
+//    void Awake()
+//    {
+//        s_instance = this;
+//    }
+
+//    void OnDestroy()
+//    {
+//        Release();
+//    }
+//}
 
 public class GetAssetFromLocalAssetBundle<T> where T : Object
 {
