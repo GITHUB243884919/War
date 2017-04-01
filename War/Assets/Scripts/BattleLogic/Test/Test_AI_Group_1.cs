@@ -51,7 +51,9 @@ public class Test_AI_Group_1 : MonoBehaviour
     void OnDrawGizmos()
     {
         //Test_1();
-        Test_2();
+        //Test_2();
+        //Test_3();
+        Test_4();
     }
 
     void Test_1()
@@ -112,6 +114,87 @@ public class Test_AI_Group_1 : MonoBehaviour
             fireRange * Mathf.Cos(radEnd),
             0,
             fireRange * Mathf.Sin(radEnd));
+        rayPointEnd += (startPos - Vector3.zero);
+        LogMediator.DrawLine(startPos, rayPointEnd, Color.cyan, (rayPointEnd - startPos).magnitude);
+        LogMediator.Log("dis 2 " + (rayPointEnd - startPos).magnitude);
+    }
+
+    void Test_3()
+    {
+        Vector3 startPos = new Vector3(0, 0, 0);
+        Vector3 endPos = startPos + new Vector3(32f, 0f, 32f);
+        Vector3 toTarget = endPos - startPos;
+        float fireRange = toTarget.magnitude;
+        //float orginRad = Mathf.Acos(toTarget.x / toTarget.magnitude);
+        float orginRad = BattleCalc.Vector3AngleRad(startPos, endPos);
+        //float orginDeg = Mathf.Rad2Deg * orginRad;
+        float orginDeg = BattleCalc.Vector3AngleDeg(startPos, endPos);
+        LogMediator.DrawLine(startPos, endPos, Color.red, toTarget.magnitude);
+        LogMediator.Log("dis 0 " + toTarget.magnitude
+            + " orginDeg " + orginDeg);
+        
+        
+        float startDeg = 5f;
+        float startRad = Mathf.Deg2Rad * (orginDeg - startDeg);
+        //float startRad = orginRad - Mathf.Deg2Rad * startDeg;
+        Debug.Log("startDeg " + Mathf.Rad2Deg * startRad);
+        Vector3 rayPointStart = new Vector3(
+            fireRange * Mathf.Cos(startRad),
+            0,
+            fireRange * Mathf.Sin(startRad));
+        rayPointStart += (startPos - Vector3.zero);
+        LogMediator.DrawLine(startPos, rayPointStart, Color.blue, (rayPointStart - startPos).magnitude);
+        LogMediator.Log("dis 1 " + (rayPointStart - startPos).magnitude);
+
+        LogMediator.Log("orginDeg " + orginDeg);
+        float endDeg = orginDeg + startDeg;
+        LogMediator.Log("degEnd " + endDeg);
+        float endRad = Mathf.Deg2Rad * endDeg;
+        //float endRad = orginRad + (orginRad - startRad);
+        Vector3 rayPointEnd = new Vector3(
+            fireRange * Mathf.Cos(endRad),
+            0,
+            fireRange * Mathf.Sin(endRad));
+        rayPointEnd += (startPos - Vector3.zero);
+        LogMediator.DrawLine(startPos, rayPointEnd, Color.cyan, (rayPointEnd - startPos).magnitude);
+        LogMediator.Log("dis 2 " + (rayPointEnd - startPos).magnitude);
+    }
+
+    void Test_4()
+    {
+        Vector3 startPos = new Vector3(0, 0, 0);
+        Vector3 endPos = startPos + new Vector3(-32f, 0f, 32f);
+        Vector3 toTarget = endPos - startPos;
+        float fireRange = toTarget.magnitude;
+
+        float orginRad = BattleCalc.Vector3AngleRad(startPos, endPos);
+        float orginDeg = BattleCalc.Vector3AngleDeg(startPos, endPos);
+        LogMediator.DrawLine(startPos, endPos, Color.red, toTarget.magnitude);
+        LogMediator.Log("dis 0 " + toTarget.magnitude
+            + " orginDeg " + orginDeg);
+
+
+        float startDeg = 5f;
+        //float startRad = Mathf.Deg2Rad * (orginDeg - startDeg);
+        float startRad = orginRad - Mathf.Deg2Rad * startDeg;
+        Debug.Log("startDeg " + Mathf.Rad2Deg * startRad);
+        Vector3 rayPointStart = new Vector3(
+            fireRange * Mathf.Cos(startRad),
+            0,
+            fireRange * Mathf.Sin(startRad));
+        rayPointStart += (startPos - Vector3.zero);
+        LogMediator.DrawLine(startPos, rayPointStart, Color.blue, (rayPointStart - startPos).magnitude);
+        LogMediator.Log("dis 1 " + (rayPointStart - startPos).magnitude);
+
+        LogMediator.Log("orginDeg " + orginDeg);
+        //float endDeg = orginDeg + startDeg;
+        //LogMediator.Log("degEnd " + endDeg);
+        float endRad = orginRad + Mathf.Deg2Rad * startDeg;
+        //float endRad = orginRad + (orginRad - startRad);
+        Vector3 rayPointEnd = new Vector3(
+            fireRange * Mathf.Cos(endRad),
+            0,
+            fireRange * Mathf.Sin(endRad));
         rayPointEnd += (startPos - Vector3.zero);
         LogMediator.DrawLine(startPos, rayPointEnd, Color.cyan, (rayPointEnd - startPos).magnitude);
         LogMediator.Log("dis 2 " + (rayPointEnd - startPos).magnitude);
