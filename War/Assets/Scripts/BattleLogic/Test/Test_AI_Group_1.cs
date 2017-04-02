@@ -53,7 +53,8 @@ public class Test_AI_Group_1 : MonoBehaviour
         //Test_1();
         //Test_2();
         //Test_3();
-        Test_4();
+        //Test_4();
+        Test_5();
     }
 
     void Test_1()
@@ -199,4 +200,26 @@ public class Test_AI_Group_1 : MonoBehaviour
         LogMediator.DrawLine(startPos, rayPointEnd, Color.cyan, (rayPointEnd - startPos).magnitude);
         LogMediator.Log("dis 2 " + (rayPointEnd - startPos).magnitude);
     }
+
+    void Test_5()
+    {
+        Vector3 target   = new Vector3(10f, 0f, 32f);
+        float   radius   = 15f;
+        float   angleDeg = 45f;
+        Vector3 center = target - target.normalized * radius;
+        float targetRad = GeometryUtil.TwoPointAngleRad2D(center, target);
+        float targetDeg  = targetRad * Mathf.Rad2Deg;
+        Vector3 p1 = Vector3.zero;
+        Vector3 p2 = Vector3.zero;
+        p1 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg + angleDeg);
+        p2 = GeometryUtil.PositionInCycleByAngleRad2D(center, radius, targetRad - angleDeg * Mathf.Deg2Rad);
+        
+        LogMediator.DrawLine(center, target, Color.red, (target - center).magnitude);
+        LogMediator.Log((target - center).magnitude);
+        LogMediator.DrawLine(center, p1, Color.red, (p1 - center).magnitude);
+        LogMediator.Log((p1 - center).magnitude);
+        LogMediator.DrawLine(center, p2, Color.red, (p2 - center).magnitude);
+        LogMediator.Log((p2 - center).magnitude);
+    }
+
 }

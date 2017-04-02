@@ -90,4 +90,16 @@ public static class GeometryUtil
         return position;
     }
 
+    public static Vector3 PositionInCycleByAngleRad2D(
+        Vector3 center, float radius, float rad)
+    {
+        Vector3 position = Vector3.zero;
+        //float rad = Mathf.Deg2Rad * deg;
+        position = new Vector3(radius * Mathf.Cos(rad), 0f,
+            radius * Mathf.Sin(rad));
+        position += center;
+
+        return position;
+    }
+
 }
