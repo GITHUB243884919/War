@@ -30,22 +30,59 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
 
     IEnumerator Load(string assetName, OnAfterGetAsset callback)
     {
-        //暂时将assetName 设置成path
-        m_path.Remove(0, m_path.Length);
-        string path = m_path.Append(assetName).ToString();
+        string assetBundleName = GetAssetBundleName(assetName);
+        if (string.IsNullOrEmpty(assetBundleName))
+        {
+            LogMediator.LogError("资源没有找到对应的assetbundle " + assetName);
+            yield break;
+        }
+
+        AssetBundle assetBundle = null;
+        ResourcesManager.Instance.m_assetBundles.
+            TryGetValue(assetBundleName, out assetBundle);
+        AssetBundleRequest bundleRequest;
+        if (assetBundle != null)
+        {
+            bundleRequest = assetBundle.LoadAssetAsync<T>(assetName);
+            yield return bundleRequest;
+            if (bundleRequest.asset == null)
+            {
+                LogMediator.LogError("加载Asset失败 " + assetName);
+                yield break;
+            }
+
+            callback(bundleRequest.asset as T);
+            yield break;
+        }
         
-        var createRequest = AssetBundle.LoadFromFileAsync(
-            Path.Combine(Application.streamingAssetsPath, path));
+        m_path.Remove(0, m_path.Length);
+        m_path.Append(Application.persistentDataPath);
+        m_path.Append("/");
+        m_path.Append(assetName);
+
+        string path = null;
+        path = m_path.ToString();
+        if (!File.Exists(m_path.ToString()))
+        {
+            m_path.Remove(0, m_path.Length);
+            m_path.Append(Application.streamingAssetsPath);
+            m_path.Append("/");
+            m_path.Append(assetName);
+        }
+        path = m_path.ToString();
+        
+        var createRequest = AssetBundle.LoadFromFileAsync(path);
         yield return createRequest;
 
-        var assetBundle = createRequest.assetBundle;
+        assetBundle = createRequest.assetBundle;
         if (assetBundle == null)
         {
             LogMediator.LogError("加载AssetBundle失败 " + path);
             yield break;
         }
+        ResourcesManager.Instance.m_assetBundles.Add(assetBundleName, assetBundle);
 
-        var bundleRequest = assetBundle.LoadAssetAsync<T>(assetName);
+        bundleRequest = assetBundle.LoadAssetAsync<T>(assetName);
         yield return bundleRequest;
         if (bundleRequest.asset == null)
         {
@@ -54,15 +91,13 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
         }
 
         callback(bundleRequest.asset as T);
-        //T prefab = bundleRequest.asset as T;
-        //GameObject.Instantiate(prefab);
-
-        //assetBundle.Unload(false);
     }
 
     public string GetAssetBundleName(string assetName)
     {
-        string bundleName = "";
+        string bundleName = null;
+        ResourcesManager.Instance.
+            m_assets.TryGetValue(assetName, out bundleName);
         return bundleName;
     }
 

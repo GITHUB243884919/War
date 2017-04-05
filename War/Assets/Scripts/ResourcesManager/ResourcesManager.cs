@@ -9,6 +9,13 @@ public class ResourcesManager : MonoBehaviour
     private static ResourcesManager s_instance = null;
 
     private string assetListBundlePath = null;
+
+    public Dictionary<string, string> m_assets 
+        = new Dictionary<string, string>();
+
+    public Dictionary<string, AssetBundle> m_assetBundles
+        = new Dictionary<string, AssetBundle>();
+
     public static ResourcesManager Instance
     {
         get
@@ -27,7 +34,6 @@ public class ResourcesManager : MonoBehaviour
         LoadAssetList();
     }
 
-    private Dictionary<string, string> m_assets = new Dictionary<string, string>();
     private void LoadAssetList()
     {
         LogMediator.Log("LoadAssetList");

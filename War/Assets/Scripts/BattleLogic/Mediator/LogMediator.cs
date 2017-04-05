@@ -43,9 +43,9 @@ public static class LogMediator
         {
             Debug.Log(message);
         }
+#endif
         string str = Convert.ToString(message);
         Show(str);
-#endif
     }
 
     public static void LogFormat(string format, params object[] args)
@@ -66,6 +66,8 @@ public static class LogMediator
             Debug.LogWarning(message);
         }
 #endif
+        string str = Convert.ToString(message);
+        Show(str);
     }
 
     public static void LogWarningFormat(string format, params object[] args)
@@ -86,6 +88,8 @@ public static class LogMediator
             Debug.LogError(message);
         }
 #endif
+        string str = Convert.ToString(message);
+        Show(str);
     }
 
     public static void LogErrorFormat(string format, params object[] args)
