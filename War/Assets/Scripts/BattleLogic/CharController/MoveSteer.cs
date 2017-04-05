@@ -1,6 +1,6 @@
 ﻿/// <summary>
 /// 移动行为基类
-/// autor: fanzhengyong
+/// author: fanzhengyong
 /// date: 2017-02-22 
 /// 
 /// 派生类 完成自己的初始化函数和给力函数,最终输出一个力（向量）

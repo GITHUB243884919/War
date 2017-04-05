@@ -105,8 +105,12 @@ public class CharController : MonoBehaviour
         WaitForCommond = E_COMMOND.NONE;
         RegCommond(E_COMMOND.WAIT, OnWait);
 
-        m_steers = new MoveSteers(PositionData, OnStopMove);
-        m_steers.Init();
+        m_steers = new MoveSteers();
+        MoveSteers.E_STEER_TYPE [] steerType;
+        steerType = new MoveSteers.E_STEER_TYPE [1]{
+            MoveSteers.E_STEER_TYPE.ARRIVE
+        };
+        m_steers.Init(steerType, PositionData, OnStopMove);
     }
 
     /// <summary>

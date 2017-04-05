@@ -1,8 +1,10 @@
 ﻿/// <summary>
 /// 轰炸行为：自由落体
 /// 
-/// autor: fanzhengyong
-/// date: 2017-04-05 
+/// author: fanzhengyong
+/// date: 2017-04-05
+/// 
+/// 名字中包含Static的意思是目标是静止的
 /// </summary>
 using UnityEngine;
 using System.Collections;

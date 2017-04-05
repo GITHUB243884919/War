@@ -77,21 +77,21 @@ public class MoveSteers
         } 
     }
 
-    public MoveSteers(PositionData positionData, StopMoveCallback callback)
-    {
-        m_positionData = positionData;
-        m_stopMoveCallback += callback;
-    }
-
-    public void Init()
+    public void Init(E_STEER_TYPE[] types, PositionData positionData, StopMoveCallback callback)
     {
         //LogMediator.Log("MoveSteers Init");
         Active  = false;
         m_timer = 0.0f;
 
-        MoveSteer steerArrive = new MoveSteerForArrive(this);
-        m_steers.Add(E_STEER_TYPE.ARRIVE, steerArrive);
-        steerArrive.Init();
+        m_positionData = positionData;
+        m_stopMoveCallback += callback;
+
+        for (int i = 0; i < types.Length; i++)
+        {
+            MoveSteer steer = MoveSteerFactory.Create(this, types[i]);
+            steer.Init();
+            m_steers.Add(E_STEER_TYPE.ARRIVE, steer);
+        }
     }
 
     public void Update()
