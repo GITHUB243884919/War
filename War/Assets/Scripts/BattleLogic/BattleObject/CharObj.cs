@@ -53,7 +53,7 @@ public class CharObj
 
         if (GameObject == null)
         {
-            Debug.LogError("CharObj对象上没有持有 GameObject,请联系BattleObjManager作者");
+            LogMediator.LogError("CharObj对象上没有持有 GameObject");
             return result;
         }
 
@@ -63,7 +63,7 @@ public class CharObj
         }
         if (CharController == null)
         {
-            Debug.LogError("CharObj对象上没有持有 CharController组件,请联系BattleObjManager作者");
+            LogMediator.LogError("CharObj对象上没有持有 CharController组件");
             return result;
         }
 

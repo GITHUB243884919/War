@@ -109,6 +109,7 @@ public class BattleObjManager : MonoBehaviour
 
         CharObjCache.Instance.Add(obj);
 
+        obj.Deactive();
         return obj;
     }
 
