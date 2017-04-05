@@ -50,6 +50,7 @@ public class MoveSteerForStaticBomb : MoveSteer
         m_interval  = Time.realtimeSinceStartup - m_lastForceTime;
         m_speed    += G * m_interval;
         m_force     = m_toTargetDir * m_speed;
+        m_lastForceTime = Time.realtimeSinceStartup;
 
         m_toTarget  = m_steers.m_positionData.TargetForArrive -
             m_steers.m_positionData.Transform.position;
