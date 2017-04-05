@@ -162,11 +162,17 @@ public class CharController : MonoBehaviour
         Animator   = null;
         CharObj    = null;
 
-        m_steers.Release();
-        m_steers = null;
+        if (m_steers != null)
+        {
+            m_steers.Release();
+            m_steers = null;
+        }
 
-        m_commondCallbacks.Clear();
-        m_commondCallbacks = null;
+        if (m_commondCallbacks != null)
+        {
+            m_commondCallbacks.Clear();
+            m_commondCallbacks = null;
+        }
     }
 
     public void Commond(E_COMMOND commond)
@@ -242,16 +248,19 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
-        arrive.Active    = true;
+        //MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
+        //arrive.Active    = true;
         m_steers.Active  = true;
     }
 
     private void OnStopMove()
     {
         //LogMediator.Log("CharController OnStopMove");
-        MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
-        arrive.Active    = false;
+        if (m_steers == null)
+        {
+            return;
+        }
+
         m_steers.Active  = false;
         m_commond.StopAnimator();
         m_commond.StopEffect();

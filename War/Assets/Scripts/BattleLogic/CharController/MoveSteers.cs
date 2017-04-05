@@ -30,7 +30,52 @@ public class MoveSteers
     public Vector3        m_steeringForce = Vector3.zero;
     public PositionData   m_positionData  = null;
 
-    public bool Active { get; set; }
+    private bool m_arrived = false;
+    public  bool Arrived 
+    { 
+        get 
+        {
+            return m_arrived;
+        }
+        set 
+        {
+            if (m_arrived == value)
+            {
+                return;
+            }
+            m_arrived = value;
+            
+            if (!m_arrived)
+            {
+                return;
+            }
+
+            WhenArrived();
+        } 
+    }
+
+    private bool  m_active = false;
+    public  bool  Active 
+    {
+        get 
+        {
+            return m_active;
+        }
+        set 
+        {
+            if (m_active == value)
+            {
+                return;
+            }
+            m_active = value;
+
+            foreach (MoveSteer moveSteer in m_steers.Values)
+            {
+                moveSteer.Active = value;
+            }
+
+        } 
+    }
 
     public MoveSteers(PositionData positionData, StopMoveCallback callback)
     {
@@ -105,5 +150,15 @@ public class MoveSteers
         m_positionData = null;
 
         m_stopMoveCallback = null;
+    }
+
+    public void WhenArrived()
+    {
+        Active = false;
+
+        if (m_stopMoveCallback != null)
+        {
+            m_stopMoveCallback();
+        }
     }
 }

@@ -83,7 +83,7 @@ public class Test_AI_1 : MonoBehaviour
         float time = 3f;
         float speed = (endPos - startPos).magnitude / time;
 
-        LogMediator.Log("speed " + speed);
+        //LogMediator.Log("speed " + speed);
         switch (cmd)
         {
             case CharController.E_COMMOND.ARRIVE:

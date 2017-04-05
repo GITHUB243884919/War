@@ -47,7 +47,7 @@ public class Test_AI_Group_1 : MonoBehaviour
 
         
     }
-
+#if _WAR_TEST_
     void OnDrawGizmos()
     {
         //Test_1();
@@ -221,5 +221,5 @@ public class Test_AI_Group_1 : MonoBehaviour
         LogMediator.DrawLine(center, p2, Color.red, (p2 - center).magnitude);
         LogMediator.Log((p2 - center).magnitude);
     }
-
+#endif
 }
