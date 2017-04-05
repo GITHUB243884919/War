@@ -38,6 +38,11 @@ public abstract class MoveSteer
         return Vector3.zero;
     }
 
+    public virtual bool ConditionStopMoveInMoveSteers()
+    {
+        return false;
+    }
+
     public virtual void Release()
     {
 

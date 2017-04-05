@@ -127,6 +127,11 @@ public class MoveSteers
             return;
         }
 
+        if (CheckConditionStopMove())
+        {
+            Active = false;
+        }
+
         m_moveDistance = m_steeringForce * Time.fixedDeltaTime;
         m_positionData.Transform.position += m_moveDistance;
 
@@ -160,5 +165,23 @@ public class MoveSteers
         {
             m_stopMoveCallback();
         }
+    }
+
+    public bool CheckConditionStopMove()
+    {
+        bool retCode = false;
+        bool result = false;
+
+        foreach (MoveSteer moveSteer in m_steers.Values)
+        {
+            retCode = moveSteer.ConditionStopMoveInMoveSteers();
+            if (retCode)
+            {
+                result = retCode;
+                break;
+            }
+        }
+
+        return result;
     }
 }
