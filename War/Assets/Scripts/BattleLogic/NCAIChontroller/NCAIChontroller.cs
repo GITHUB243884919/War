@@ -3,8 +3,8 @@ using System.Collections;
 
 public class NCAIChontroller : MonoBehaviour 
 {
-    public MoveSteers   m_steers = null;
-    public MoveSteers.E_STEER_TYPE[] m_steerTypes = null;
+    private MoveSteers   m_steers = null;
+    private MoveSteers.E_STEER_TYPE[] m_steerTypes = null;
     //位置数据
     //public PositionData m_positionData = new PositionData();
     //public PositionData PositionData { get { return m_positionData; } }
