@@ -92,6 +92,7 @@ public class M_Arm_Engineercorps_Commond : CharCommond
     {
         //base.MoveAnimator();
         //m_cctr.Animator.SetBool("Move", true);
+        //Debug.Log("M_Arm_Engineercorps_Commond MoveAnimator");
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Move");
     }
@@ -99,7 +100,10 @@ public class M_Arm_Engineercorps_Commond : CharCommond
     public override void StopAnimator()
     {
         //base.StopAnimator();
-        m_cctr.Animator.speed = 0f;
+        if (m_cctr.Animator != null)
+        {
+            m_cctr.Animator.speed = 0f;
+        }
     }
 	public override void Update() 
     {

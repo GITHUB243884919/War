@@ -87,9 +87,9 @@ public class CharController : MonoBehaviour
     public Transform   Transform            { get; private set; }
     public Animator    Animator             { get; private set; }
 
-    public void Init()
+    public void Init(CharObj charObj)
     {
-        //CharObj    = charObj;
+        CharObj    = charObj;
         GameObject = gameObject;
         PositionData.GameObject = GameObject;
         Transform  = transform;
@@ -273,7 +273,6 @@ public class CharController : MonoBehaviour
             m_steers.Active = false;
         }
 
-        Debug.Log(m_commond != null);
         if (m_commond != null)
         {
             m_commond.StopAnimator();

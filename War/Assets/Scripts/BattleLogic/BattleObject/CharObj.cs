@@ -35,14 +35,14 @@ public class CharObj
     private Dictionary<GameObject, string> m_childsPools =
         new Dictionary<GameObject, string>();
 
-    public CharObj(GameObject gameObject)
+    public CharObj(GameObject gameObject, BattleObjManager.E_BATTLE_OBJECT_TYPE type)
     {
         if (gameObject == null)
         {
             LogMediator.LogError("CharObj对应的prefab的GameObject为空");
             return;
         }
-
+        Type           = type;
         GameObject     = gameObject;
         CharController = gameObject.GetComponent<CharController>();
         if (CharController == null)
@@ -50,8 +50,8 @@ public class CharObj
             LogMediator.LogError("CharObj没有取到CharController组件");
             return;
         }
-        //CharController.Init(this);
-        CharController.Init();
+        CharController.Init(this);
+        //CharController.Init();
         CharController.Deactive();
     }
 

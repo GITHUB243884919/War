@@ -104,7 +104,7 @@ public class BattleObjManager : MonoBehaviour
 
         obj.ServerEntityID                = serverEntityID;
         obj.Type                          = type;
-        obj.CharController.CharObj        = obj;
+        //obj.CharController.CharObj        = obj;
         //LogMediator.Log(type.ToString());
 
         CharObjCache.Instance.Add(obj);

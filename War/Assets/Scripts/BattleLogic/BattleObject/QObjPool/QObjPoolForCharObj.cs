@@ -17,7 +17,7 @@ public class CharObjCreator : QObjCreator<CharObj>
     private GameObject    m_seed          = null;
     private GameObject    m_meshbakerGo   = null;
     private MB3_MeshBaker m_meshBaker     = null;
-    //private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
+    private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
     
     //一次生成的对象个数
     public int m_count;
@@ -50,6 +50,7 @@ public class CharObjCreator : QObjCreator<CharObj>
     {
         bool retCode        = false;
 
+        m_type = type;
         m_meshbakerGo = ResourcesManagerMediator.
             GetGameObjectFromResourcesManager(paths[0]);
         if (m_meshbakerGo == null)
@@ -94,9 +95,7 @@ public class CharObjCreator : QObjCreator<CharObj>
 #endif
             go.transform.position = CharObj.INIT_POS;
             goObjs[i]             = go;
-            //CharObj charObj       = new CharObj();
-            //charObj.GameObject    = goObjs[i];
-            CharObj charObj = new CharObj(goObjs[i]);
+            CharObj charObj = new CharObj(goObjs[i], m_type);
             charObjs[i]           = charObj;
         }
 
