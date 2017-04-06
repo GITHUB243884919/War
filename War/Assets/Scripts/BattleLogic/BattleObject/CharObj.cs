@@ -23,22 +23,36 @@ public class CharObj
     //角色对应的prefab 坦克，士兵之类的prefab
     public GameObject      GameObject     { get; set; }
 
-    public static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
-
     //角色控制器
     public CharController  CharController { get; set; }
 
     //对象类型
     public BattleObjManager.E_BATTLE_OBJECT_TYPE Type { get; set; }
 
+    public static readonly Vector3 INIT_POS = new Vector3(0f, -10f, 0f);
+
     //子对象的pool，<GameObject, path>
     private Dictionary<GameObject, string> m_childsPools =
         new Dictionary<GameObject, string>();
 
-    public CharObj()
+    public CharObj(GameObject gameObject)
     {
-        GameObject     = null;
-        CharController = null;
+        if (gameObject == null)
+        {
+            LogMediator.LogError("CharObj对应的prefab的GameObject为空");
+            return;
+        }
+
+        GameObject     = gameObject;
+        CharController = gameObject.GetComponent<CharController>();
+        if (CharController == null)
+        {
+            LogMediator.LogError("CharObj没有取到CharController组件");
+            return;
+        }
+        //CharController.Init(this);
+        CharController.Init();
+        CharController.Deactive();
     }
 
     /// <summary>
@@ -57,10 +71,6 @@ public class CharObj
             return result;
         }
 
-        if (CharController == null)
-        {
-            CharController = GameObject.GetComponent<CharController>();
-        }
         if (CharController == null)
         {
             LogMediator.LogError("CharObj对象上没有持有 CharController组件");

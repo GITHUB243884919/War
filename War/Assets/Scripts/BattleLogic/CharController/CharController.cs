@@ -48,6 +48,8 @@ public class CharController : MonoBehaviour
             {
                 m_commond = CharCommondFactory.CreateCommond(this, m_charObj.Type);
                 m_commond.Init();
+                m_commond.StopAnimator();
+                m_commond.StopEffect();
             }
         }
     }
@@ -85,8 +87,9 @@ public class CharController : MonoBehaviour
     public Transform   Transform            { get; private set; }
     public Animator    Animator             { get; private set; }
 
-    private void Init()
+    public void Init()
     {
+        //CharObj    = charObj;
         GameObject = gameObject;
         PositionData.GameObject = GameObject;
         Transform  = transform;
@@ -265,9 +268,17 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        m_steers.Active  = false;
-        m_commond.StopAnimator();
-        m_commond.StopEffect();
+        if (m_steers != null)
+        {
+            m_steers.Active = false;
+        }
+
+        Debug.Log(m_commond != null);
+        if (m_commond != null)
+        {
+            m_commond.StopAnimator();
+            m_commond.StopEffect();
+        }
     }
 
     private void OnWait()
@@ -287,7 +298,7 @@ public class CharController : MonoBehaviour
     //Unity
 	void Awake () 
     {
-        Init();
+        //Init();
 	}
 	
 	void Update () 

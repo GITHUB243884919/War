@@ -94,8 +94,9 @@ public class CharObjCreator : QObjCreator<CharObj>
 #endif
             go.transform.position = CharObj.INIT_POS;
             goObjs[i]             = go;
-            CharObj charObj       = new CharObj();
-            charObj.GameObject    = goObjs[i];
+            //CharObj charObj       = new CharObj();
+            //charObj.GameObject    = goObjs[i];
+            CharObj charObj = new CharObj(goObjs[i]);
             charObjs[i]           = charObj;
         }
 
