@@ -17,7 +17,11 @@ public class MoveSteerFactory
             case MoveSteers.E_STEER_TYPE.ARRIVE:
                 steer = new MoveSteerForArrive(steers);
                 break;
+            case MoveSteers.E_STEER_TYPE.STATIC_BOMB:
+                steer = new MoveSteerForStaticBomb(steers);
+                break;
             default:
+                LogMediator.LogError("没有找到这种类型的MoveSteer " + type.ToString());
                 break;
         }
 

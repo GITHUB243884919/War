@@ -34,11 +34,11 @@ public class Test_AI_1 : MonoBehaviour
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
 
-        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
-        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
-
         BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+
+        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
 
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
@@ -78,6 +78,11 @@ public class Test_AI_1 : MonoBehaviour
     void ArriveCallback()
     {
         LogMediator.Log("ArriveCallback");
+        BattleObjManager.E_BATTLE_OBJECT_TYPE type
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+        CharObj obj = BattleObjManager.Instance.BorrowCharObj(
+            type, 0, 1);
+        CharObjAI(obj, CharController.E_COMMOND.ATTACK);
     }
 
     void CharObjAI(CharObj obj, CharController.E_COMMOND cmd)

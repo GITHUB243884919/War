@@ -14,7 +14,8 @@ public class MoveSteers
     public enum E_STEER_TYPE
     {
         NONE,
-        ARRIVE
+        ARRIVE,        //到达
+        STATIC_BOMB    //静态轰炸
     }
 
     public Dictionary<E_STEER_TYPE, MoveSteer> m_steers =
@@ -79,7 +80,7 @@ public class MoveSteers
 
     public void Init(E_STEER_TYPE[] types, PositionData positionData, StopMoveCallback callback)
     {
-        //LogMediator.Log("MoveSteers Init");
+        //Debug.Log("MoveSteers Init");
         Active  = false;
         m_timer = 0.0f;
 

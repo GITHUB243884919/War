@@ -35,10 +35,19 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     {
         //Debug.Log("M_Arm_Airplane_01_Commond.Attack " + Time.realtimeSinceStartup);
 
-        CharController.E_COMMOND cmd = CharController.E_COMMOND.ATTACK;
-        m_cctr.Animator.speed = 1f;
-        m_cctr.Animator.SetTrigger("Fire");
-        ActiveEffect(cmd);
+        //CharController.E_COMMOND cmd = CharController.E_COMMOND.ATTACK;
+        //m_cctr.Animator.speed = 1f;
+        //m_cctr.Animator.SetTrigger("Fire");
+        //ActiveEffect(cmd);
+        GameObject go = ResourcesManagerMediator.
+            GetGameObjectFromResourcesManager("NCAIObj/Tank_daodan");
+        go.transform.position = m_cctr.PositionData.Transform.position;
+        NCAIChontroller ctr = go.GetComponent<NCAIChontroller>();
+        PositionData data = new PositionData();
+        data.TargetForArrive = new Vector3(32f, 0f, 32f);
+
+
+        ctr.AI(data);
     }
 
     public void OnAttacked()
@@ -71,6 +80,15 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     {
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Move");
+    }
+
+    public override void StopAnimator()
+    {
+        //base.StopAnimator();
+        if (m_cctr.Animator != null)
+        {
+            m_cctr.Animator.speed = 0f;
+        }
     }
 
 	public override void Update() 

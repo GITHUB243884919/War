@@ -31,9 +31,9 @@ public class MoveSteerForStaticBomb : MoveSteer
     {
         Active = false;
 
-        m_toTarget = m_steers.m_positionData.TargetForArrive -
-            m_steers.m_positionData.Transform.position;
-        m_toTargetDir = m_toTarget.normalized;
+        //m_toTarget = m_steers.m_positionData.TargetForArrive -
+        //    m_steers.m_positionData.Transform.position;
+        //m_toTargetDir = m_toTarget.normalized;
     }
 
     public override Vector3 Force()
@@ -49,6 +49,11 @@ public class MoveSteerForStaticBomb : MoveSteer
             m_lastForceTime = Time.realtimeSinceStartup;
             return Vector3.zero;
         }
+        m_toTarget = m_steers.m_positionData.TargetForArrive -
+            m_steers.m_positionData.Transform.position;
+        m_toTargetDir = m_toTarget.normalized;
+
+
         m_interval  = Time.realtimeSinceStartup - m_lastForceTime;
         m_speed    += G * m_interval;
         m_force     = m_toTargetDir * m_speed;
@@ -75,7 +80,8 @@ public class MoveSteerForStaticBomb : MoveSteer
     public override bool ConditionStopMoveInMoveSteers()
     {
         bool result = false;
-
+        //Debug.Log(m_steers.m_positionData != null);
+        //Debug.Log(m_steers.m_positionData.Transform != null);
         result = m_steers.m_positionData.Transform.position.y 
             <= m_steers.m_positionData.TargetForArrive.y;
 
