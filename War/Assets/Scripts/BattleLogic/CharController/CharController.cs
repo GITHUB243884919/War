@@ -89,12 +89,12 @@ public class CharController : MonoBehaviour
 
     public void Init(CharObj charObj)
     {
-        CharObj    = charObj;
         GameObject = gameObject;
         PositionData.GameObject = GameObject;
         Transform  = transform;
         PositionData.Transform = Transform;
         Animator   = GetComponent<Animator>();
+        CharObj    = charObj;
 
         RegCommond(E_COMMOND.NONE, OnNone);
         
