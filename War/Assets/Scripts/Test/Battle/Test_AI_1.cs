@@ -60,18 +60,19 @@ public class Test_AI_1 : MonoBehaviour
         //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.DEAD;
         //CharObj obj2 = BattleObjManager.Instance.BorrowCharObj(
         //    type, 2, 1);
-        //StartCoroutine(SwitchAI(obj2, switchCmd));
+        //StartCoroutine(SwitchAI(obj, switchCmd));
     }
 
     IEnumerator SwitchAI(CharObj obj, CharController.E_COMMOND cmd)
     {
         //obj.GameObject.transform.LookAt(new Vector3(32, 0f, 0f));
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
+        Debug.Log("Switch");
         CharObjAI(obj, cmd);
-        yield return new WaitForSeconds(5f);
-        CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
-        yield return new WaitForSeconds(5f);
-        CharObjAI(obj, CharController.E_COMMOND.ATTACK);
+        //yield return new WaitForSeconds(5f);
+        //CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
+        //yield return new WaitForSeconds(5f);
+        //CharObjAI(obj, CharController.E_COMMOND.ATTACK);
     }
 
     void ArriveCallback()

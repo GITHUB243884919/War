@@ -105,6 +105,13 @@ public class M_Arm_Engineercorps_Commond : CharCommond
             m_cctr.Animator.speed = 0f;
         }
     }
+
+    public override void OnArrived()
+    {
+        m_cctr.Animator.speed = 1f;
+        m_cctr.Animator.SetTrigger("Stand");
+    }
+
 	public override void Update() 
     {
 	

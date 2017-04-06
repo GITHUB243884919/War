@@ -113,7 +113,7 @@ public class CharController : MonoBehaviour
         steerType = new MoveSteers.E_STEER_TYPE [1]{
             MoveSteers.E_STEER_TYPE.ARRIVE
         };
-        m_steers.Init(steerType, PositionData, OnStopMove);
+        m_steers.Init(steerType, PositionData, m_commond.OnArrived);
     }
 
     /// <summary>

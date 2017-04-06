@@ -107,6 +107,11 @@ public abstract class CharCommond
 
     }
 
+    public virtual void OnArrived()
+    {
+
+    }
+
     public virtual void Init()
     {
 
