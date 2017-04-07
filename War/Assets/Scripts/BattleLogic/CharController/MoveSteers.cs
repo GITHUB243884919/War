@@ -91,7 +91,7 @@ public class MoveSteers
         {
             MoveSteer steer = MoveSteerFactory.Create(this, types[i]);
             steer.Init();
-            m_steers.Add(E_STEER_TYPE.ARRIVE, steer);
+            m_steers.Add(types[i], steer);
         }
     }
 
@@ -130,7 +130,7 @@ public class MoveSteers
 
         if (CheckConditionStopMove())
         {
-            Active = false;
+            Arrived = true;
         }
 
         m_moveDistance = m_steeringForce * Time.fixedDeltaTime;

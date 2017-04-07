@@ -151,15 +151,15 @@ public class CharController : MonoBehaviour
     /// </summary>
     public void PrepareSwitchCommond()
     {
-        StopCoroutine(WaitTimer(WaitForCommond, WaitForSeconds));
-        if (Animator != null)
-        {
-            Animator.speed = 0f;
-        }
-        if (m_commond != null)
-        {
-            m_commond.DeactiveEffects();
-        }
+        //StopCoroutine(WaitTimer(WaitForCommond, WaitForSeconds));
+        //if (Animator != null)
+        //{
+        //    Animator.speed = 0f;
+        //}
+        //if (m_commond != null)
+        //{
+        //    m_commond.DeactiveEffects();
+        //}
     }
 
     private void Release()
@@ -255,8 +255,6 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        //MoveSteer arrive = m_steers.m_steers[MoveSteers.E_STEER_TYPE.ARRIVE];
-        //arrive.Active    = true;
         m_steers.Active  = true;
     }
 

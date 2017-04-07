@@ -15,6 +15,7 @@ public class Test_AI_1 : MonoBehaviour
         StartCoroutine("CreateCharObjs");
     }
 
+    CharObj m_obj = null;
     IEnumerator CreateCharObjs()
     {
         yield return null;
@@ -51,6 +52,7 @@ public class Test_AI_1 : MonoBehaviour
 
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, entityID, 1);
+        m_obj = obj;
         CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
         //CharObjAI(obj, CharController.E_COMMOND.ATTACK);
         //CharObjAI(obj, CharController.E_COMMOND.DEAD);
@@ -77,12 +79,12 @@ public class Test_AI_1 : MonoBehaviour
 
     void ArriveCallback()
     {
-        LogMediator.Log("ArriveCallback");
+        Debug.Log("ArriveCallback");
         BattleObjManager.E_BATTLE_OBJECT_TYPE type
             = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
-        CharObj obj = BattleObjManager.Instance.BorrowCharObj(
-            type, 0, 1);
-        CharObjAI(obj, CharController.E_COMMOND.ATTACK);
+        //CharObj obj = BattleObjManager.Instance.BorrowCharObj(
+        //     type, 0, 1);
+        CharObjAI(m_obj, CharController.E_COMMOND.ATTACK);
     }
 
     void CharObjAI(CharObj obj, CharController.E_COMMOND cmd)
