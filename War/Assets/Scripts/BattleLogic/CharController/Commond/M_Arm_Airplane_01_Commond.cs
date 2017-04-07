@@ -1,8 +1,8 @@
 ﻿/// <summary>
-/// M_Arm_Airplane_01的命令
+/// M_Arm_Airplane_01 飞机的命令
 /// author : fanzhengyong
 /// date  : 2017-03-09
-/// 
+/// </summary>
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
