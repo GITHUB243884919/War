@@ -1,10 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class TestApp_1 : MonoBehaviour
-{
+#if _WAR_TEST_
+using Debug = LogMediator;
+#endif
+
+public class Res_Test_1 : MonoBehaviour {
+
     void Start()
     {
+        Button btn = GetComponent<Button>();
+        btn.onClick.AddListener(BtnClick);
+    }
+
+    public void BtnClick()
+    {
+        //StartCoroutine("CreateCharObjs");
+        Debug.Log("BtnClick");
         ResourcesManager.Instance.Init();
         GetAssetFromLocalAssetBundle<Material> loader
             = new GetAssetFromLocalAssetBundle<Material>();
@@ -14,10 +27,8 @@ public class TestApp_1 : MonoBehaviour
             FinishLoad);
     }
 
-    void FinishLoad(Material material)
+    void FinishLoad(Material m)
     {
-        //LogMediator.Log("成功");
-    }
 
-    
+    }
 }

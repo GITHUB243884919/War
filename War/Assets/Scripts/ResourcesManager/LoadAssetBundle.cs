@@ -4,9 +4,9 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 
-//#if _WAR_TEST_
-//using Debug = LogMediator;
-//#endif
+#if _WAR_TEST_
+using Debug = LogMediator;
+#endif
 
 public class GetAssetFromLocalAssetBundle<T> where T : Object
 {
@@ -30,6 +30,7 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
     /// 
     public void GetAsset(string assetName, OnAfterGetAsset callback)
     {
+        LogMediator.Log("assetName " + assetName);
         ResourcesManager.Instance.StartCoroutine(Load(assetName, callback));
     }
 
@@ -91,7 +92,7 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
             Debug.LogError("加载AssetBundle失败 " + path);
             yield break;
         }
-        Debug.Log("加载AssetBundle成功 " + path);
+        //Debug.Log("加载AssetBundle成功 " + path);
         LogMediator.Log("加载AssetBundle成功 " + path);
 
         ResourcesManager.Instance.m_assetBundles.Add(assetBundleName, assetBundle);

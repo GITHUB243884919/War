@@ -4,6 +4,10 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 
+#if _WAR_TEST_
+using Debug = LogMediator;
+#endif
+
 public class ResourcesManager : MonoBehaviour
 {
     private static ResourcesManager s_instance = null;
@@ -54,7 +58,7 @@ public class ResourcesManager : MonoBehaviour
         
         if (assetListBundle == null)
         {
-            Debug.Log("assetListBundle == null");
+            Debug.Log("assetListBundle == null " + assetListBundlePath);
         }
 
         TextAsset assetListAsset = assetListBundle.LoadAsset<TextAsset>("assetlist");

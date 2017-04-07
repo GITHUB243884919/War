@@ -30,7 +30,8 @@ public static class LogMediator
                 return s_UIRoot;
             }
 
-            s_UIRoot = GameObject.Find("Canvas/UI_LOG_ROOT");
+            //s_UIRoot = GameObject.Find("Canvas/UI_LOG_ROOT");
+            s_UIRoot = GameObject.Find("Canvas/Button/Text");
 
             return s_UIRoot;
         }
