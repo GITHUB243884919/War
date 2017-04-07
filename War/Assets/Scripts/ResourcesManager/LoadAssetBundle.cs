@@ -4,9 +4,14 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 
+//#if _WAR_TEST_
+//using Debug = LogMediator;
+//#endif
+
 public class GetAssetFromLocalAssetBundle<T> where T : Object
 {
     public static StringBuilder m_path = new StringBuilder();
+    //public static StringBuilder m_assetName = new StringBuilder();
 
     public delegate void OnAfterGetAsset(T t);
     
@@ -23,17 +28,20 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
     /// <param name="assetName"></param>
     /// <returns></returns>
     /// 
-    void GetAsset(string assetName, OnAfterGetAsset callback)
+    public void GetAsset(string assetName, OnAfterGetAsset callback)
     {
         ResourcesManager.Instance.StartCoroutine(Load(assetName, callback));
     }
 
     IEnumerator Load(string assetName, OnAfterGetAsset callback)
     {
+        Debug.Log("assetName " + assetName);
         string assetBundleName = GetAssetBundleName(assetName);
+        Debug.Log("assetBundleName " + assetBundleName);
         if (string.IsNullOrEmpty(assetBundleName))
         {
-            LogMediator.LogError("资源没有找到对应的assetbundle " + assetName);
+            //Debug.LogError("资源没有找到对应的assetbundle " + assetName);
+            Debug.LogError("资源没有找到对应的assetbundle " + assetName);
             yield break;
         }
 
@@ -47,7 +55,8 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
             yield return bundleRequest;
             if (bundleRequest.asset == null)
             {
-                LogMediator.LogError("加载Asset失败 " + assetName);
+                //Debug.LogError("加载Asset失败 " + assetName);
+                Debug.LogError("加载Asset失败 " + assetName);
                 yield break;
             }
 
@@ -58,38 +67,44 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
         m_path.Remove(0, m_path.Length);
         m_path.Append(Application.persistentDataPath);
         m_path.Append("/");
-        m_path.Append(assetName);
+        m_path.Append(assetBundleName);
 
         string path = null;
         path = m_path.ToString();
-        if (!File.Exists(m_path.ToString()))
+        if (!File.Exists(path))
         {
+            //Debug.Log("persistentDataPath 目录不存在 " + path);
+            Debug.Log("persistentDataPath 目录不存在 " + path);
             m_path.Remove(0, m_path.Length);
             m_path.Append(Application.streamingAssetsPath);
             m_path.Append("/");
-            m_path.Append(assetName);
+            m_path.Append(assetBundleName);
         }
         path = m_path.ToString();
         
         var createRequest = AssetBundle.LoadFromFileAsync(path);
         yield return createRequest;
-
         assetBundle = createRequest.assetBundle;
         if (assetBundle == null)
         {
-            LogMediator.LogError("加载AssetBundle失败 " + path);
+            //Debug.LogError("加载AssetBundle失败 " + path);
+            Debug.LogError("加载AssetBundle失败 " + path);
             yield break;
         }
-        ResourcesManager.Instance.m_assetBundles.Add(assetBundleName, assetBundle);
+        Debug.Log("加载AssetBundle成功 " + path);
+        LogMediator.Log("加载AssetBundle成功 " + path);
 
+        ResourcesManager.Instance.m_assetBundles.Add(assetBundleName, assetBundle);
+        assetName = Path.GetFileNameWithoutExtension(assetName);
+        Debug.Log("assetName " + assetName);
         bundleRequest = assetBundle.LoadAssetAsync<T>(assetName);
         yield return bundleRequest;
         if (bundleRequest.asset == null)
         {
-            LogMediator.LogError("加载Asset失败 " + assetName);
+            Debug.LogError("加载Asset失败 " + assetName);
             yield break;
         }
-
+        Debug.Log("加载Asset成功 " + assetName);
         callback(bundleRequest.asset as T);
     }
 

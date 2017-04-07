@@ -141,3 +141,5 @@ public static class LogMediator
         txtCom.text = str;
     }
 }
+
+

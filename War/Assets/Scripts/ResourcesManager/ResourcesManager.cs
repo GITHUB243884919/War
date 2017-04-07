@@ -22,7 +22,7 @@ public class ResourcesManager : MonoBehaviour
         {
             if (s_instance == null)
             {
-                LogMediator.LogError("没有持有ResourcesManager的对象");
+                Debug.LogError("没有持有ResourcesManager的对象");
                 
             }
             return s_instance;
@@ -36,16 +36,16 @@ public class ResourcesManager : MonoBehaviour
 
     private void LoadAssetList()
     {
-        LogMediator.Log("LoadAssetList");
+        Debug.Log("LoadAssetList");
 
         assetListBundlePath = Application.persistentDataPath + "/assetlist.bundle";
-        LogMediator.Log(assetListBundlePath);
+        Debug.Log(assetListBundlePath);
         AssetBundle assetListBundle = null;
         if (!File.Exists(assetListBundlePath))
         {
             assetListBundlePath = Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
             assetListBundle = AssetBundle.LoadFromFile(assetListBundlePath);
-            LogMediator.Log(assetListBundlePath);
+            Debug.Log(assetListBundlePath);
         }
         else
         {
@@ -54,7 +54,7 @@ public class ResourcesManager : MonoBehaviour
         
         if (assetListBundle == null)
         {
-            LogMediator.Log("");
+            Debug.Log("assetListBundle == null");
         }
 
         TextAsset assetListAsset = assetListBundle.LoadAsset<TextAsset>("assetlist");
@@ -64,7 +64,7 @@ public class ResourcesManager : MonoBehaviour
             while ((line = sr.ReadLine()) != null)
             {
                 string[] split = line.Split(',');
-                Debug.Log(split[0] + " " + split[1]);
+                //Debug.Log(split[0] + " " + split[1]);
                 m_assets.Add(split[0], split[1]);
             }
         }
