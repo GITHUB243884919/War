@@ -4,20 +4,28 @@ using System.Collections;
 public class NCAIChontroller : MonoBehaviour 
 {
     private MoveSteers   m_steers = null;
+
     private MoveSteers.E_STEER_TYPE[] m_steerTypes = null;
+
     //位置数据
-    //public PositionData m_positionData = new PositionData();
-    //public PositionData PositionData { get { return m_positionData; } }
     public PositionData PositionData { get; set; }
-    
+
+    private bool m_isInit = false;
+
     void Init()
     {
-        //m_steers = new MoveSteers();
-        //MoveSteers.E_STEER_TYPE[] steerType;
-        //steerType = new MoveSteers.E_STEER_TYPE[1]{
-        //    MoveSteers.E_STEER_TYPE.STATIC_BOMB
-        //};
-        //m_steers.Init(steerType, PositionData, OnArrived);
+        if (m_isInit)
+        {
+            return;
+        }
+        m_steers = new MoveSteers();
+        m_steerTypes = new MoveSteers.E_STEER_TYPE[1]{
+            MoveSteers.E_STEER_TYPE.STATIC_BOMB
+        };
+
+        m_steers.Init(m_steerTypes, OnArrived);
+
+        m_isInit = true;
     }
 
     void Release()
@@ -30,17 +38,11 @@ public class NCAIChontroller : MonoBehaviour
     {
         Debug.Log("AI");
 
-        m_steers = new MoveSteers();
-        m_steerTypes = new MoveSteers.E_STEER_TYPE[1]{
-            MoveSteers.E_STEER_TYPE.STATIC_BOMB
-        };
-        
-
-        PositionData = positionData;
+        PositionData            = positionData;
         PositionData.GameObject = gameObject;
-        PositionData.Transform = transform;
-        m_steers.Init(m_steerTypes, PositionData, OnArrived);
-        m_steers.Active = true;
+        PositionData.Transform  = transform;
+        m_steers.PositionData   = PositionData;
+        m_steers.Active         = true;
     }
 
     void OnArrived()

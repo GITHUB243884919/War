@@ -31,6 +31,12 @@ public class MoveSteers
     public Vector3        m_steeringForce = Vector3.zero;
     public PositionData   m_positionData  = null;
 
+    public PositionData PositionData 
+    {
+        get { return m_positionData; }
+        set { m_positionData = value; }
+    }
+
     private bool m_arrived = false;
     public  bool Arrived 
     { 
@@ -85,6 +91,23 @@ public class MoveSteers
         m_timer = 0.0f;
 
         m_positionData = positionData;
+        m_stopMoveCallback += callback;
+
+        for (int i = 0; i < types.Length; i++)
+        {
+            MoveSteer steer = MoveSteerFactory.Create(this, types[i]);
+            steer.Init();
+            m_steers.Add(types[i], steer);
+        }
+    }
+
+    public void Init(E_STEER_TYPE[] types, StopMoveCallback callback)
+    {
+        //Debug.Log("MoveSteers Init");
+        Active = false;
+        m_timer = 0.0f;
+
+        //m_positionData = positionData;
         m_stopMoveCallback += callback;
 
         for (int i = 0; i < types.Length; i++)

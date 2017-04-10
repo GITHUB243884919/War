@@ -48,7 +48,7 @@ public class Test_AI_Group_1 : MonoBehaviour
         
     }
 #if _WAR_TEST_
-    void OnDrawGizmos()
+    void OnDrawGizmos_Test()
     {
         //Test_1();
         //Test_2();

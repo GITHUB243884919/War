@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+#if _WAR_TEST_
+using Debug = LogMediator;
+#endif
 public class MeshBakerManager
 {
     List<GameObject>             m_gos        = new List<GameObject>();
@@ -31,15 +34,7 @@ public class MeshBakerManager
             = meshBaker.meshCombiner as DigitalOpus.MB.Core.MB3_MeshCombinerSingle;
         GameObject combineGo = meshCombiner.resultSceneObject;
 
-        GameObject UIGo = GameObject.Find("Canvas/Button/Text");
-        if (UIGo != null)
-        {
-            Text text = UIGo.GetComponent<Text>();
-            if (text != null)
-            {
-                text.text += (combineGo != null);
-            }
-        }
+        Debug.Log("meshbaker是否合并成功 " + (combineGo != null));
 
         MeshBakerManager.Instance.AddCombine(combineGo);
         MeshBakerManager.Instance.AddSeed(seed);
