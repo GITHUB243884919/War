@@ -139,9 +139,14 @@ public class CharObj
     /// <param name="endPoint">终点</param>
     /// <param name="speed">速度</param>
     public void AI_Arrive(Vector3 startPoint, Vector3 endPoint, float speed,
-        MoveSteers.StopMoveCallback callback = null)
+        MoveSteers.StopMoveCallback callback)
     {
         CharControllerMediator.AI_Arrive(CharController, startPoint, endPoint, speed, callback);
+    }
+
+    public void AI_Arrive(Vector3 startPoint, Vector3 endPoint, float speed)
+    {
+        CharControllerMediator.AI_Arrive(CharController, startPoint, endPoint, speed, null);
     }
 
     /// <summary>
