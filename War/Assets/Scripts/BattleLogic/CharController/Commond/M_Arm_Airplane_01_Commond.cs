@@ -42,10 +42,9 @@ public class M_Arm_Airplane_01_Commond : CharCommond
         GameObject go = ResourcesManagerMediator.
             GetGameObjectFromResourcesManager("NCAIObj/Tank_daodan");
         go.transform.position = m_cctr.PositionData.Transform.position;
-        NCAIChontroller ctr = go.GetComponent<NCAIChontroller>();
+        NCAIController ctr = go.GetComponent<NCAIController>();
         PositionData data = new PositionData();
         data.TargetForArrive = new Vector3(32f, 0f, 32f);
-
 
         ctr.AI(data);
     }

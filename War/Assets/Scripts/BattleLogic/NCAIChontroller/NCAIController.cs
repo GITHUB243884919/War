@@ -1,11 +1,16 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// NCAI  对象的控制器抽象类
+/// author : fanzhengyong
+/// date  : 2017-04-10
+/// </summary>
+using UnityEngine;
 using System.Collections;
 
-public class NCAIChontroller : MonoBehaviour 
+public abstract class  NCAIController : MonoBehaviour 
 {
-    private MoveSteers   m_steers = null;
+    public  MoveSteers   m_steers = null;
 
-    private MoveSteers.E_STEER_TYPE[] m_steerTypes = null;
+    public  MoveSteers.E_STEER_TYPE[] m_steerTypes = null;
 
     //位置数据
     public PositionData PositionData { get; set; }
@@ -18,14 +23,18 @@ public class NCAIChontroller : MonoBehaviour
         {
             return;
         }
-        m_steers = new MoveSteers();
-        m_steerTypes = new MoveSteers.E_STEER_TYPE[1]{
-            MoveSteers.E_STEER_TYPE.STATIC_BOMB
-        };
 
-        m_steers.Init(m_steerTypes, OnArrived);
+        InitSteers();
 
         m_isInit = true;
+    }
+
+    public virtual void  InitSteers()
+    {
+    }
+
+    public virtual void OnArrived()
+    {
     }
 
     void Release()
@@ -43,11 +52,6 @@ public class NCAIChontroller : MonoBehaviour
         PositionData.Transform  = transform;
         m_steers.PositionData   = PositionData;
         m_steers.Active         = true;
-    }
-
-    void OnArrived()
-    {
-        LogMediator.Log("命中目标");
     }
     
     //----Unity--------------------------------------------------------------
