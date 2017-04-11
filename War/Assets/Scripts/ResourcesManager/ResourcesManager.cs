@@ -14,6 +14,9 @@ public class ResourcesManager : MonoBehaviour
 
     private string assetListBundlePath = null;
 
+    private AssetBundle m_manifestAB = null;
+    private AssetBundleManifest m_manifest = null;
+
     public Dictionary<string, string> m_assets 
         = new Dictionary<string, string>();
 
@@ -37,6 +40,7 @@ public class ResourcesManager : MonoBehaviour
     {
         LoadAssetList();
         //StartCoroutine(CoLoadAssetList());
+        InitManifest();
     }
 
     private void LoadAssetList()
@@ -146,6 +150,27 @@ public class ResourcesManager : MonoBehaviour
 
         yield return null;
 
+    }
+
+    void InitManifest()
+    {
+        //m_manifest
+        string path = "";
+#if UNITY_EDITOR
+        path = Application.dataPath + "/StreamingAssets/" + "StreamingAssets";
+#elif UNITY_ANDROID
+        path = Application.dataPath + "!assets/StreamingAssets";
+#endif
+        m_manifestAB = AssetBundle.LoadFromFile(path);
+        Debug.Log("m_manifestAB " + (m_manifestAB != null));
+
+        if (m_manifestAB != null)
+        {
+            m_manifest = m_manifestAB.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+            return;
+        }
+
+        Debug.Log("m_manifest " + (m_manifest != null));
     }
 
     void Release()
