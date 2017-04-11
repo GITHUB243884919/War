@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 粒子系统回调工具类
 /// author : fanzhengyong
-/// date  : 2017-03-09
+/// date  : 2017-04-09
 /// </summary>
 /// 
 using UnityEngine;
@@ -20,6 +20,7 @@ public class ParticleCallbackUtil : MonoBehaviour
 
     public void Init(PlayedCallback stopedCallback)
     {
+        //Debug.Log("ParticleCallbackUtil Init " + (stopedCallback != null));
         m_stopedCallback = stopedCallback;
     }
 
@@ -31,6 +32,7 @@ public class ParticleCallbackUtil : MonoBehaviour
 
     public void SetState()
     {
+        //Debug.Log("SetState");
         SetPlayed();
         SetStoped();
     }
@@ -43,6 +45,7 @@ public class ParticleCallbackUtil : MonoBehaviour
         }
 
         //有一个开始了就算开始
+        //Debug.Log("m_particleSystems.Length " + m_particleSystems.Length);
         for (int i = 0; i < m_particleSystems.Length; i++)
         {
             if (m_particleSystems[i].isPlaying)
@@ -76,6 +79,7 @@ public class ParticleCallbackUtil : MonoBehaviour
 
     void InvokeStopedCallback()
     {
+        //Debug.Log("InvokeStopedCallback " + m_isStoped + " " + (m_stopedCallback != null));
         if ((m_isStoped)
             && (m_stopedCallback != null)
             )

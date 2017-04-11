@@ -39,14 +39,13 @@ public class M_Arm_Airplane_01_Commond : CharCommond
         //m_cctr.Animator.speed = 1f;
         //m_cctr.Animator.SetTrigger("Fire");
         //ActiveEffect(cmd);
-        //GameObject go = ResourcesManagerMediator.
-        //    GetGameObjectFromResourcesManager("NCAIObj/Tank_daodan");
-        //go.transform.position = m_cctr.PositionData.Transform.position;
-        //NCAIController ctr = go.GetComponent<NCAIController>();
-        //PositionData data = new PositionData();
-        //data.TargetForArrive = new Vector3(32f, 0f, 32f);
-
-        //ctr.AI(data);
+        GameObject go = ResourcesManagerMediator.
+            GetGameObjectFromResourcesManager("NCAIObj/DIY_Bomb");
+        go.transform.position = m_cctr.PositionData.Transform.position;
+        NCAIController ctr = go.GetComponent<NCAIController>();
+        PositionData data = new PositionData();
+        data.TargetForArrive = new Vector3(32f, 0f, 32f);
+        ctr.AI(data);
     }
 
     public void OnAttacked()

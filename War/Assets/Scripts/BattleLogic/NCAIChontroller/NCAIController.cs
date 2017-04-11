@@ -37,10 +37,15 @@ public abstract class  NCAIController : MonoBehaviour
     {
     }
 
-    void Release()
+    public virtual void Release()
     {
         m_steers     = null;
-        PositionData = null;
+
+        if (PositionData  != null)
+        {
+            PositionData.Release();
+            PositionData = null;
+        }
     }
 
     public void AI(PositionData positionData)

@@ -12,6 +12,9 @@ using Debug = LogMediator;
 
 public class NCAIBombController : NCAIController
 {
+    ParticleSystem m_ps = null;
+    ParticleCallbackUtil m_pscbUtil = null;
+
     public override void InitSteers()
     {
         m_steers = new MoveSteers();
@@ -25,5 +28,29 @@ public class NCAIBombController : NCAIController
     public override void OnArrived()
     {
         Debug.Log("Bomb 命中目标");
+        if (m_ps == null)
+        {
+            m_ps = gameObject.GetComponentInChildren<ParticleSystem>();
+        }
+        if (m_pscbUtil == null)
+        {
+            m_pscbUtil = gameObject.GetComponent<ParticleCallbackUtil>();
+            m_pscbUtil.Init(Finished);
+        }
+        m_ps.Play();
+        Debug.Log("Bomb 命中目标 播放特效");
+    }
+
+    public override void Release()
+    {
+        base.Release();
+        m_ps = null;
+        m_pscbUtil = null;
+    }
+
+    public void Finished()
+    {
+        Debug.Log("特效播放完毕 炸弹消失");
+        GameObject.Destroy(gameObject, 0.1f);
     }
 }

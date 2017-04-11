@@ -35,7 +35,8 @@ public class ResourcesManager : MonoBehaviour
 
     public void Init()
     {
-        LoadAssetList();
+        //LoadAssetList();
+        StartCoroutine(CoLoadAssetList());
     }
 
     private void LoadAssetList()
@@ -72,6 +73,68 @@ public class ResourcesManager : MonoBehaviour
                 m_assets.Add(split[0], split[1]);
             }
         }
+    }
+
+    public IEnumerator CoLoadAssetList()
+    {
+        Debug.Log("CoLoadAssetList");
+
+        assetListBundlePath = Application.persistentDataPath + "/assetlist.bundle";
+        Debug.Log(assetListBundlePath);
+        AssetBundle assetListBundle = null;
+        if (!File.Exists(assetListBundlePath))
+        {
+
+            assetListBundlePath = Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
+#if UNITY_EDITOR
+            assetListBundlePath = "file:///" + Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
+#elif UNITY_ANDROID 
+            assetListBundlePath = "jar:file://" + Application.dataPath + "!/assets/" + bundleinfo/assetlist.bundle";  
+#endif
+        }
+        Debug.Log(assetListBundlePath);
+        using (WWW www = new WWW(assetListBundlePath))
+        {
+            
+            if (www.error != null)
+            {
+                Debug.Log("WWW download had an error:" + www.error);
+                yield break;
+            }
+            yield return www;
+            assetListBundle = www.assetBundle;
+            //if (AssetName == "")
+            //    Instantiate(bundle.mainAsset);
+            //else
+            //    Instantiate(bundle.LoadAsset(AssetName));
+            // Unload the AssetBundles compressed contents to conserve memory
+            //bundle.Unload(false);
+
+            if (assetListBundle == null)
+            {
+                Debug.Log("assetListBundle == null " + assetListBundlePath);
+            }
+
+            TextAsset assetListAsset = assetListBundle.LoadAsset<TextAsset>("assetlist");
+            assetListBundle.Unload(false);
+            using (StringReader sr = new StringReader(assetListAsset.text))
+            {
+                string line = null;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] split = line.Split(',');
+                    //Debug.Log(split[0] + " " + split[1]);
+                    m_assets.Add(split[0], split[1]);
+                }
+            }
+
+            yield return www;
+
+        } 
+
+
+        yield return null;
+
     }
 
     void Release()
