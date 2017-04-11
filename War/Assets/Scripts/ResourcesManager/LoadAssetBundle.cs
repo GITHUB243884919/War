@@ -77,8 +77,12 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
             //Debug.Log("persistentDataPath 目录不存在 " + path);
             Debug.Log("persistentDataPath 目录不存在 " + path);
             m_path.Remove(0, m_path.Length);
-            m_path.Append(Application.streamingAssetsPath);
-            m_path.Append("/");
+#if UNITY_EDITOR
+            m_path.Append(Application.dataPath + "/StreamingAssets/");
+#elif UNITY_ANDROID
+            m_path.Append(Application.dataPath + "!assets/");
+#endif
+            //m_path.Append("/");
             m_path.Append(assetBundleName);
         }
         path = m_path.ToString();
@@ -93,7 +97,7 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
             yield break;
         }
         //Debug.Log("加载AssetBundle成功 " + path);
-        LogMediator.Log("加载AssetBundle成功 " + path);
+        LogMediator.Log("加载AssetBundle成功 " + path + (assetBundle != null));
 
         ResourcesManager.Instance.m_assetBundles.Add(assetBundleName, assetBundle);
         assetName = Path.GetFileNameWithoutExtension(assetName);
@@ -105,7 +109,7 @@ public class GetAssetFromLocalAssetBundle<T> where T : Object
             Debug.LogError("加载Asset失败 " + assetName);
             yield break;
         }
-        Debug.Log("加载Asset成功 " + assetName);
+        Debug.Log("加载Asset成功 " + assetName + (bundleRequest.asset != null));
         callback(bundleRequest.asset as T);
     }
 

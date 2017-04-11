@@ -35,8 +35,8 @@ public class ResourcesManager : MonoBehaviour
 
     public void Init()
     {
-        //LoadAssetList();
-        StartCoroutine(CoLoadAssetList());
+        LoadAssetList();
+        //StartCoroutine(CoLoadAssetList());
     }
 
     private void LoadAssetList()
@@ -49,20 +49,29 @@ public class ResourcesManager : MonoBehaviour
         if (!File.Exists(assetListBundlePath))
         {
             assetListBundlePath = Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
-            assetListBundle = AssetBundle.LoadFromFile(assetListBundlePath);
-            Debug.Log(assetListBundlePath);
+            //assetListBundle = AssetBundle.LoadFromFile(assetListBundlePath);
+            //Debug.Log(assetListBundlePath);
+            assetListBundlePath = Application.dataPath+"!assets/bundleinfo/assetlist.bundle";
         }
-        else
-        {
-            assetListBundle = AssetBundle.LoadFromFile(assetListBundlePath);
-        }
-        
+        //else
+        //{
+        //    assetListBundle = AssetBundle.LoadFromFile(assetListBundlePath);
+        //}
+#if UNITY_EDITOR
+        assetListBundlePath = Application.dataPath + "/StreamingAssets/" + "bundleinfo/assetlist.bundle";
+#elif UNITY_ANDROID
+        assetListBundlePath = Application.dataPath + "!assets/bundleinfo/assetlist.bundle";
+#endif
+
+        assetListBundle = AssetBundle.LoadFromFile(assetListBundlePath);
+        Debug.Log("assetListBundle " + (assetListBundle != null));
         if (assetListBundle == null)
         {
-            Debug.Log("assetListBundle == null " + assetListBundlePath);
+            Debug.Log("no co assetListBundle == null " + assetListBundlePath);
         }
 
         TextAsset assetListAsset = assetListBundle.LoadAsset<TextAsset>("assetlist");
+        //Debug.Log("assetListAsset " + (assetListAsset != null));
         using (StringReader sr = new StringReader(assetListAsset.text))
         {
             string line = null;
@@ -79,18 +88,19 @@ public class ResourcesManager : MonoBehaviour
     {
         Debug.Log("CoLoadAssetList");
 
-        assetListBundlePath = Application.persistentDataPath + "/assetlist.bundle";
-        Debug.Log(assetListBundlePath);
+        //assetListBundlePath = Application.persistentDataPath + "/assetlist.bundle";
+        //Debug.Log(assetListBundlePath);
         AssetBundle assetListBundle = null;
-        if (!File.Exists(assetListBundlePath))
+        //if (!File.Exists(assetListBundlePath))
         {
 
-            assetListBundlePath = Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
-#if UNITY_EDITOR
-            assetListBundlePath = "file:///" + Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
-#elif UNITY_ANDROID 
-            assetListBundlePath = "jar:file://" + Application.dataPath + "!/assets/" + bundleinfo/assetlist.bundle";  
-#endif
+            //assetListBundlePath = Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
+//#if UNITY_EDITOR
+            //assetListBundlePath = "file:///" + Application.streamingAssetsPath + "/bundleinfo/assetlist.bundle";
+//#elif UNITY_ANDROID 
+//#else
+            assetListBundlePath = "jar:file:/" + Application.dataPath + "!/assets/" + "bundleinfo/assetlist.bundle";  
+//#endif
         }
         Debug.Log(assetListBundlePath);
         using (WWW www = new WWW(assetListBundlePath))
@@ -112,11 +122,12 @@ public class ResourcesManager : MonoBehaviour
 
             if (assetListBundle == null)
             {
-                Debug.Log("assetListBundle == null " + assetListBundlePath);
+                Debug.Log("co assetListBundle == null " + assetListBundlePath);
             }
 
             TextAsset assetListAsset = assetListBundle.LoadAsset<TextAsset>("assetlist");
             assetListBundle.Unload(false);
+            Debug.Log("assetListAsset  " + (assetListAsset != null));
             using (StringReader sr = new StringReader(assetListAsset.text))
             {
                 string line = null;
