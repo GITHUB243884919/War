@@ -17,7 +17,7 @@ public class Test_AI_Group_2 : MonoBehaviour
 
     void CreateGroupCharObjs()
     {
-        GroupCharObjsElement[] elements = new GroupCharObjsElement[2];
+        GroupCharObjsElement[] elements = new GroupCharObjsElement[3];
         elements[0] = new GroupCharObjsElement();
         elements[0].ServerEntityID = 0;
         elements[0].Type = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
@@ -26,9 +26,9 @@ public class Test_AI_Group_2 : MonoBehaviour
         elements[1].ServerEntityID = 1;
         elements[1].Type = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
 
-        //elements[2] = new GroupCharObjsElement();
-        //elements[2].ServerEntityID = 2;
-        //elements[2].Type = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
+        elements[2] = new GroupCharObjsElement();
+        elements[2].ServerEntityID = 2;
+        elements[2].Type = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
 
         GroupCharObjsController groupCtr = new GroupCharObjsController();
         GroupCharObjsController.E_FORMATION_TYPE formationType =

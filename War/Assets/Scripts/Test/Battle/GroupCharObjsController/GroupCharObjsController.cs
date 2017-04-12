@@ -103,11 +103,15 @@ public class GroupCharObjsController
             case E_FORMATION_TYPE.TARGET_VERTICAL_LINE:
                 //目标点即是第一个点
                 //第二个点是转了180
-                points.Add(target);
                 angleDeg = 180f;
                 p1 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg + angleDeg);
-                points.Add(p1);
-                
+                Vector3 spaceDir = (p1 - target).normalized;
+                float spaceOffset = (p1 - target).magnitude / (count - 1);
+                points.Add(target);
+                for (int i = 1; i < count; i++)
+                {
+                    points.Add(target + spaceDir * spaceOffset * i);
+                }
                 break;
             default:
                 Debug.LogError("没有这种队形的实现" + formation.ToString());
