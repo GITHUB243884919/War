@@ -34,6 +34,8 @@ public class MoveSteerForStaticBomb : MoveSteer
         //m_toTarget = m_steers.m_positionData.TargetForArrive -
         //    m_steers.m_positionData.Transform.position;
         //m_toTargetDir = m_toTarget.normalized;
+
+        m_steers.IsLookAt = true;
     }
 
     public override Vector3 Force()

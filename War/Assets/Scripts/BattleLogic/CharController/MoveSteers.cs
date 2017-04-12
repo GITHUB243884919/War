@@ -84,11 +84,14 @@ public class MoveSteers
         } 
     }
 
+    public bool IsLookAt { get; set; }
+
     public void Init(E_STEER_TYPE[] types, PositionData positionData, StopMoveCallback callback)
     {
         //Debug.Log("MoveSteers Init");
-        Active  = false;
-        m_timer = 0.0f;
+        Active   = false;
+        IsLookAt = false;
+        m_timer  = 0.0f;
 
         m_positionData = positionData;
         m_stopMoveCallback += callback;
@@ -157,6 +160,11 @@ public class MoveSteers
         }
 
         m_moveDistance = m_steeringForce * Time.fixedDeltaTime;
+        if (IsLookAt)
+        {
+            m_positionData.Transform.LookAt(m_positionData.Transform.position + m_moveDistance);
+        }
+
         m_positionData.Transform.position += m_moveDistance;
 
         if (m_displayTrack)
