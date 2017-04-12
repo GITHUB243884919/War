@@ -14,10 +14,12 @@ public class CustomExportAssetbundle
         
         //打出AB包
         BuildAssetBundleOptions buildAssetBundleOptions =
+            BuildAssetBundleOptions.AppendHashToAssetBundleName |
             BuildAssetBundleOptions.DisableWriteTypeTree |
             BuildAssetBundleOptions.DeterministicAssetBundle |
             BuildAssetBundleOptions.ForceRebuildAssetBundle |
             BuildAssetBundleOptions.ChunkBasedCompression;
+            
         string outputPath = Application.dataPath + "/StreamingAssets";
         GenAssetBundles(buildAssetBundleOptions, outputPath);
 

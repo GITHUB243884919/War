@@ -53,8 +53,8 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     public void OnAttacked()
     {
         Debug.Log("M_Arm_Airplane_01_Commond.Attacked");
-        CharController.E_COMMOND cmd    = CharController.E_COMMOND.ATTACKED;
-        ActiveEffect(cmd);
+        //CharController.E_COMMOND cmd    = CharController.E_COMMOND.ATTACKED;
+        //ActiveEffect(cmd);
     }
 
     /// <summary>
@@ -64,16 +64,16 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     {
         Debug.Log("M_Arm_Airplane_01_Commond.OnDead");
         //设置隐身参数
-        if (CharObjUSMBForDeadExit == null)
-        {
-            CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
-        }
+        //if (CharObjUSMBForDeadExit == null)
+        //{
+        //    CharObjUSMBForDeadExit = m_cctr.Animator.GetBehaviour<CharObjUSMBForDeadExit>();
+        //}
 
-        m_cctr.m_positionData.TargetForPosition = CharObj.INIT_POS;
-        CharObjUSMBForDeadExit.m_cctr    = m_cctr;
-        CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
-        m_cctr.Animator.speed = 1f;
-        m_cctr.Animator.SetTrigger("Die");
+        //m_cctr.m_positionData.TargetForPosition = CharObj.INIT_POS;
+        //CharObjUSMBForDeadExit.m_cctr    = m_cctr;
+        //CharObjUSMBForDeadExit.m_commond = CharController.E_COMMOND.POSITION;
+        //m_cctr.Animator.speed = 1f;
+        //m_cctr.Animator.SetTrigger("Die");
     }
 
     public override void MoveAnimator()

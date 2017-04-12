@@ -60,6 +60,7 @@ public class Test_AI_1 : MonoBehaviour
 
         //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACK;
         //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.DEAD;
+        //CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACKED;
         //CharObj obj2 = BattleObjManager.Instance.BorrowCharObj(
         //    type, 2, 1);
         //StartCoroutine(SwitchAI(obj, switchCmd));
@@ -68,8 +69,8 @@ public class Test_AI_1 : MonoBehaviour
     IEnumerator SwitchAI(CharObj obj, CharController.E_COMMOND cmd)
     {
         //obj.GameObject.transform.LookAt(new Vector3(32, 0f, 0f));
-        yield return new WaitForSeconds(10f);
-        Debug.Log("Switch");
+        yield return new WaitForSeconds(5f);
+        Debug.Log("Switch " + obj.Type.ToString() +  " " + cmd.ToString());
         CharObjAI(obj, cmd);
         //yield return new WaitForSeconds(5f);
         //CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
@@ -80,11 +81,13 @@ public class Test_AI_1 : MonoBehaviour
     void ArriveCallback()
     {
         Debug.Log("ArriveCallback");
-        BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
         //CharObj obj = BattleObjManager.Instance.BorrowCharObj(
         //     type, 0, 1);
         CharObjAI(m_obj, CharController.E_COMMOND.ATTACK);
+        CharController.E_COMMOND switchCmd = CharController.E_COMMOND.ATTACKED;
+        StartCoroutine(SwitchAI(m_obj, switchCmd));
     }
 
     void CharObjAI(CharObj obj, CharController.E_COMMOND cmd)
@@ -105,6 +108,9 @@ public class Test_AI_1 : MonoBehaviour
                 break;
             case CharController.E_COMMOND.ATTACK:
                 obj.AI_Attack(startPos, endPos, 1f);
+                break;
+            case CharController.E_COMMOND.ATTACKED:
+                obj.AI_Attacked(startPos);
                 break;
             case CharController.E_COMMOND.DEAD:
                 //obj.AI_Position(startPos);
