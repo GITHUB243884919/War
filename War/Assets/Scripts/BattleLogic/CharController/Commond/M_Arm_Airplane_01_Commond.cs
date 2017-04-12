@@ -44,7 +44,9 @@ public class M_Arm_Airplane_01_Commond : CharCommond
         go.transform.position = m_cctr.PositionData.Transform.position;
         NCAIController ctr = go.GetComponent<NCAIController>();
         PositionData data = new PositionData();
-        data.TargetForArrive = new Vector3(32f, 0f, 32f);
+        
+        data.TargetForArrive = m_cctr.m_positionData.TargetForLookAt 
+            - m_cctr.m_positionData.Offset;
         ctr.AI(data);
     }
 
