@@ -50,7 +50,7 @@ public abstract class  NCAIController : MonoBehaviour
 
     public void AI(PositionData positionData)
     {
-        Debug.Log("AI");
+        //Debug.Log("AI");
 
         PositionData            = positionData;
         PositionData.GameObject = gameObject;

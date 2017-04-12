@@ -6,9 +6,9 @@
 using UnityEngine;
 using System.Collections;
 
-#if _WAR_TEST_
-using Debug = LogMediator;
-#endif
+//#if _WAR_TEST_
+//using Debug = LogMediator;
+//#endif
 
 public class NCAIBombController : NCAIController
 {
@@ -27,7 +27,7 @@ public class NCAIBombController : NCAIController
 
     public override void OnArrived()
     {
-        Debug.Log("Bomb 命中目标");
+        //Debug.Log("Bomb 命中目标");
         if (m_ps == null)
         {
             m_ps = gameObject.GetComponentInChildren<ParticleSystem>();
@@ -38,7 +38,7 @@ public class NCAIBombController : NCAIController
             m_pscbUtil.Init(Finished);
         }
         m_ps.Play();
-        Debug.Log("Bomb 命中目标 播放特效");
+        //Debug.Log("Bomb 命中目标 播放特效");
     }
 
     public override void Release()
@@ -50,7 +50,7 @@ public class NCAIBombController : NCAIController
 
     public void Finished()
     {
-        Debug.Log("特效播放完毕 炸弹消失");
+        //Debug.Log("特效播放完毕 炸弹消失");
         GameObject.Destroy(gameObject, 0.1f);
     }
 }
