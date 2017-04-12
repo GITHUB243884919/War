@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using FU_FrameWork;
 public class Test_AI_Group_1 : MonoBehaviour
 {
     void Start()

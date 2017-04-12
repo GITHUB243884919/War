@@ -40,7 +40,7 @@ public class M_Arm_Airplane_01_Commond : CharCommond
         //m_cctr.Animator.SetTrigger("Fire");
         //ActiveEffect(cmd);
         GameObject go = ResourcesManagerMediator.
-            GetGameObjectFromResourcesManager("NCAIObj/DIY_Bomb");
+            GetGameObjectFromResourcesManager("NCAIObj/Daodan_0_1");
         go.transform.position = m_cctr.PositionData.Transform.position;
         NCAIController ctr = go.GetComponent<NCAIController>();
         PositionData data = new PositionData();
