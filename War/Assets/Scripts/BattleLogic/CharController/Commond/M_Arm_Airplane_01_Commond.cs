@@ -18,7 +18,7 @@ public class M_Arm_Airplane_01_Commond : CharCommond
     {
         InitCommond();
         InitPath();
-        m_cctr.m_positionData.Offset = new Vector3(0f, 10f, 0f);
+        m_cctr.m_positionData.Offset = new Vector3(0f, 2.8f, 0f);
     }
 
     public void OnIdle()
