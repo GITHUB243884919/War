@@ -2,6 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using FU_FrameWork;
+
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public class GroupCharObjsElement
 {
     public int ServerEntityID { get; set; }
@@ -27,8 +32,12 @@ public class GroupCharObjsController
     Dictionary<int, GroupCharObjsElement> m_elments 
         = new Dictionary<int, GroupCharObjsElement>();
 
+    bool m_isCached = false;
     public void Init(GroupCharObjsElement[] elments, E_FORMATION_TYPE formation, Vector3 orginPoint)
     {
+        //Debug.Log("GroupCharObjsController Init " 
+        //    + m_charObjs.Count + " " + m_elments.Count);
+
         bool retCode = false;
 
         CacheObjs(elments);
@@ -43,6 +52,7 @@ public class GroupCharObjsController
             return;
         }
 
+        //Debug.Log("直接形成初始阵型");
         for(int i = 0; i < m_charObjs.Count; i++)
         {
             //m_charObjs[i].AI_Position(positions[i]);
@@ -52,6 +62,13 @@ public class GroupCharObjsController
 
     public void CacheObjs(GroupCharObjsElement[] elments)
     {
+        //m_charObjs.Clear();
+        if (m_isCached)
+        {
+            Debug.Log("allready cached");
+            return;
+        }
+
         for (int i = 0; i < elments.Length; i++)
         {
             CharObj charObj = null;
@@ -66,6 +83,8 @@ public class GroupCharObjsController
             elments[i].Arrived = false;
             m_elments.Add(elments[i].ServerEntityID, elments[i]);
         }
+
+        m_isCached = true;
     }
 
     public bool GetFormationPositions(
@@ -100,11 +119,11 @@ public class GroupCharObjsController
                 points.Add(p1);
                 points.Add(p2);
                 Debug.DrawLine(center, target, Color.blue, (target - center).magnitude);
-                Debug.Log((target - center).magnitude);
+                //Debug.Log((target - center).magnitude);
                 Debug.DrawLine(center, p1, Color.red, (p1 - center).magnitude);
-                Debug.Log((p1 - center).magnitude);
+                //Debug.Log((p1 - center).magnitude);
                 Debug.DrawLine(center, p2, Color.cyan, (p2 - center).magnitude);
-                Debug.Log((p2 - center).magnitude);
+                //Debug.Log((p2 - center).magnitude);
                 //其他点的坐标按个数平分
                 break;
             case E_FORMATION_TYPE.TARGET_VERTICAL_LINE:
@@ -148,33 +167,35 @@ public class GroupCharObjsController
 
         for (int i = 0; i < m_charObjs.Count; i++)
         {
+            Debug.Log("移动到指定位置");
             CharObj charObj = m_charObjs[i];
             m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
                 positions[i], 2f, 
                 delegate() 
                 {
-                    ArrivedCallback(charObj);
+                    Debug.Log("Group执行OnArrived");
+                    OnArrived(charObj);
                 });
         }
     }
 
-    public void ArrivedCallback(CharObj charObj)
+    public void OnArrived(CharObj charObj)
     {
         bool retCode = false;
 
-        LogMediator.Log(charObj.ServerEntityID + " 到了");
+        Debug.Log(charObj.ServerEntityID + " 到了");
         GroupCharObjsElement element = null;
         retCode = m_elments.TryGetValue(charObj.ServerEntityID, out element);
         if (!retCode)
         {
-            LogMediator.LogError("没有找到实体ID" + charObj.ServerEntityID);
+            Debug.LogError("没有找到实体ID" + charObj.ServerEntityID);
             return;
         }
         //更新自己的到达标志
         element.Arrived = true;
         //检查所有的到达标志
         bool allArrived = true;
-        foreach (GroupCharObjsElement e in m_elments.Values)
+        foreach (var e in m_elments.Values)
         {
             if (!e.Arrived)
             {
@@ -184,13 +205,13 @@ public class GroupCharObjsController
         }
         if (!allArrived)
         {
-            LogMediator.Log("还有没到的");
+            Debug.Log("还有没到的");
         }
         else
         {
-            LogMediator.Log("都到了");
+            Debug.Log("都到了");
             //都到了就设置没到达
-            foreach (GroupCharObjsElement e in m_elments.Values)
+            foreach (var e in m_elments.Values)
             {
                 e.Arrived = false;
             }

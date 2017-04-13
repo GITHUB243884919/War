@@ -59,6 +59,9 @@ public class CharController : MonoBehaviour
     public Dictionary<E_COMMOND, CommondCallback> m_commondCallbacks =
         new Dictionary<E_COMMOND, CommondCallback>();
 
+
+    public MoveSteers.StopMoveCallback m_outStopCallback = null;
+
     private CharCommond        m_commond = null;
     public  MoveSteers         m_steers  = null;
 
@@ -113,7 +116,8 @@ public class CharController : MonoBehaviour
         steerType = new MoveSteers.E_STEER_TYPE [1]{
             MoveSteers.E_STEER_TYPE.ARRIVE
         };
-        m_steers.Init(steerType, PositionData, m_commond.OnArrived);
+        //m_steers.Init(steerType, PositionData, m_commond.OnArrived);
+        m_steers.Init(steerType, PositionData);
     }
 
     /// <summary>
@@ -254,7 +258,10 @@ public class CharController : MonoBehaviour
                 MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
             return;
         }
-
+        //Debug.Log("Add stop callback");
+        m_steers.m_stopMoveCallback  = null;
+        m_steers.m_stopMoveCallback += m_commond.OnArrived;
+        m_steers.m_stopMoveCallback += m_outStopCallback;
         m_steers.Active  = true;
     }
 

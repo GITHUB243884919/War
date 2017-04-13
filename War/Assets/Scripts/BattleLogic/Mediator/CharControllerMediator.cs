@@ -37,7 +37,8 @@ public static class CharControllerMediator
         cctr.m_positionData.TargetForPosition = startPoint;
         cctr.m_positionData.TargetForArrive = endPoint;
         cctr.m_positionData.SpeedForArrive = speed;
-        cctr.m_steers.m_stopMoveCallback += callback;
+        //cctr.m_steers.m_stopMoveCallback = callback;
+        cctr.m_outStopCallback = callback;
         cctr.Commond(CharController.E_COMMOND.ARRIVE);
     }
 

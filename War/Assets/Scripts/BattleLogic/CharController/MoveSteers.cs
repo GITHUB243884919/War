@@ -86,7 +86,7 @@ public class MoveSteers
 
     public bool IsLookAt { get; set; }
 
-    public void Init(E_STEER_TYPE[] types, PositionData positionData, StopMoveCallback callback)
+    public void Init(E_STEER_TYPE[] types, PositionData positionData)
     {
         //Debug.Log("MoveSteers Init");
         Active   = false;
@@ -94,7 +94,7 @@ public class MoveSteers
         m_timer  = 0.0f;
 
         m_positionData = positionData;
-        m_stopMoveCallback += callback;
+        //m_stopMoveCallback = callback;
 
         for (int i = 0; i < types.Length; i++)
         {
@@ -191,8 +191,9 @@ public class MoveSteers
 
     public void WhenArrived()
     {
-        Active = false;
-
+        Active  = false;
+        Arrived = false;
+        //Debug.Log("WhenArrived");
         if (m_stopMoveCallback != null)
         {
             m_stopMoveCallback();

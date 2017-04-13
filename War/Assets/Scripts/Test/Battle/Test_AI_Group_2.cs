@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 #if _LOG_MEDIATOR_
-using Debug = LogMediator
+using Debug = LogMediator;
 #endif
 public class Test_AI_Group_2 : MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class Test_AI_Group_2 : MonoBehaviour
     {
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(BtnClick);
+        m_groupCtr = new GroupCharObjsController();
     }
 
     public void BtnClick()
@@ -35,7 +36,7 @@ public class Test_AI_Group_2 : MonoBehaviour
         //elements[2].ServerEntityID = 2;
         //elements[2].Type = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
 
-        m_groupCtr = new GroupCharObjsController();
+        
         GroupCharObjsController.E_FORMATION_TYPE orgFormation =
             GroupCharObjsController.E_FORMATION_TYPE.TARGET_HORIZONTAL_LINE;
             //GroupCharObjsController.E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
@@ -53,9 +54,9 @@ public class Test_AI_Group_2 : MonoBehaviour
         Vector3 target)
     {
 
-        LogMediator.Log("3秒后开始阵型变换");
+        Debug.Log("3秒后开始阵型变换");
         yield return new WaitForSeconds(3f);
-        LogMediator.Log("阵型变换中。。。。");
+        Debug.Log("阵型变换中。。。。");
         m_groupCtr.SwitchFormation(formation, target);
     }
 }

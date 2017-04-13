@@ -109,7 +109,7 @@ public abstract class CharCommond
 
     public virtual void OnArrived()
     {
-
+        //Debug.Log("CharCommond OnArrived");
     }
 
     public virtual void Init()
