@@ -6,6 +6,8 @@ public class GroupCharObjsElement
 {
     public int ServerEntityID { get; set; }
     public BattleObjManager.E_BATTLE_OBJECT_TYPE Type { get; set; }
+
+    public bool Arrived { get; set; }
 }
 
 public class GroupCharObjsController
@@ -22,6 +24,8 @@ public class GroupCharObjsController
     public static readonly int MIN_CHAROBJ_COUNT = 2;
 
     List<CharObj> m_charObjs = new List<CharObj>();
+    Dictionary<int, GroupCharObjsElement> m_elments 
+        = new Dictionary<int, GroupCharObjsElement>();
 
     public void Init(GroupCharObjsElement[] elments, E_FORMATION_TYPE formation, Vector3 orginPoint)
     {
@@ -31,7 +35,7 @@ public class GroupCharObjsController
 
         Vector3[] positions = null;
         retCode = GetFormationPositions(
-            elments.Length, formation, true,
+            m_charObjs.Count, formation, true,
             orginPoint, out positions);
         if (!retCode)
         {
@@ -58,6 +62,9 @@ public class GroupCharObjsController
                 Debug.LogError("角色对象charObj为空");
             }
             m_charObjs.Add(charObj);
+
+            elments[i].Arrived = false;
+            m_elments.Add(elments[i].ServerEntityID, elments[i]);
         }
     }
 
@@ -68,7 +75,7 @@ public class GroupCharObjsController
         bool result = false;
 
         positions       = null;
-        float radius    = 5f;
+        float radius    = 1f;
         Vector3 center  = target - target.normalized * radius;
         float targetRad = GeometryUtil.TwoPointAngleRad2D(center, target);
         float targetDeg = targetRad * Mathf.Rad2Deg;
@@ -123,6 +130,76 @@ public class GroupCharObjsController
 
         result = true;
         return result;
+    }
+
+    public void SwitchFormation(E_FORMATION_TYPE formation, Vector3 target)
+    {
+        bool retCode = false;
+
+        Vector3[] positions = null;
+        retCode = GetFormationPositions(
+            m_charObjs.Count, formation, true,
+            target, out positions);
+        if (!retCode)
+        {
+            Debug.LogError("获取阵型坐标失败" + formation.ToString());
+            return;
+        }
+
+        for (int i = 0; i < m_charObjs.Count; i++)
+        {
+            CharObj charObj = m_charObjs[i];
+            m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
+                positions[i], 2f, 
+                delegate() 
+                {
+                    ArrivedCallback(charObj);
+                });
+        }
+    }
+
+    public void ArrivedCallback(CharObj charObj)
+    {
+        bool retCode = false;
+
+        LogMediator.Log(charObj.ServerEntityID + " 到了");
+        GroupCharObjsElement element = null;
+        retCode = m_elments.TryGetValue(charObj.ServerEntityID, out element);
+        if (!retCode)
+        {
+            LogMediator.LogError("没有找到实体ID" + charObj.ServerEntityID);
+            return;
+        }
+        //更新自己的到达标志
+        element.Arrived = true;
+        //检查所有的到达标志
+        bool allArrived = true;
+        foreach (GroupCharObjsElement e in m_elments.Values)
+        {
+            if (!e.Arrived)
+            {
+                allArrived = false;
+                break;
+            }
+        }
+        if (!allArrived)
+        {
+            LogMediator.Log("还有没到的");
+        }
+        else
+        {
+            LogMediator.Log("都到了");
+            //都到了就设置没到达
+            foreach (GroupCharObjsElement e in m_elments.Values)
+            {
+                e.Arrived = false;
+            }
+            //foreach (GroupCharObjsElement e in m_elments.Values)
+            //{
+            //    //e.Arrived = false;
+            //    Debug.Log(e.Arrived);
+            //}
+        }
     }
 
     void Test_5()
