@@ -27,6 +27,13 @@ public class Res_Test_2 : MonoBehaviour
             Debug.Log("m != null " + m.GetInstanceID());
         }
 
+        Material m2 = ResourcesManager2.Instance.LoadAssetSync<Material>(
+            "Resources/RuntimeMeshBaker/M_Arm_Engineercorps/M_Arm_Engineercorps-mat");
+        if (m2 != null)
+        {
+            Debug.Log("m2 != null " + m2.GetInstanceID());
+        }
+
         GameObject go_1 = ResourcesManager2.Instance.LoadAssetSync<GameObject>(
             "Resources/RuntimeMeshBaker/M_Arm_Tank/M_Arm_Tank_ORG");
         if (go_1 != null)
@@ -45,6 +52,9 @@ public class Res_Test_2 : MonoBehaviour
         GameObject tank_2 = GameObject.Instantiate<GameObject>(go_2);
         Debug.Log("tank_2 " + tank_2.GetInstanceID());
 
+        ResourcesManager2.Instance.Print_CacheAssetsIDMapBunlesPath();
+        ResourcesManager2.Instance.ReleaseAsset(out m);
+        Debug.Log("m " + (m == null));
     }
 
 }
