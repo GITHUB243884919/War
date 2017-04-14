@@ -17,16 +17,19 @@ public class Scene_Commond_Test : MonoBehaviour
 
     public void BtnClick()
     {
-        //Debug.Log("Begin click " + Time.realtimeSinceStartup);
-        StartCoroutine("CreateTanks");
-        //for (int i = 0; i < 128; i++)
-        //{
-        //    //CreateTank(i, false, false);
-        //    //CreateTank(i, true, false);
-        //    CreateTank_Arrive_Attack(i, true, true);
-
-        //}
-        ////Debug.Log("End click " + Time.realtimeSinceStartup);
+        Debug.Log("Begin click " + Time.realtimeSinceStartup);
+        //StartCoroutine("CreateTanks");
+        Profiler.BeginSample("xxxxxxxxxxxxxxxxxxxxxx");
+        Debug.Log(Time.realtimeSinceStartup);
+        for (int i = 0; i < 128; i++)
+        {
+            //CreateTank(i, false, false);
+            //CreateTank(i, true, false);
+            CreateTank_Arrive_Attack(i, true, true);
+        }
+        Debug.Log(Time.realtimeSinceStartup);
+        Profiler.EndSample();
+        Debug.Log("End click " + Time.realtimeSinceStartup);
         //m_effectCycle++;
         //if (m_effectCycle > 1)
         //{
@@ -62,10 +65,10 @@ public class Scene_Commond_Test : MonoBehaviour
 
         //CreateTank_Dead(1, 2);
         //CreateTank_Arrive_Attack_LookAt(false, true);
-        yield return new WaitForSeconds(5f);
-        Debug.Log("begin return " + Time.realtimeSinceStartup);
-        BattleObjManager.Instance.ReturnAllBorrowCharObjs();
-        Debug.Log("end return " + Time.realtimeSinceStartup);
+        //yield return new WaitForSeconds(5f);
+        //Debug.Log("begin return " + Time.realtimeSinceStartup);
+        //BattleObjManager.Instance.ReturnAllBorrowCharObjs();
+        //Debug.Log("end return " + Time.realtimeSinceStartup);
     }
     void CreateTank_Arrive_Attack(int entityID, bool withAI, bool withEffect)
     {

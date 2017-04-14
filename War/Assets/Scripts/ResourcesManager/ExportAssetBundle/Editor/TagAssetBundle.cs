@@ -77,6 +77,7 @@ public static class TagAssetBundle
     private static void TagOneAssetBundle(string filepath, string assetName, string variantName)
     {
 
+        //Debug.Log("filepath " + filepath);
         var importer = AssetImporter.GetAtPath(filepath);
         if (!assetName.Equals(importer.assetBundleName))
         {

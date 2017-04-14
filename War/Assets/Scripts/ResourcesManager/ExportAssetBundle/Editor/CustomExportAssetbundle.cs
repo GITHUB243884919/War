@@ -14,7 +14,7 @@ public class CustomExportAssetbundle
         
         //打出AB包
         BuildAssetBundleOptions buildAssetBundleOptions =
-            BuildAssetBundleOptions.AppendHashToAssetBundleName |
+            //BuildAssetBundleOptions.AppendHashToAssetBundleName |
             BuildAssetBundleOptions.DisableWriteTypeTree |
             BuildAssetBundleOptions.DeterministicAssetBundle |
             BuildAssetBundleOptions.ForceRebuildAssetBundle |
@@ -104,7 +104,7 @@ public class CustomExportAssetbundle
             Hash128 hash;
             BuildPipeline.GetHashForAssetBundle(Application.dataPath + "/StreamingAssets/" + bundle, out hash);
 
-            Debug.Log("AssetBundle: " + bundle + " CRC: " + crc + " Hash:" + hash);
+            //Debug.Log("AssetBundle: " + bundle + " CRC: " + crc + " Hash:" + hash);
             lineBundleList = string.Format("{0:S},{1:S},{2:S}", bundle.ToString(), crc.ToString(), hash.ToString());
             //Debug.Log("format " + string.Format("%s,%s,%s,1", bundle.ToString(), crc.ToString(), hash.ToString()));
             swBundleList.WriteLine(lineBundleList);
@@ -112,7 +112,7 @@ public class CustomExportAssetbundle
             var assets = AssetDatabase.GetAssetPathsFromAssetBundle(bundle);
             foreach (var asset in assets)
             {
-                Debug.Log("Asset :" + asset);
+                //Debug.Log("Asset :" + asset);
                 string[] assetName = asset.Substring(7).Split('.');
                 lineAssetList = string.Format("{0:S},{1:S}",
                     assetName[0], bundle);
@@ -142,8 +142,10 @@ public class CustomExportAssetbundle
             fsAssetList = null;
         }
 
+        //AssetImporter.SaveAndReimport();
         //把详单打成AB
-        //Debug.Log("bundleListPath:" + bundleListPath);
+        Debug.Log("bundleListPath:" + bundleListPath);
+        //var importer = AssetImporter.GetAtPath("Assets/" + bundleListPath);
         var importer = AssetImporter.GetAtPath("Assets/" + bundleListPath);
         importer.assetBundleName = "bundleinfo/bundlelist.bundle";
         var importer2 = AssetImporter.GetAtPath("Assets/" + assetListPath);

@@ -1,5 +1,3 @@
-Resources/assetlist,bundleinfo/assetlist.bundle
-Resources/bundlelist,bundleinfo/bundlelist.bundle
 Resources/RuntimeMeshBaker/M_Arm_Airplane_01/M_Arm_Airplane_01-mat,runtimemeshbaker/m_arm_airplane_01
 Resources/RuntimeMeshBaker/M_Arm_Airplane_01/M_Arm_Airplane_01,runtimemeshbaker/m_arm_airplane_01
 Resources/RuntimeMeshBaker/M_Arm_Airplane_01/M_Arm_Airplane_01_Org,runtimemeshbaker/m_arm_airplane_01

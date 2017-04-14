@@ -111,7 +111,7 @@ public class MoveSteers
         m_timer = 0.0f;
 
         //m_positionData = positionData;
-        m_stopMoveCallback += callback;
+        m_stopMoveCallback = callback;
 
         for (int i = 0; i < types.Length; i++)
         {
