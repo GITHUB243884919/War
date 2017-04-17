@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UF_Framework;
 
 #if _LOG_MEDIATOR_
 using Debug = LogMediator;

@@ -1,33 +1,31 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.IO;
-using System.Collections.Generic;
-
-#if _LOG_MEDIATOR_
-using Debug = LogMediator;
-#endif
-
-/// <summary>
+﻿/// <summary>
 /// Asset.Path-AB.Path对应表
 /// manifest加载
 /// 
 /// Cache.AB表
 /// AB.Path-AB.Hash对应表
 /// </summary>
+
+using UnityEngine;
+using System.Collections;
+using System.IO;
+using System.Collections.Generic;
+
+
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
+namespace UF_Framework
+{
 public class ResourcesManager2 : MonoBehaviour
 {
     private static ResourcesManager2 s_instance = null;
     private bool m_isInit = false;
 
-    public static readonly string STREAMING_ASSET_PATH =
-#if (UNITY_ANDROID) && (!UNITY_EDITOR)
-        Application.dataPath + "!assets";
-#else
-        Application.streamingAssetsPath;
-#endif
+    public static string STREAMING_ASSET_PATH = null;
 
-    public static readonly string STREAMING_ASSET_LIST_PATH =
-        STREAMING_ASSET_PATH + "/bundleinfo/assetlist.bundle";
+    public static string STREAMING_ASSET_LIST_PATH = null;
 
     //Asset路径和Bundle路径映射
     private Dictionary<string, string> m_assetsPathMapBunlesPath
@@ -57,6 +55,20 @@ public class ResourcesManager2 : MonoBehaviour
         }
     }
 
+    public void InitPath()
+    {
+        STREAMING_ASSET_PATH =
+#if (UNITY_ANDROID) && (!UNITY_EDITOR)
+        Application.dataPath + "!assets";
+#else
+        Application.streamingAssetsPath;
+#endif
+
+        STREAMING_ASSET_LIST_PATH =
+            STREAMING_ASSET_PATH + "/bundleinfo/assetlist.bundle";
+
+    }
+
     public void Init()
     {
         if (m_isInit)
@@ -64,6 +76,7 @@ public class ResourcesManager2 : MonoBehaviour
             return;
         }
 
+        InitPath();
         LoadAssetsPathMapBunlesPath();
         LoadManifest();
 
@@ -121,7 +134,7 @@ public class ResourcesManager2 : MonoBehaviour
         GameObject orginGo = null;
         //处理的引用计数
         orginGo = LoadAssetSync<GameObject>(assetPath);
-        
+
         return go;
     }
 
@@ -135,7 +148,7 @@ public class ResourcesManager2 : MonoBehaviour
     {
         bool result = false;
         TextAsset assetListAsset = LoadAssetSync<TextAsset>(
-            STREAMING_ASSET_LIST_PATH, 
+            STREAMING_ASSET_LIST_PATH,
             STREAMING_ASSET_LIST_PATH,
             false);
 
@@ -192,8 +205,8 @@ public class ResourcesManager2 : MonoBehaviour
     AssetBundle LoadAssetBundleSync(string path, bool isProcessDependencies = true)
     {
         BundleElement bundleElment = null;
-        AssetBundle   bundle       = null;
-        
+        AssetBundle bundle = null;
+
         bool retCode = false;
         retCode = m_cacheBundles.TryGetValue(path, out bundleElment);
         if (retCode)
@@ -303,7 +316,7 @@ public class ResourcesManager2 : MonoBehaviour
                 m_cacheAssetsIDMapBunlesPath.Add(t.GetInstanceID(), bundlePath);
             }
         }
-        
+
         return t;
     }
 
@@ -349,13 +362,14 @@ public class ResourcesManager2 : MonoBehaviour
     //---------------------
     public void Print_CacheAssetsIDMapBunlesPath()
     {
-        Debug.Log("====CacheAssetsIDMapBunlesPath===");
-        foreach(var pair in m_cacheAssetsIDMapBunlesPath)
+        Debug.Log("========CacheAssetsIDMapBunlesPath===");
+        foreach (var pair in m_cacheAssetsIDMapBunlesPath)
         {
             Debug.Log(pair.Key + " " + pair.Value);
         }
         Debug.Log("=================================");
     }
+
     //----Unity----------------------------
     void Awake()
     {
@@ -367,3 +381,6 @@ public class ResourcesManager2 : MonoBehaviour
         Release();
     }
 }
+
+}
+

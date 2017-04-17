@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using FU_FrameWork;
+using UF_FrameWork;
 
 #if _LOG_MEDIATOR_
 using Debug = LogMediator;
