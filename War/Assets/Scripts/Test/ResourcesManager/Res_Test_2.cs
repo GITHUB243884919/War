@@ -54,7 +54,7 @@ public class Res_Test_2 : MonoBehaviour
         Debug.Log("tank_2 " + tank_2.GetInstanceID());
 
         ResourcesManager2.Instance.Print_CacheAssetsIDMapBunlesPath();
-        ResourcesManager2.Instance.ReleaseAsset(out m);
+        ResourcesManager2.Instance.ReleaseAsset(ref m);
         Debug.Log("m " + (m == null));
     }
 

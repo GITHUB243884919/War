@@ -1,9 +1,20 @@
 ﻿/// <summary>
-/// Asset.Path-AB.Path对应表
+/// Asset.Path-AB.Path 映射表(assetlist.txt)
+///     m_assetsPathMapBunlesPath
+///     
 /// manifest加载
 /// 
-/// Cache.AB表
-/// AB.Path-AB.Hash对应表
+/// Cache.AB 映射表(path-AssetBundle)
+///     m_cacheBundles
+/// 
+/// Asset.ID-AB.Path 映射表
+///     m_cacheAssetsIDMapBunlesPath
+///     
+/// GameObject.ID-Asset.ID 映射表
+///     m_cacheGameObjectIDMapAssetID
+///     
+/// AB.Path-AB.Hash对应表(bundlelist.txt)
+/// 
 /// </summary>
 
 using UnityEngine;
@@ -38,6 +49,9 @@ public class ResourcesManager2 : MonoBehaviour
     //Asset.ID和Bundle.Path的映射
     private Dictionary<int, string> m_cacheAssetsIDMapBunlesPath
         = new Dictionary<int, string>();
+
+    private Dictionary<int, GameObject> m_cacheGameObjectIDMapAssetID
+        = new Dictionary<int, GameObject>();
 
     //全局Manifest
     private AssetBundleManifest m_manifest = null;
@@ -115,15 +129,33 @@ public class ResourcesManager2 : MonoBehaviour
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="t"></param>
-    public void ReleaseAsset<T>(out T t) where T : Object
+    public void ReleaseAsset<T>(ref T t, bool isGameObject = false) where T : Object
     {
-        t = default(T);
+        bool retCode = false;
+
+        string bundlePath = null;
+        int assetID = t.GetInstanceID();
+        retCode = m_cacheAssetsIDMapBunlesPath.TryGetValue(
+            assetID, out bundlePath);
+        if (!retCode)
+        {
+            Debug.Log("Asset的ID没有找到对应AssetBundle" + t.name + " " + assetID);
+            return;
+        }
+
+        ReleaseAssetBundle(bundlePath);
+
+        if (!isGameObject)
+        {
+            t = default(T);
+        }
+        
     }
 
     /// <summary>
     /// 取GameObject
-    /// 既要处理AssetBundle的引用计数，
-    /// 也要记录InstnceID和AssetBundle的映射关系
+    /// 记录GameObject.ID和Asset.ID的映射关系
+    /// 是Asset对应的AssetBundle的引用计数+1
     /// 
     /// </summary>
     /// <param name="assetPath"></param>
@@ -132,15 +164,88 @@ public class ResourcesManager2 : MonoBehaviour
     {
         GameObject go = null;
         GameObject orginGo = null;
+        GameObject insGo = null;
+        bool retCode = false;
         //处理的引用计数
         orginGo = LoadAssetSync<GameObject>(assetPath);
+        insGo = GameObject.Instantiate<GameObject>(orginGo);
+        int gameObjectID = insGo.GetInstanceID();
+        //int assetID = 0;
+        retCode = m_cacheGameObjectIDMapAssetID.TryGetValue(gameObjectID, out orginGo);
+        if (retCode)
+        {
+            Debug.LogError("GameObject ID 已存在");
+            return go;
+        }
+
+        m_cacheGameObjectIDMapAssetID.Add(gameObjectID, orginGo);
+        go = insGo;
 
         return go;
     }
 
-    public GameObject InstanceGameObject(GameObject orginGo)
+    /// <summary>
+    /// 释放GameObject
+    /// 1.找到对应的Asset(就是实例化之前的GameObject)
+    /// 2.Asset对应的AssetBundle的引用计数-1
+    /// </summary>
+    /// <param name="go"></param>
+    public void ReleaseGameObject(ref GameObject go)
     {
+        bool retCode = false;
+
+        int gameObjectID = go.GetInstanceID();
+        GameObject orginGo = null;
+        retCode = m_cacheGameObjectIDMapAssetID.TryGetValue(gameObjectID, out orginGo);
+        if (!retCode)
+        {
+            Debug.LogError("GameObject ID 不存在");
+            return;
+        }
+
+        ReleaseAsset(ref orginGo, true);
+
+        GameObject.Destroy(go);
+        go = null;
+    }
+
+    /// <summary>
+    /// 克隆GameObject
+    /// 1.orginGo是曾经被实例化后的go
+    /// 2.找到orginGo对应的AssetBundle，引用计数+1
+    /// 3.建立实例化后go的ID和Asset的对应关系
+    /// </summary>
+    /// <param name="orginGo"></param>
+    /// <returns></returns>
+    public GameObject CloneGameObject(GameObject orginGo)
+    {
+        bool retCode = false;
         GameObject go = null;
+        GameObject insGo = null;
+        insGo = GameObject.Instantiate<GameObject>(orginGo);
+        int gameObjectID = orginGo.GetInstanceID();
+        GameObject assetGo = null;
+        retCode = m_cacheGameObjectIDMapAssetID.TryGetValue(gameObjectID, out assetGo);
+        if (!retCode)
+        {
+            Debug.LogError("GameObject ID 不存在");
+            return go;
+        }
+        int AssetID = assetGo.GetInstanceID();
+        string path = null;
+        retCode = m_cacheAssetsIDMapBunlesPath.TryGetValue(AssetID, out path);
+        if (!retCode)
+        {
+            Debug.LogError("Asset ID 不存在");
+            return go;
+        }
+
+        //AssetBundle引用计数+1
+        LoadAssetBundleSync(path);
+        //实例化后的GameObject的ID和Asset（实例化前的GameObject）建立映射关系
+        m_cacheGameObjectIDMapAssetID.Add(
+            insGo.GetInstanceID(), assetGo);
+        go = insGo;
         return go;
     }
 
@@ -259,6 +364,39 @@ public class ResourcesManager2 : MonoBehaviour
         }
 
         return bundle;
+    }
+
+    /// <summary>
+    /// 释放AssetBundle
+    /// 依赖的所有的AssetBundle的引用计数-1
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="isProcessDependencies"></param>
+    public void ReleaseAssetBundle(string path, bool isProcessDependencies = true)
+    {
+        BundleElement bundleElment = null;
+        //AssetBundle bundle = null;
+
+        bool retCode = false;
+        retCode = m_cacheBundles.TryGetValue(path, out bundleElment);
+        if (!retCode)
+        {
+            return;
+        }
+
+        if (isProcessDependencies)
+        {
+            bundleElment.MinusDef();
+
+            //递归依赖
+            var dependencies = m_manifest.GetDirectDependencies(path);
+            foreach (var dependency in dependencies)
+            {
+                Debug.Log("bundle name: " + path + " dependent by :" + dependency);
+                ReleaseAssetBundle(dependency);
+            }
+        }
+
     }
 
     public T LoadAssetSync<T>(AssetBundle bundle, string assetName) where T : Object
