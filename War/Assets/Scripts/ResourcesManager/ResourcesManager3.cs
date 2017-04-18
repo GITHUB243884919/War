@@ -107,19 +107,50 @@ public class ResourcesManager3 : MonoBehaviour
     public T LoadAsset<T>(string assetPath) where T : Object
     {
         T t = default(T);
-        bool retCode = false;
 
-        string bundlePath = null;
-        retCode = m_assetsPathMapBunlesPath.TryGetValue(assetPath, out bundlePath);
-        if (!retCode)
+        string bundlePath = FindBundlePath(assetPath);
+        if (string.IsNullOrEmpty(bundlePath))
         {
             Debug.LogError("没有找到对应的assetbundle" + assetPath);
             return t;
         }
+
+        //Debug.Log(bundlePath);
         bundlePath = STREAMING_ASSET_PATH + "/" + bundlePath;
-        t = LoadAsset<T>(bundlePath, assetPath);
+        t = LoadAsset<T>(assetPath, bundlePath);
+        if (t != default(T))
+        {
+            bool retCode = false;
+            int  AssetID = t.GetInstanceID();
+            string bundlePathInCache = null;
+            retCode = m_cacheAssetsIDMapBunlesPath.TryGetValue(
+                AssetID, out bundlePathInCache);
+            if (!retCode)
+            {
+                m_cacheAssetsIDMapBunlesPath.Add(AssetID, bundlePath);
+            }
+        }
 
         return t;
+    }
+
+    public void ReleaseAsset<T>(ref T t) where T : Object
+    {
+        bool retCode = false;
+        int AssetID = t.GetInstanceID();
+        string bundlePath = null;
+        retCode = m_cacheAssetsIDMapBunlesPath.TryGetValue(
+            AssetID, out bundlePath);
+        if (!retCode)
+        {
+            Debug.LogError("缓存中没有找到AssetBundle　" + AssetID);
+            return;
+        }
+
+        Debug.Log("ReleaseAsset " + bundlePath);
+        ReleaseBundle(bundlePath);
+
+        t = default(T);
     }
 
     string FindBundlePath(string assetPath)
@@ -132,19 +163,19 @@ public class ResourcesManager3 : MonoBehaviour
             Debug.LogError("没有找到对应的assetbundle" + assetPath);
             return bundlePath;
         }
-        bundlePath = STREAMING_ASSET_PATH + "/" + bundlePath;
+        //bundlePath = STREAMING_ASSET_PATH + "/" + bundlePath;
 
         return bundlePath;
     }
 
-    T LoadAsset<T>(string assetPath, string bundlePath, bool isProcessRefCount = true)
-        where T : Object
+    T LoadAsset<T>(string assetPath, string bundlePath, 
+        bool isProcessRefCount = true) where T : Object
     {
         T t = default(T);
 
         AssetBundle bundle = null;
 
-        bundle = GetBundle(bundlePath, isProcessRefCount);
+        bundle = LoadBundle(bundlePath, isProcessRefCount);
 
         if (bundle == null)
         {
@@ -156,7 +187,7 @@ public class ResourcesManager3 : MonoBehaviour
         return t;
     }
 
-    AssetBundle GetBundle(string bundlePath, bool isProcessRefCount = true)
+    AssetBundle LoadBundle(string bundlePath, bool isProcessRefCount = true)
     {
         AssetBundle bundle = null;
         BundleElement bundleElement = null;
@@ -164,7 +195,12 @@ public class ResourcesManager3 : MonoBehaviour
         if (bundle == null)
         {
             //bundle==null那么bundleElement也是==null的
-            bundle = GetBunleFromLocalFile(bundlePath);
+            bundle = LoadBunleFromLocalFile(bundlePath);
+            if (bundle == null)
+            {
+                Debug.LogError("磁盘加载AssetBundle失败 " + bundlePath);
+                return bundle;
+            }
             bundleElement = new BundleElement(bundle);
             m_cacheBundles.Add(bundlePath, bundleElement);
         }
@@ -172,17 +208,41 @@ public class ResourcesManager3 : MonoBehaviour
         if (isProcessRefCount)
         {
             bundleElement.AddRef();
+
+            var dependencies = m_manifest.GetDirectDependencies(bundlePath);
+            foreach (var dependency in dependencies)
+            {
+                Debug.Log("bundle name: " + bundlePath + " dependent by :" + dependency);
+                LoadBundle(dependency, isProcessRefCount);
+            }
         }
-        
-        //无论是否处理引用计数，依赖的AssetBundle还是要加载的
-        var dependencies = m_manifest.GetDirectDependencies(bundlePath);
-        foreach (var dependency in dependencies)
-        {
-            Debug.Log("bundle name: " + bundlePath + " dependent by :" + dependency);
-            GetBundle(dependency, isProcessRefCount);
-        }
-        
+
         return bundle;
+    }
+
+    void ReleaseBundle(string bundlePath, bool isProcessRefCount = true)
+    {
+        AssetBundle bundle = null;
+        BundleElement bundleElement = null;
+        bundle = GetBundleFromCache(bundlePath, out bundleElement);
+        if (bundle == null)
+        {
+            Debug.LogError("缓存中没有找到AssetBundle" + bundlePath);
+            return;
+        }
+        Debug.Log("ReleaseBundle " + bundlePath);
+        if (isProcessRefCount)
+        {
+            bundleElement.MinusDef();
+
+            var dependencies = m_manifest.GetDirectDependencies(bundlePath);
+            foreach (var dependency in dependencies)
+            {
+                Debug.Log("bundle name: " + bundlePath + " dependent by :" + dependency);
+                ReleaseBundle(dependency, isProcessRefCount);
+            }
+        }
+
     }
 
     AssetBundle GetBundleFromCache(string bundlePath, out BundleElement bundleElement)
@@ -191,11 +251,15 @@ public class ResourcesManager3 : MonoBehaviour
         bool retCode = false;
         bundleElement = null;
         retCode = m_cacheBundles.TryGetValue(bundlePath, out bundleElement);
-        
+        if (retCode)
+        {
+            bundle = bundleElement.Bundle;
+        }
+
         return bundle;
     }
 
-    AssetBundle GetBunleFromLocalFile(string bundlePath)
+    AssetBundle LoadBunleFromLocalFile(string bundlePath)
     {
         AssetBundle bundle = null;
 
@@ -204,138 +268,10 @@ public class ResourcesManager3 : MonoBehaviour
         return bundle;
     }
 
-
-    /// <summary>
-    /// 释放资源
-    /// 1.Asset = null
-    /// 2.依赖的所有AssetBundle的引用计数-1
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="t"></param>
-    public void ReleaseAsset<T>(ref T t, bool isGameObject = false) where T : Object
-    {
-        bool retCode = false;
-
-        string bundlePath = null;
-        int assetID = t.GetInstanceID();
-        retCode = m_cacheAssetsIDMapBunlesPath.TryGetValue(
-            assetID, out bundlePath);
-        if (!retCode)
-        {
-            Debug.Log("Asset的ID没有找到对应AssetBundle" + t.name + " " + assetID);
-            return;
-        }
-
-        ReleaseAssetBundle(bundlePath);
-
-        if (!isGameObject)
-        {
-            t = default(T);
-        }
-        
-    }
-
-    /// <summary>
-    /// 取GameObject
-    /// 记录GameObject.ID和Asset.ID的映射关系
-    /// 是Asset对应的AssetBundle的引用计数+1
-    /// 
-    /// </summary>
-    /// <param name="assetPath"></param>
-    /// <returns></returns>
-    //public GameObject GetGameObject(string assetPath)
-    //{
-    //    GameObject go = null;
-    //    GameObject orginGo = null;
-    //    GameObject insGo = null;
-    //    bool retCode = false;
-    //    //处理的引用计数
-    //    orginGo = LoadAssetSync<GameObject>(assetPath);
-    //    insGo = GameObject.Instantiate<GameObject>(orginGo);
-    //    int gameObjectID = insGo.GetInstanceID();
-    //    //int assetID = 0;
-    //    retCode = m_cacheGameObjectIDMapAssetID.TryGetValue(gameObjectID, out orginGo);
-    //    if (retCode)
-    //    {
-    //        Debug.LogError("GameObject ID 已存在");
-    //        return go;
-    //    }
-
-    //    m_cacheGameObjectIDMapAssetID.Add(gameObjectID, orginGo);
-    //    go = insGo;
-
-    //    return go;
-    //}
-
-    /// <summary>
-    /// 释放GameObject
-    /// 1.找到对应的Asset(就是实例化之前的GameObject)
-    /// 2.Asset对应的AssetBundle的引用计数-1
-    /// </summary>
-    /// <param name="go"></param>
-    public void ReleaseGameObject(ref GameObject go)
-    {
-        bool retCode = false;
-
-        int gameObjectID = go.GetInstanceID();
-        GameObject orginGo = null;
-        retCode = m_cacheGameObjectIDMapAssetID.TryGetValue(gameObjectID, out orginGo);
-        if (!retCode)
-        {
-            Debug.LogError("GameObject ID 不存在");
-            return;
-        }
-
-        ReleaseAsset(ref orginGo, true);
-
-        GameObject.Destroy(go);
-        go = null;
-    }
-
-    /// <summary>
-    /// 克隆GameObject
-    /// 1.orginGo是曾经被实例化后的go
-    /// 2.找到orginGo对应的AssetBundle，引用计数+1
-    /// 3.建立实例化后go的ID和Asset的对应关系
-    /// </summary>
-    /// <param name="orginGo"></param>
-    /// <returns></returns>
-    public GameObject CloneGameObject(GameObject orginGo)
-    {
-        bool retCode = false;
-        GameObject go = null;
-        GameObject insGo = null;
-        insGo = GameObject.Instantiate<GameObject>(orginGo);
-        int gameObjectID = orginGo.GetInstanceID();
-        GameObject assetGo = null;
-        retCode = m_cacheGameObjectIDMapAssetID.TryGetValue(gameObjectID, out assetGo);
-        if (!retCode)
-        {
-            Debug.LogError("GameObject ID 不存在");
-            return go;
-        }
-        int AssetID = assetGo.GetInstanceID();
-        string path = null;
-        retCode = m_cacheAssetsIDMapBunlesPath.TryGetValue(AssetID, out path);
-        if (!retCode)
-        {
-            Debug.LogError("Asset ID 不存在");
-            return go;
-        }
-
-        //AssetBundle引用计数+1
-        LoadAssetBundleSync(path);
-        //实例化后的GameObject的ID和Asset（实例化前的GameObject）建立映射关系
-        m_cacheGameObjectIDMapAssetID.Add(
-            insGo.GetInstanceID(), assetGo);
-        go = insGo;
-        return go;
-    }
-
     bool LoadAssetsPathMapBunlesPath()
     {
         bool result = false;
-        TextAsset assetListAsset = LoadAssetSync<TextAsset>(
+        TextAsset assetListAsset = LoadAsset<TextAsset>(
             STREAMING_ASSET_LIST_PATH,
             STREAMING_ASSET_LIST_PATH,
             false);
@@ -367,7 +303,7 @@ public class ResourcesManager3 : MonoBehaviour
 
         string path = STREAMING_ASSET_PATH + "/StreamingAssets";
 
-        m_manifest = LoadAssetSync<AssetBundleManifest>(path, "AssetBundleManifest", false);
+        m_manifest = LoadAsset<AssetBundleManifest>("AssetBundleManifest", path, false);
         if (m_manifest == null)
         {
             Debug.Log("Manifest加载失败");
@@ -376,77 +312,6 @@ public class ResourcesManager3 : MonoBehaviour
         Debug.Log("m_manifest " + (m_manifest != null));
         result = true;
         return result;
-    }
-
-    /// <summary>
-    /// AssetBundle同步加载
-    /// 1.检查cache中有没有
-    /// 2.cache中有，从cache加载
-    /// --2.1本bundle本身引用+1，本bundle所有依赖+1
-    /// 3.cache中没有，从磁盘加载
-    /// --3.1如果有依赖先加载依赖
-    /// --3.2本bundle本身引用+1，本bundle所有依赖+1
-    /// 
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    AssetBundle LoadAssetBundleSync(string path, bool isProcessDependencies = true)
-    {
-        BundleElement bundleElment = null;
-        AssetBundle bundle = null;
-
-        bool retCode = false;
-        retCode = m_cacheBundles.TryGetValue(path, out bundleElment);
-        if (retCode)
-        {
-            bundle = bundleElment.Bundle;
-            if (bundle == null)
-            {
-                Debug.LogError("Cache中获得的AssetBundle为空 " + path);
-                return bundle;
-            }
-
-            //处理依赖
-            if (isProcessDependencies)
-            {
-                bundleElment.AddRef();
-
-                //递归依赖
-                var dependencies = m_manifest.GetDirectDependencies(path);
-                foreach (var dependency in dependencies)
-                {
-                    Debug.Log("bundle name: " + path + " dependent by :" + dependency);
-                    LoadAssetBundleSync(dependency);
-                }
-            }
-
-            return bundle;
-        }
-
-        bundle = AssetBundle.LoadFromFile(path);
-        if (bundle != null)
-        {
-            bundleElment = new BundleElement(bundle);
-            m_cacheBundles.Add(path, bundleElment);
-
-            //处理依赖
-            if (isProcessDependencies)
-            {
-                bundleElment.AddRef();
-
-                //递归依赖
-                Debug.Log("m_manifest " + (m_manifest != null) + " " + path);
-                var dependencies = m_manifest.GetDirectDependencies(path);
-                foreach (var dependency in dependencies)
-                {
-                    Debug.Log("bundle name: " + path + " dependent by :" + dependency);
-                    LoadAssetBundleSync(dependency);
-                }
-            }
-
-        }
-
-        return bundle;
     }
 
     /// <summary>
@@ -494,62 +359,6 @@ public class ResourcesManager3 : MonoBehaviour
         return t;
     }
 
-    /// <summary>
-    /// 同步加载资源
-    /// 1.加载资源
-    /// 2.把资源的id和bundlePath缓存起来
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="bundlePath"></param>
-    /// <param name="assetPath"></param>
-    /// <param name="isProcessDependencies"></param>
-    /// <returns></returns>
-    T LoadAssetSync<T>(string bundlePath, string assetPath,
-        bool isProcessDependencies = true) where T : Object
-    {
-        Debug.Log("LoadAssetSync " + assetPath);
-
-        T t = default(T);
-        bool retCode = false;
-
-        AssetBundle bundle = LoadAssetBundleSync(bundlePath, isProcessDependencies);
-        if (bundle == null)
-        {
-            Debug.LogError("AssetBundle加载失败 " + bundlePath);
-            return t;
-        }
-
-        string assetName = Path.GetFileNameWithoutExtension(assetPath);
-        t = LoadAssetSync<T>(bundle, assetName);
-        if (isProcessDependencies
-            && (t != default(T))
-        )
-        {
-            Debug.Log("Cache Asset.ID " + assetPath + " " + t.GetInstanceID());
-            int instanceID = t.GetInstanceID();
-            string path = null;
-
-            retCode = m_cacheAssetsIDMapBunlesPath.TryGetValue(instanceID, out path);
-            if (!retCode)
-            {
-                //retCode == true是正常情况，因为同一个AssetBundle取出的相同的
-                //Asset的InstanceID是相同的。
-                m_cacheAssetsIDMapBunlesPath.Add(t.GetInstanceID(), bundlePath);
-            }
-        }
-
-        return t;
-    }
-
-    //--------------------------------
-    bool LoadAssetBundleAsync()
-    {
-        bool result = false;
-
-        return result;
-    }
-
-
     //--------------
     void Release()
     {
@@ -589,6 +398,16 @@ public class ResourcesManager3 : MonoBehaviour
             Debug.Log(pair.Key + " " + pair.Value);
         }
         Debug.Log("=================================");
+    }
+
+    public void Print_CacheBundles()
+    {
+        Debug.Log("************cacheBundles**********");
+        foreach(var pair in m_cacheBundles)
+        {
+            Debug.Log(pair.Key + " " + pair.Value.RefCount);
+        }
+        Debug.Log("*******************************");
     }
 
     //----Unity----------------------------
