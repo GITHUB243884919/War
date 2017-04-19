@@ -252,12 +252,12 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (m_positionData.TargetForArrive == m_positionData.TargetForPosition)
-        {
-            LogMediator.LogWarning("起点和终点相同，不会执行 " + 
-                MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
-            return;
-        }
+        //if (m_positionData.TargetForArrive == m_positionData.TargetForPosition)
+        //{
+        //    LogMediator.LogWarning("起点和终点相同，不会执行 " + 
+        //        MoveSteers.E_STEER_TYPE.ARRIVE.ToString());
+        //    return;
+        //}
         //Debug.Log("Add stop callback");
         m_steers.m_stopMoveCallback  = null;
         m_steers.m_stopMoveCallback += m_commond.OnArrived;

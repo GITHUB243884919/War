@@ -23,7 +23,8 @@ public class GroupCharObjsController
         //VERTICAL_LINE,  
         TARGET_HORIZONTAL_LINE, //面朝目标横向一字型
         TARGET_VERTICAL_LINE,   //面朝目标纵向一字型
-        TARGET_TRANGLE          //面朝目标三角形
+        TARGET_TRANGLE,         //面朝目标三角形
+        TARGET_CYCLE            //面朝目标散开
     }
 
     public static readonly int MIN_CHAROBJ_COUNT = 2;
@@ -94,7 +95,7 @@ public class GroupCharObjsController
         bool result = false;
 
         positions       = null;
-        float radius    = 1f;
+        float radius    = 3f;
         Vector3 center  = target - target.normalized * radius;
         float targetRad = GeometryUtil.TwoPointAngleRad2D(center, target);
         float targetDeg = targetRad * Mathf.Rad2Deg;
@@ -139,6 +140,35 @@ public class GroupCharObjsController
                     points.Add(target + spaceDir * spaceOffset * i);
                 }
                 break;
+            case E_FORMATION_TYPE.TARGET_TRANGLE:
+                Vector3 tragleP1 = target;
+
+                Vector3 tragleP2 = GeometryUtil.PositionInCycleByAngleDeg2D(
+                    center, radius, targetDeg + 120f);
+                Vector3 tragleP3 = GeometryUtil.PositionInCycleByAngleDeg2D(
+                    center, radius, targetDeg - 120f);
+                points.Add(tragleP1);
+                points.Add(tragleP2);
+                points.Add(tragleP3);
+
+                //float tempDeg = 360 / count;
+                //for(int i = 0; i < count; i++)
+                //{
+                //    Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                //        center, radius, targetDeg + i * tempDeg);
+                //    points.Add(p);
+                //}
+                break;
+            case E_FORMATION_TYPE.TARGET_CYCLE:
+                Debug.Log(E_FORMATION_TYPE.TARGET_CYCLE.ToString());
+                float tempDeg = 360 / count;
+                for(int i = 0; i < count; i++)
+                {
+                    Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                        center, radius, targetDeg + i * tempDeg);
+                    points.Add(p);
+                }
+                break;
             default:
                 Debug.LogError("没有这种队形的实现" + formation.ToString());
                 break;
@@ -174,12 +204,12 @@ public class GroupCharObjsController
                 delegate() 
                 {
                     Debug.Log("Group执行OnArrived");
-                    OnArrived(charObj);
+                    OnArrived(charObj, target);
                 });
         }
     }
 
-    public void OnArrived(CharObj charObj)
+    public void OnArrived(CharObj charObj, Vector3 target)
     {
         bool retCode = false;
 
@@ -193,6 +223,8 @@ public class GroupCharObjsController
         }
         //更新自己的到达标志
         element.Arrived = true;
+        //调整朝向
+        charObj.AI_LookAt(charObj.GameObject.transform.position, target);
         //检查所有的到达标志
         bool allArrived = true;
         foreach (var e in m_elments.Values)
