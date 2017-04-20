@@ -63,6 +63,28 @@ public class GroupCharObjsController
         }
     }
 
+    public void Init(GroupCharObjsElement[] elments, E_FORMATION_TYPE formation, Vector3 start, Vector3 target)
+    {
+        bool retCode = false;
+
+        CacheObjs(elments);
+
+        retCode = SetFormationPositions(
+            m_charObjs.Count, formation, true,
+            start, target);
+        if (!retCode)
+        {
+            Debug.LogError("获取阵型坐标失败" + formation.ToString());
+            return;
+        }
+
+        //Debug.Log("直接形成初始阵型");
+        for (int i = 0; i < m_charObjs.Count; i++)
+        {
+            m_charObjs[i].AI_LookAt(m_formationPoints[i], target);
+        }
+    }
+
     public void CacheObjs(GroupCharObjsElement[] elments)
     {
         //m_charObjs.Clear();
@@ -88,6 +110,33 @@ public class GroupCharObjsController
         }
 
         m_isCached = true;
+    }
+
+    public bool SetFormationPositions(
+        int count, E_FORMATION_TYPE formation, bool isStandCenter, 
+        Vector3 orgin,  Vector3 target)
+    {
+        bool result = false;
+
+        float radius = 3f;
+        float targetRad = GeometryUtil.TwoPointAngleRad2D(orgin, target);
+        float targetDeg = targetRad * Mathf.Rad2Deg;
+        
+        switch(formation)
+        {
+            case E_FORMATION_TYPE.TARGET_VERTICAL_LINE:
+                Formation_TargetVerticalLine(orgin, radius, targetDeg, target, count);
+                break;
+            case E_FORMATION_TYPE.TARGET_CYCLE:
+                Formation_TargetCycle(orgin, radius, targetDeg, target, count);
+                break;
+            default:
+                break;
+
+        }
+
+        result = true;
+        return result;
     }
 
     public bool GetFormationPositions(
@@ -259,19 +308,19 @@ public class GroupCharObjsController
         }
     }
 
-    Vector3 [] Formation_TargetVerticalLine(Vector3 center, float radius, float orginDeg, Vector3 target, int count)
+    Vector3 [] Formation_TargetVerticalLine(Vector3 orgin, float radius, float targetDeg, Vector3 target, int count)
     {
-        //目标点即是第一个点
-        //最后一个点是转了180
         m_formationPoints.Clear();
         float angleDeg = 180f;
-        Vector3 lastPoint = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, orginDeg + angleDeg);
-        Vector3 spaceDir = (lastPoint - target).normalized;
-        float spaceOffset = (lastPoint - target).magnitude / (count - 1);
-        m_formationPoints.Add(target);
-        for (int i = 1; i < count; i++)
+        Vector3 dir = (target - orgin).normalized;
+        Vector3 fristPoint = orgin + dir * radius;
+        Vector3 lastPoint = GeometryUtil.PositionInCycleByAngleDeg2D(orgin, radius, targetDeg + angleDeg);
+        Debug.DrawLine(fristPoint, lastPoint, Color.blue, (fristPoint - lastPoint).magnitude);
+
+        float spaceOffset = (lastPoint - fristPoint).magnitude / (count - 1);
+        for (int i = 0; i < count; i++)
         {
-            m_formationPoints.Add(target + spaceDir * spaceOffset * i);
+            m_formationPoints.Add(fristPoint - dir * spaceOffset * i);
         }
 
         return m_formationPoints.ToArray();
