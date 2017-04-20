@@ -34,6 +34,8 @@ public class GroupCharObjsController
         = new Dictionary<int, GroupCharObjsElement>();
 
     bool m_isCached = false;
+    //队形形成的点的集合
+    List<Vector3> m_formationPoints = new List<Vector3>();
     public void Init(GroupCharObjsElement[] elments, E_FORMATION_TYPE formation, Vector3 orginPoint)
     {
         //Debug.Log("GroupCharObjsController Init " 
@@ -130,15 +132,16 @@ public class GroupCharObjsController
             case E_FORMATION_TYPE.TARGET_VERTICAL_LINE:
                 //目标点即是第一个点
                 //第二个点是转了180
-                angleDeg = 180f;
-                p1 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg + angleDeg);
-                Vector3 spaceDir = (p1 - target).normalized;
-                float spaceOffset = (p1 - target).magnitude / (count - 1);
-                points.Add(target);
-                for (int i = 1; i < count; i++)
-                {
-                    points.Add(target + spaceDir * spaceOffset * i);
-                }
+                //angleDeg = 180f;
+                //p1 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg + angleDeg);
+                //Vector3 spaceDir = (p1 - target).normalized;
+                //float spaceOffset = (p1 - target).magnitude / (count - 1);
+                ////points.Add(target);
+                //for (int i = 0; i < count; i++)
+                //{
+                //    points.Add(target + spaceDir * spaceOffset * i);
+                //}
+                positions = Formation_TargetVerticalLine(center, radius, targetDeg, target, count);
                 break;
             case E_FORMATION_TYPE.TARGET_TRANGLE:
                 Vector3 tragleP1 = target;
@@ -160,22 +163,23 @@ public class GroupCharObjsController
                 //}
                 break;
             case E_FORMATION_TYPE.TARGET_CYCLE:
-                Debug.Log(E_FORMATION_TYPE.TARGET_CYCLE.ToString());
-                float tempDeg = 360 / count;
-                for(int i = 0; i < count; i++)
-                {
-                    Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
-                        center, radius, targetDeg + i * tempDeg);
-                    points.Add(p);
-                }
+                //Debug.Log(E_FORMATION_TYPE.TARGET_CYCLE.ToString());
+                //float tempDeg = 360 / count;
+                //for(int i = 0; i < count; i++)
+                //{
+                //    Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                //        center, radius, targetDeg + i * tempDeg);
+                //    points.Add(p);
+                //}
+                positions = Formation_TargetCycle(center, radius, targetDeg, target, count);
                 break;
             default:
                 Debug.LogError("没有这种队形的实现" + formation.ToString());
                 break;
 
         }
-
-        positions = points.ToArray();
+        //points = m_formationPoints;
+        //positions = points.ToArray();
 
         result = true;
         return result;
@@ -253,6 +257,37 @@ public class GroupCharObjsController
             //    Debug.Log(e.Arrived);
             //}
         }
+    }
+
+    Vector3 [] Formation_TargetVerticalLine(Vector3 center, float radius, float orginDeg, Vector3 target, int count)
+    {
+        //目标点即是第一个点
+        //最后一个点是转了180
+        m_formationPoints.Clear();
+        float angleDeg = 180f;
+        Vector3 lastPoint = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, orginDeg + angleDeg);
+        Vector3 spaceDir = (lastPoint - target).normalized;
+        float spaceOffset = (lastPoint - target).magnitude / (count - 1);
+        m_formationPoints.Add(target);
+        for (int i = 1; i < count; i++)
+        {
+            m_formationPoints.Add(target + spaceDir * spaceOffset * i);
+        }
+
+        return m_formationPoints.ToArray();
+    }
+
+    Vector3[] Formation_TargetCycle(Vector3 center, float radius, float orginDeg, Vector3 target, int count)
+    {
+        m_formationPoints.Clear();
+        float tempDeg = 360 / count;
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                center, radius, orginDeg + i * tempDeg);
+            m_formationPoints.Add(p);
+        }
+        return m_formationPoints.ToArray();
     }
 
     void Test_5()
