@@ -61,8 +61,8 @@ public class Test_AI_Group_2 : MonoBehaviour
         {
             GroupCharObjsController.E_FORMATION_TYPE orgFormation =
                 //GroupCharObjsController.E_FORMATION_TYPE.TARGET_HORIZONTAL_LINE;
-                //GroupCharObjsController.E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
-                GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE;
+                GroupCharObjsController.E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
+                //GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE;
             m_groupCtr.Init(elements, orgFormation, new Vector3(32f, 0f, 32f), new Vector3(64f, 0f, 64f));
 
         }

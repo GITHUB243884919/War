@@ -38,7 +38,7 @@ public class Bomb_Test_1 : MonoBehaviour
         //AudioSource.PlayClipAtPoint(m_clip_1, transform.position);
         //AudioSource.PlayClipAtPoint(m_clip_2, transform.position); 
         //3.用自己实现的AudioManager
-        AudioManager.Instance.PlayAudio("Audio/UI_Click", transform.position);
+        //AudioManager.Instance.PlayAudio("Audio/UI_Click", transform.position);
         //AudioManager.Instance.PlayAudio("Audio/UI_Click", transform.position);
         StartCoroutine(PlayNextAudio());
     }
@@ -46,7 +46,7 @@ public class Bomb_Test_1 : MonoBehaviour
     IEnumerator PlayNextAudio()
     {
         yield return new WaitForSeconds(3f);
-        AudioManager.Instance.PlayAudio("Audio/UI_Click", transform.position);
+        //AudioManager.Instance.PlayAudio("Audio/UI_Click", transform.position);
 
     }
     void Update()

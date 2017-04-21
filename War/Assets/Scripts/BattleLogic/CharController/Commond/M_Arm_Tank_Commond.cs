@@ -6,7 +6,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UF_FrameWork;
 public class M_Arm_Tank_Commond : CharCommond
 {
     private CharObjUSMBForDeadExit CharObjUSMBForDeadExit { get; set; }
@@ -39,6 +39,8 @@ public class M_Arm_Tank_Commond : CharCommond
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Fire");
         ActiveEffect(cmd);
+        AudioManager.Instance.PlaySound("Audio/fire3", m_cctr.Transform.position);
+        //AudioManager.Instance.PlayMusic("Audio/fire3", false);
     }
 
     public void OnAttacked()

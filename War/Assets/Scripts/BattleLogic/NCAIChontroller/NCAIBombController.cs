@@ -5,7 +5,7 @@
 /// </summary>
 using UnityEngine;
 using System.Collections;
-
+using UF_FrameWork;
 //#if _WAR_TEST_
 //using Debug = LogMediator;
 //#endif
@@ -38,6 +38,8 @@ public class NCAIBombController : NCAIController
             m_pscbUtil.Init(Finished);
         }
         m_ps.Play();
+        AudioManager.Instance.PlaySound(
+            "Audio/bomb1", transform.position);
         //Debug.Log("Bomb 命中目标 播放特效");
     }
 
