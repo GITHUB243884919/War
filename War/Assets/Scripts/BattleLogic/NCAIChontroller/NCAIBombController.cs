@@ -38,7 +38,7 @@ public class NCAIBombController : NCAIController
             m_pscbUtil.Init(Finished);
         }
         m_ps.Play();
-        AudioManager.Instance.PlaySound(
+        UF_FrameWork.AudioManager.Instance.PlaySound(
             "Audio/bomb1", transform.position);
         //Debug.Log("Bomb 命中目标 播放特效");
     }

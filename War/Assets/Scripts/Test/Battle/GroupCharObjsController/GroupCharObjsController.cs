@@ -21,7 +21,8 @@ public class GroupCharObjsController
     {
         //HORIZONTAL_LINE, 
         //VERTICAL_LINE,  
-        TARGET_HORIZONTAL_LINE, //面朝目标横向一字型
+        TARGET_NONE,
+        //TARGET_HORIZONTAL_LINE, //面朝目标横向一字型
         TARGET_VERTICAL_LINE,   //面朝目标纵向一字型
         TARGET_TRANGLE,         //面朝目标三角形
         TARGET_CYCLE            //面朝目标散开
@@ -36,34 +37,24 @@ public class GroupCharObjsController
     bool m_isCached = false;
     //队形形成的点的集合
     List<Vector3> m_formationPoints = new List<Vector3>();
-    public void Init(GroupCharObjsElement[] elments, E_FORMATION_TYPE formation, Vector3 orginPoint)
-    {
-        //Debug.Log("GroupCharObjsController Init " 
-        //    + m_charObjs.Count + " " + m_elments.Count);
 
-        bool retCode = false;
+    //阵型的中心点
+    public Vector3 m_center = Vector3.zero;
+    //阵型的朝向
+    public Vector3 m_lookAt = Vector3.zero;
+    //阵型的半径
+    public float   m_radius = 5f;
+    //阵型的类型
+    public E_FORMATION_TYPE m_formation 
+        = E_FORMATION_TYPE.TARGET_NONE;
+    //行走的的阵型
+    public E_FORMATION_TYPE m_arriveFormation
+        = E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
 
-        CacheObjs(elments);
-
-        Vector3[] positions = null;
-        retCode = GetFormationPositions(
-            m_charObjs.Count, formation, true,
-            orginPoint, out positions);
-        if (!retCode)
-        {
-            Debug.LogError("获取阵型坐标失败" + formation.ToString());
-            return;
-        }
-
-        //Debug.Log("直接形成初始阵型");
-        for(int i = 0; i < m_charObjs.Count; i++)
-        {
-            //m_charObjs[i].AI_Position(positions[i]);
-            m_charObjs[i].AI_LookAt(positions[i], orginPoint);
-        }
-    }
-
-    public void Init(GroupCharObjsElement[] elments, E_FORMATION_TYPE formation, Vector3 start, Vector3 target)
+    public delegate void ArrivedCallback();
+    public ArrivedCallback m_arrivedCallback = null;
+    public void Init(GroupCharObjsElement[] elments, 
+        E_FORMATION_TYPE formation, Vector3 start, Vector3 lookAt)
     {
         bool retCode = false;
 
@@ -71,7 +62,7 @@ public class GroupCharObjsController
 
         retCode = SetFormationPositions(
             m_charObjs.Count, formation, true,
-            start, target);
+            start, lookAt);
         if (!retCode)
         {
             Debug.LogError("获取阵型坐标失败" + formation.ToString());
@@ -81,13 +72,60 @@ public class GroupCharObjsController
         //Debug.Log("直接形成初始阵型");
         for (int i = 0; i < m_charObjs.Count; i++)
         {
-            m_charObjs[i].AI_LookAt(m_formationPoints[i], target);
+            m_charObjs[i].AI_LookAt(m_formationPoints[i], lookAt);
         }
     }
 
-    public void CacheObjs(GroupCharObjsElement[] elments)
+    public void AI_Arrive(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
     {
-        //m_charObjs.Clear();
+        //查看阵型是否是一字型
+        if (m_formation == m_arriveFormation)
+        {
+            m_arrivedCallback = callback;
+            for (int i = 0; i < m_charObjs.Count; i++)
+            {
+                Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
+                Vector3 _target = target + (_start - m_center);
+                CharObj charObj = m_charObjs[i];
+                m_charObjs[i].AI_Arrive(_start, _target, speed,
+                    delegate()
+                    {
+                        Debug.Log("AI_Arrive 中执行CheckArrived " + target);
+                        CheckArrived(charObj, target);
+                    });
+            }
+        }
+        else
+        {
+            //先变成一字型
+            //在执行Arrive
+            Debug.Log("不是一字型，要变成一字型" + m_center);
+            //Vector3 _lookAt = 
+            SwitchFormation(m_arriveFormation, m_center, m_center + m_center.normalized * m_radius);
+            m_arrivedCallback = delegate()
+            {
+                Debug.Log("一字型ok");
+            };
+            m_arrivedCallback += delegate()
+            {
+                m_arrivedCallback = callback;
+                for (int i = 0; i < m_charObjs.Count; i++)
+                {
+                    Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
+                    Vector3 _target = target + (_start - m_center);
+                    CharObj charObj = m_charObjs[i];
+                    m_charObjs[i].AI_Arrive(_start, _target, speed,
+                        delegate()
+                        {
+                            CheckArrived(charObj, target);
+                        });
+                }
+            };
+        }
+    }
+
+    void CacheObjs(GroupCharObjsElement[] elments)
+    {
         if (m_isCached)
         {
             Debug.Log("allready cached");
@@ -114,21 +152,28 @@ public class GroupCharObjsController
 
     public bool SetFormationPositions(
         int count, E_FORMATION_TYPE formation, bool isStandCenter, 
-        Vector3 orgin,  Vector3 target)
+        Vector3 center,  Vector3 lookAt)
     {
+        Debug.Log("获得阵型");
         bool result = false;
 
-        float radius = 3f;
-        float targetRad = GeometryUtil.TwoPointAngleRad2D(orgin, target);
-        float targetDeg = targetRad * Mathf.Rad2Deg;
+        m_center    = center;
+        m_lookAt    = lookAt;
+        m_formation = formation;
+
+        //float radius = 3f;
+        float lookAtRad = GeometryUtil.TwoPointAngleRad2D(center, lookAt);
+        float lookAtDeg = lookAtRad * Mathf.Rad2Deg;
         
         switch(formation)
         {
             case E_FORMATION_TYPE.TARGET_VERTICAL_LINE:
-                Formation_TargetVerticalLine(orgin, radius, targetDeg, target, count);
+                Formation_TargetVerticalLine(center, m_radius, lookAtDeg, lookAt, 
+                    count, ref m_formationPoints);
                 break;
             case E_FORMATION_TYPE.TARGET_CYCLE:
-                Formation_TargetCycle(orgin, radius, targetDeg, target, count);
+                Formation_TargetCycle(center, m_radius, lookAtDeg, lookAt,
+                    count, ref m_formationPoints);
                 break;
             default:
                 break;
@@ -139,134 +184,11 @@ public class GroupCharObjsController
         return result;
     }
 
-    public bool GetFormationPositions(
-        int count, E_FORMATION_TYPE formation, bool isStandCenter, 
-        Vector3 target, out Vector3 [] positions)
-    {
-        bool result = false;
-
-        positions       = null;
-        float radius    = 3f;
-        Vector3 center  = target - target.normalized * radius;
-        float targetRad = GeometryUtil.TwoPointAngleRad2D(center, target);
-        float targetDeg = targetRad * Mathf.Rad2Deg;
-        float angleDeg  = 0f;
-
-        //count必须大于2
-        if (count < MIN_CHAROBJ_COUNT)
-        {
-            Debug.LogError("阵型需要至少" + MIN_CHAROBJ_COUNT + "个对象");
-            return result;
-        }
-        List<Vector3> points = new List<Vector3>();
-        switch (formation)
-        {
-            case E_FORMATION_TYPE.TARGET_HORIZONTAL_LINE:
-                //先算出横向两个点的坐标
-                angleDeg = 90f;
-                Vector3 p1 = Vector3.zero;
-                Vector3 p2 = Vector3.zero;
-                p1 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg + angleDeg);
-                p2 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg - angleDeg);
-                points.Add(p1);
-                points.Add(p2);
-                Debug.DrawLine(center, target, Color.blue, (target - center).magnitude);
-                //Debug.Log((target - center).magnitude);
-                Debug.DrawLine(center, p1, Color.red, (p1 - center).magnitude);
-                //Debug.Log((p1 - center).magnitude);
-                Debug.DrawLine(center, p2, Color.cyan, (p2 - center).magnitude);
-                //Debug.Log((p2 - center).magnitude);
-                //其他点的坐标按个数平分
-                break;
-            case E_FORMATION_TYPE.TARGET_VERTICAL_LINE:
-                //目标点即是第一个点
-                //第二个点是转了180
-                //angleDeg = 180f;
-                //p1 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg + angleDeg);
-                //Vector3 spaceDir = (p1 - target).normalized;
-                //float spaceOffset = (p1 - target).magnitude / (count - 1);
-                ////points.Add(target);
-                //for (int i = 0; i < count; i++)
-                //{
-                //    points.Add(target + spaceDir * spaceOffset * i);
-                //}
-                positions = Formation_TargetVerticalLine(center, radius, targetDeg, target, count);
-                break;
-            case E_FORMATION_TYPE.TARGET_TRANGLE:
-                Vector3 tragleP1 = target;
-
-                Vector3 tragleP2 = GeometryUtil.PositionInCycleByAngleDeg2D(
-                    center, radius, targetDeg + 120f);
-                Vector3 tragleP3 = GeometryUtil.PositionInCycleByAngleDeg2D(
-                    center, radius, targetDeg - 120f);
-                points.Add(tragleP1);
-                points.Add(tragleP2);
-                points.Add(tragleP3);
-
-                //float tempDeg = 360 / count;
-                //for(int i = 0; i < count; i++)
-                //{
-                //    Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
-                //        center, radius, targetDeg + i * tempDeg);
-                //    points.Add(p);
-                //}
-                break;
-            case E_FORMATION_TYPE.TARGET_CYCLE:
-                //Debug.Log(E_FORMATION_TYPE.TARGET_CYCLE.ToString());
-                //float tempDeg = 360 / count;
-                //for(int i = 0; i < count; i++)
-                //{
-                //    Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
-                //        center, radius, targetDeg + i * tempDeg);
-                //    points.Add(p);
-                //}
-                positions = Formation_TargetCycle(center, radius, targetDeg, target, count);
-                break;
-            default:
-                Debug.LogError("没有这种队形的实现" + formation.ToString());
-                break;
-
-        }
-        //points = m_formationPoints;
-        //positions = points.ToArray();
-
-        result = true;
-        return result;
-    }
-
-    public void SwitchFormation(E_FORMATION_TYPE formation, Vector3 target)
+    public void CheckArrived(CharObj charObj, Vector3 lookAt)
     {
         bool retCode = false;
 
-        Vector3[] positions = null;
-        retCode = GetFormationPositions(
-            m_charObjs.Count, formation, true,
-            target, out positions);
-        if (!retCode)
-        {
-            Debug.LogError("获取阵型坐标失败" + formation.ToString());
-            return;
-        }
-
-        for (int i = 0; i < m_charObjs.Count; i++)
-        {
-            Debug.Log("移动到指定位置");
-            CharObj charObj = m_charObjs[i];
-            m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
-                positions[i], 2f, 
-                delegate() 
-                {
-                    Debug.Log("Group执行OnArrived");
-                    OnArrived(charObj, target);
-                });
-        }
-    }
-
-    public void OnArrived(CharObj charObj, Vector3 target)
-    {
-        bool retCode = false;
-
-        Debug.Log(charObj.ServerEntityID + " 到了");
+        //Debug.Log(charObj.ServerEntityID + " 到了");
         GroupCharObjsElement element = null;
         retCode = m_elments.TryGetValue(charObj.ServerEntityID, out element);
         if (!retCode)
@@ -277,7 +199,7 @@ public class GroupCharObjsController
         //更新自己的到达标志
         element.Arrived = true;
         //调整朝向
-        charObj.AI_LookAt(charObj.GameObject.transform.position, target);
+        charObj.AI_LookAt(charObj.GameObject.transform.position, lookAt + lookAt.normalized * (m_radius + 1f));
         //检查所有的到达标志
         bool allArrived = true;
         foreach (var e in m_elments.Values)
@@ -288,11 +210,8 @@ public class GroupCharObjsController
                 break;
             }
         }
-        if (!allArrived)
-        {
-            Debug.Log("还有没到的");
-        }
-        else
+
+        if (allArrived)
         {
             Debug.Log("都到了");
             //都到了就设置没到达
@@ -300,17 +219,49 @@ public class GroupCharObjsController
             {
                 e.Arrived = false;
             }
-            //foreach (GroupCharObjsElement e in m_elments.Values)
-            //{
-            //    //e.Arrived = false;
-            //    Debug.Log(e.Arrived);
-            //}
+            if (m_arrivedCallback != null)
+            {
+                m_arrivedCallback();
+                m_arrivedCallback = null;
+            }
         }
     }
 
-    Vector3 [] Formation_TargetVerticalLine(Vector3 orgin, float radius, float targetDeg, Vector3 target, int count)
+    public void SwitchFormation(E_FORMATION_TYPE formation, Vector3 center, Vector3 lookAt)
     {
-        m_formationPoints.Clear();
+        Debug.Log("切换阵型" + formation.ToString());
+        bool retCode = false;
+
+        retCode = SetFormationPositions(
+            m_charObjs.Count, formation, true,
+            center, lookAt);
+        if (!retCode)
+        {
+            Debug.LogError("获取阵型坐标失败" + formation.ToString());
+            return;
+        }
+        Debug.Log(center + " " + lookAt);
+        for (int i = 0; i < m_charObjs.Count; i++)
+        {
+            //Debug.Log("移动到指定位置 " + m_formationPoints[i]);
+            CharObj charObj = m_charObjs[i];
+            //m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
+            //    lookAt - (m_formationPoints[i] - center), 2f,
+            m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
+                m_formationPoints[i], 2f,
+                delegate()
+                {
+                    Debug.Log("SwitchFormation 中 Group执行CheckArrived" + lookAt);
+                    CheckArrived(charObj, lookAt);
+                });
+        }
+    }
+
+    void Formation_TargetVerticalLine(Vector3 orgin, float radius, 
+        float targetDeg, Vector3 target, int count,
+        ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
         float angleDeg = 180f;
         Vector3 dir = (target - orgin).normalized;
         Vector3 fristPoint = orgin + dir * radius;
@@ -320,48 +271,38 @@ public class GroupCharObjsController
         float spaceOffset = (lastPoint - fristPoint).magnitude / (count - 1);
         for (int i = 0; i < count; i++)
         {
-            m_formationPoints.Add(fristPoint - dir * spaceOffset * i);
+            formationPoints.Add(fristPoint - dir * spaceOffset * i);
         }
-
-        return m_formationPoints.ToArray();
     }
 
-    Vector3[] Formation_TargetCycle(Vector3 center, float radius, float orginDeg, Vector3 target, int count)
+    void Formation_TargetCycle(Vector3 center, float radius, 
+        float orginDeg, Vector3 target, int count,
+        ref List<Vector3> formationPoints)
     {
-        m_formationPoints.Clear();
+        formationPoints.Clear();
         float tempDeg = 360 / count;
         for (int i = 0; i < count; i++)
         {
             Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
                 center, radius, orginDeg + i * tempDeg);
-            m_formationPoints.Add(p);
+            formationPoints.Add(p);
         }
-        return m_formationPoints.ToArray();
-    }
-
-    void Test_5()
-    {
-        Vector3 target = new Vector3(10f, 0f, 32f);
-        float radius = 15f;
-        float angleDeg = 45f;
-        Vector3 center = target - target.normalized * radius;
-        float targetRad = GeometryUtil.TwoPointAngleRad2D(center, target);
-        float targetDeg = targetRad * Mathf.Rad2Deg;
-        Vector3 p1 = Vector3.zero;
-        Vector3 p2 = Vector3.zero;
-        p1 = GeometryUtil.PositionInCycleByAngleDeg2D(center, radius, targetDeg + angleDeg);
-        p2 = GeometryUtil.PositionInCycleByAngleRad2D(center, radius, targetRad - angleDeg * Mathf.Deg2Rad);
-
-        Debug.DrawLine(center, target, Color.red, (target - center).magnitude);
-        Debug.Log((target - center).magnitude);
-        Debug.DrawLine(center, p1, Color.red, (p1 - center).magnitude);
-        Debug.Log((p1 - center).magnitude);
-        Debug.DrawLine(center, p2, Color.red, (p2 - center).magnitude);
-        Debug.Log((p2 - center).magnitude);
     }
 
     public void Release()
     {
+        if (m_formationPoints != null)
+        {
+            m_formationPoints.Clear();
+            m_formationPoints = null;
+        }
+
+        if (m_elments != null)
+        {
+            m_elments.Clear();
+            m_elments = null;
+        }
+
         if (m_charObjs != null)
         {
             for(int i = 0; i < m_charObjs.Count; i++)
@@ -371,5 +312,7 @@ public class GroupCharObjsController
             m_charObjs.Clear();
             m_charObjs = null;
         }
+
+
     }
 }
