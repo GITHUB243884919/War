@@ -100,8 +100,9 @@ public class GroupCharObjsController
             //先变成一字型
             //在执行Arrive
             Debug.Log("不是一字型，要变成一字型" + m_center);
-            //Vector3 _lookAt = 
-            SwitchFormation(m_arriveFormation, m_center, m_center + m_center.normalized * m_radius);
+            
+            //SwitchFormation(m_arriveFormation, m_center, m_center + m_center.normalized * m_radius);
+            SwitchFormation(m_arriveFormation, start, target);
             m_arrivedCallback = delegate()
             {
                 Debug.Log("一字型ok");

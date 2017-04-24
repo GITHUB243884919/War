@@ -117,8 +117,10 @@ public class Test_AI_Group_2 : MonoBehaviour
         m_groupCtr.AI_Arrive(new Vector3(64f, 0f, 64f), new Vector3(32f, 0f, 32f), 5f,
             delegate()
             {
+                //m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
+                //m_groupCtr.m_center, m_groupCtr.m_lookAt);
                 m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
-                m_groupCtr.m_center, m_groupCtr.m_lookAt);
+                    new Vector3(64f, 0f, 64f), new Vector3(32f, 0f, 32f));
             });
     }
 
