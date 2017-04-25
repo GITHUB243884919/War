@@ -90,8 +90,8 @@ public class GroupCharObjsController
                 m_charObjs[i].AI_Arrive(_start, _target, speed,
                     delegate()
                     {
-                        Debug.Log("AI_Arrive 中执行CheckArrived " + target);
-                        CheckArrived(charObj, target);
+                        Debug.Log("AI_Arrive 中执行CheckArrived " + Time.realtimeSinceStartup + " " + target);
+                        CheckArrived(charObj, target - start);
                     });
             }
         }
@@ -103,11 +103,11 @@ public class GroupCharObjsController
             
             //SwitchFormation(m_arriveFormation, m_center, m_center + m_center.normalized * m_radius);
             SwitchFormation(m_arriveFormation, start, target);
+            //m_arrivedCallback = delegate()
+            //{
+            //    Debug.Log("一字型ok");
+            //};
             m_arrivedCallback = delegate()
-            {
-                Debug.Log("一字型ok");
-            };
-            m_arrivedCallback += delegate()
             {
                 m_arrivedCallback = callback;
                 for (int i = 0; i < m_charObjs.Count; i++)
@@ -118,7 +118,7 @@ public class GroupCharObjsController
                     m_charObjs[i].AI_Arrive(_start, _target, speed,
                         delegate()
                         {
-                            CheckArrived(charObj, target);
+                            CheckArrived(charObj, target - start);
                         });
                 }
             };
@@ -201,6 +201,9 @@ public class GroupCharObjsController
         element.Arrived = true;
         //调整朝向
         charObj.AI_LookAt(charObj.GameObject.transform.position, lookAt + lookAt.normalized * (m_radius + 1f));
+        //Debug.Log("xxxxxxxxxxxx" + Time.realtimeSinceStartup + " " + lookAt);
+        charObj.AI_LookAt(charObj.GameObject.transform.position,
+            m_lookAt + (lookAt).normalized * (m_radius + 1f));
         //检查所有的到达标志
         bool allArrived = true;
         foreach (var e in m_elments.Values)
