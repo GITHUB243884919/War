@@ -21,6 +21,9 @@ public class AudioManager : MonoBehaviour
 
     private AudioSource m_audioSource = null;
 
+    public Transform CameraTrs { get; set; }
+
+    private readonly static float MAX_DISTANCE = 5f;
     public static AudioManager Instance
     {
         get
@@ -33,6 +36,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    
     public void PlaySound(string path, Vector3 position)
     {
         bool retCode        = false;
@@ -58,7 +62,25 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        AudioSource.PlayClipAtPoint(audioClip, position);
+        if (CameraTrs == null)
+        {
+            m_audioSource.PlayOneShot(audioClip);
+        }
+        else
+        {
+            float distance = (position - CameraTrs.position).magnitude;
+            if (distance < MAX_DISTANCE)
+            {
+                AudioSource.PlayClipAtPoint(audioClip, position);
+                Debug.Log((CameraTrs.position - position).magnitude + "" + position);
+            }
+            else
+            {
+                Vector3 _position = MAX_DISTANCE *
+                    (position - CameraTrs.position).normalized;
+                AudioSource.PlayClipAtPoint(audioClip, _position);
+            }
+        }
     }
 
     public void PlayMusic(string path, bool loop)
