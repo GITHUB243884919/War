@@ -125,6 +125,72 @@ public class GroupCharObjsController
         }
     }
 
+    public void AI_Attack()
+    {
+        //BattleObjManager.Instance.StartCoroutine(Attack_1());
+
+        //for (int i = 0; i < m_charObjs.Count; i++)
+        //{
+        //    BattleObjManager.Instance.StartCoroutine(Attack_2(i));
+        //}
+
+        //BattleObjManager.Instance.StartCoroutine(Attack_3());
+
+        for (int i = 0; i < m_charObjs.Count; i++)
+        {
+
+            m_charObjs[i].AI_Attack(m_charObjs[i].GameObject.transform.position,
+                m_charObjs[i].GameObject.transform.position, Random.Range(0.5f, 2.5f));
+
+        }
+    }
+
+    public IEnumerator Attack_1()
+    {
+        yield return null;
+
+        for(int i = 0; i < m_charObjs.Count; i++)
+        {
+            m_charObjs[i].AI_Attack(m_charObjs[i].GameObject.transform.position,
+                m_charObjs[i].GameObject.transform.position, 0);
+            //yield return new WaitForSeconds(Random.Range(1f, 3f));
+            yield return new WaitForSeconds(2f);
+        }
+    }
+    public IEnumerator Attack_2(int i)
+    {
+        yield return new WaitForSeconds(Random.Range(1f, 3f));
+        m_charObjs[i].AI_Attack(m_charObjs[i].GameObject.transform.position,
+            m_charObjs[i].GameObject.transform.position, 0);
+    }
+
+    public IEnumerator Attack_3()
+    {
+        //yield return new WaitForSeconds(Random.Range(1f, 3f));
+        //m_charObjs[i].AI_Attack(m_charObjs[i].GameObject.transform.position,
+        //    m_charObjs[i].GameObject.transform.position, 0);
+        int first = Random.Range(0, m_charObjs.Count);
+        Debug.Log(first);
+        m_charObjs[first].AI_Attack(m_charObjs[first].GameObject.transform.position,
+            m_charObjs[first].GameObject.transform.position, 0);
+        for(int i = 0; i < first; i++)
+        {
+            m_charObjs[i].AI_Attack(m_charObjs[i].GameObject.transform.position,
+                m_charObjs[i].GameObject.transform.position, 0);
+            Debug.Log(i);
+            yield return new WaitForSeconds(Random.Range(0.5f, 1f));
+        }
+
+        for (int i = first + 1; i < m_charObjs.Count; i++)
+        {
+            m_charObjs[i].AI_Attack(m_charObjs[i].GameObject.transform.position,
+                m_charObjs[i].GameObject.transform.position, 0);
+            Debug.Log(i);
+            yield return new WaitForSeconds(Random.Range(1f, 1.5f));
+        }
+
+    }
+
     void CacheObjs(GroupCharObjsElement[] elments)
     {
         if (m_isCached)
