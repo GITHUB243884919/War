@@ -76,8 +76,8 @@ public class AudioManager : MonoBehaviour
             }
             else
             {
-                Vector3 _position = MAX_DISTANCE *
-                    (position - CameraTrs.position).normalized;
+                Vector3 _position = CameraTrs.position + 
+                    MAX_DISTANCE * (position - CameraTrs.position).normalized;
                 AudioSource.PlayClipAtPoint(audioClip, _position);
             }
         }

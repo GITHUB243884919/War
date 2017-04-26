@@ -7,10 +7,10 @@ public class Audio_Test_1 : MonoBehaviour {
     CharObj m_charObj = null;
 	void Start () 
     {
-        //AudioManager.Instance.CameraTrs = Camera.main.GetComponent<Camera>().transform;
+        AudioManager.Instance.CameraTrs = Camera.main.GetComponent<Camera>().transform;
         
-        AudioManager.Instance.PlayMusic("Audio/BGM_Login", true);
-        AudioManager.Instance.PlayMusic("Audio/TankMove", true);
+        //AudioManager.Instance.PlayMusic("Audio/BGM_Login", true);
+        //AudioManager.Instance.PlayMusic("Audio/TankMove", true);
         m_charObj = BattleObjManager.Instance.BorrowCharObj(
             BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK,
             0, 0);
@@ -19,11 +19,11 @@ public class Audio_Test_1 : MonoBehaviour {
         Vector3 tankPos = new Vector3(10f, 0, 0);
 
         //Debug.Log((AudioManager.Instance.CameraTrs.position - tankPos).magnitude);
-        //m_charObj.AI_Attack(tankPos, tankPos, 0f);
+        m_charObj.AI_Attack(tankPos, tankPos, 0f);
 
         //m_charObj.AI_Attack(Vector3.zero, Vector3.zero, 0f);
 
-        //StartCoroutine(NextAudio());
+        StartCoroutine(NextAudio());
 	}
 
     IEnumerator NextAudio()
