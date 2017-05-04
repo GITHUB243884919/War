@@ -14,7 +14,7 @@ using System.Collections;
 public class CharObjCreator : QObjCreator<CharObj>
 {
     //被生成并克隆的对象，称为种子。春天把一个坦克埋进去，到秋天长出好多坦克:)
-    private GameObject    m_seed          = null;
+    private static GameObject    s_seed          = null;
     private GameObject    m_meshbakerGo   = null;
     private MB3_MeshBaker m_meshBaker     = null;
     private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
@@ -69,13 +69,16 @@ public class CharObjCreator : QObjCreator<CharObj>
             return;
         }
 
-        m_seed = ResourcesManagerMediator.GetGameObjectFromResourcesManager(paths[3]);
-        if (m_seed == null)
+        if (s_seed == null)
         {
-            Debug.LogError("加载种子资源失败 " + paths[3]);
-            return;
+            s_seed = ResourcesManagerMediator.GetGameObjectFromResourcesManager(paths[3]);
+            if (s_seed == null)
+            {
+                Debug.LogError("加载种子资源失败 " + paths[3]);
+                return;
+            }
+            s_seed.transform.position = CharObj.INIT_POS;
         }
-        m_seed.transform.position = CharObj.INIT_POS;
 
         m_count = count;
     }
@@ -88,7 +91,7 @@ public class CharObjCreator : QObjCreator<CharObj>
         CharObj[]    charObjs = new CharObj[m_count];
         for (int i = 0; i < m_count; i++)
         {
-            GameObject go = GameObject.Instantiate<GameObject>(m_seed);
+            GameObject go = GameObject.Instantiate<GameObject>(s_seed);
             
 #if _WAR_TEST_
             MeshBakerManager.Instance.AddGo(go);
@@ -107,7 +110,7 @@ public class CharObjCreator : QObjCreator<CharObj>
 
         //M_Build_Jeep_Seed模型不能合并，先跳过
         //Debug.Log(m_seed.name);
-        if (m_seed.name == "M_Build_Jeep_Seed(Clone)")
+        if (s_seed.name == "M_Build_Jeep_Seed(Clone)")
         {
             return charObjs;
         }
@@ -116,7 +119,7 @@ public class CharObjCreator : QObjCreator<CharObj>
         m_meshBaker.Apply();
 
 #if _WAR_TEST_
-        MeshBakerManager.Instance.AddCombine(m_meshBaker, m_seed, m_meshbakerGo);
+        MeshBakerManager.Instance.AddCombine(m_meshBaker, s_seed, m_meshbakerGo);
 #endif
         return charObjs;
     }
