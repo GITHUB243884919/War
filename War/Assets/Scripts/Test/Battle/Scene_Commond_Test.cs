@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Scene_Commond_Test : MonoBehaviour
 {
-    bool m_withEffect = true;
+    bool m_withEffect = false;
     int m_effectCycle = 0;
     bool m_wait = false;
     void Start()
@@ -17,19 +17,19 @@ public class Scene_Commond_Test : MonoBehaviour
 
     public void BtnClick()
     {
-        Debug.Log("Begin click " + Time.realtimeSinceStartup);
-        //StartCoroutine("CreateTanks");
-        Profiler.BeginSample("xxxxxxxxxxxxxxxxxxxxxx");
-        Debug.Log(Time.realtimeSinceStartup);
-        for (int i = 0; i < 128; i++)
-        {
-            //CreateTank(i, false, false);
-            //CreateTank(i, true, false);
-            CreateTank_Arrive_Attack(i, true, true);
-        }
-        Debug.Log(Time.realtimeSinceStartup);
-        Profiler.EndSample();
-        Debug.Log("End click " + Time.realtimeSinceStartup);
+        //Debug.Log("Begin click " + Time.realtimeSinceStartup);
+        StartCoroutine("CreateTanks");
+        //Profiler.BeginSample("xxxxxxxxxxxxxxxxxxxxxx");
+        //Debug.Log(Time.realtimeSinceStartup);
+        //for (int i = 0; i < 128; i++)
+        //{
+        //    //CreateTank(i, false, false);
+        //    //CreateTank(i, true, false);
+        //    CreateTank_Arrive_Attack(i, true, true);
+        //}
+        //Debug.Log(Time.realtimeSinceStartup);
+        //Profiler.EndSample();
+        //Debug.Log("End click " + Time.realtimeSinceStartup);
         //m_effectCycle++;
         //if (m_effectCycle > 1)
         //{
@@ -49,8 +49,8 @@ public class Scene_Commond_Test : MonoBehaviour
         //for (int i = 0; i < 1; i++)
         {
             //CreateTank_Arrive_Attack(i, false, false);
-            //CreateTank_Arrive_Attack(i, true, false);
-            CreateTank_Arrive_Attack(i, true, true);
+            CreateTank_Arrive_Attack(i, true, false);
+            //CreateTank_Arrive_Attack(i, true, true);
             //yield return null;
         }
         m_effectCycle++;
@@ -73,7 +73,9 @@ public class Scene_Commond_Test : MonoBehaviour
     void CreateTank_Arrive_Attack(int entityID, bool withAI, bool withEffect)
     {
         BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK;
+            //= BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK;
+            //= BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
         //int serverEntityID = entityID;
         int serverEntityType = 1;
 

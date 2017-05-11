@@ -15,26 +15,29 @@ public class GroupCharObjsElement
     public bool Arrived { get; set; }
 }
 
+
 public class GroupCharObjsController
 {
     public enum E_FORMATION_TYPE
     {
-        //HORIZONTAL_LINE, 
-        //VERTICAL_LINE,  
         TARGET_NONE,
-        //TARGET_HORIZONTAL_LINE, //面朝目标横向一字型
-        TARGET_VERTICAL_LINE,   //面朝目标纵向一字型
-        TARGET_TRANGLE,         //面朝目标三角形
-        TARGET_CYCLE            //面朝目标散开
+        TARGET_VERTICAL_LINE,    //面朝目标纵向一字型
+        TARGET_CYCLE,            //面朝目标散开
+        TARGET_CYCLE_CENTER,     //面朝目标散开有一个站中间
+        TARGET_ATTACH_CAPTION,   //面朝目标并基于队长模型上的挂点
     }
 
     public static readonly int MIN_CHAROBJ_COUNT = 2;
 
+    //CharObj对象缓存
     List<CharObj> m_charObjs = new List<CharObj>();
+
+    //CharObj对象元素缓存（里面不包含对象，初始时只包含对象的ID）
     Dictionary<int, GroupCharObjsElement> m_elments 
         = new Dictionary<int, GroupCharObjsElement>();
 
     bool m_isCached = false;
+
     //队形形成的点的集合
     List<Vector3> m_formationPoints = new List<Vector3>();
 
@@ -53,6 +56,24 @@ public class GroupCharObjsController
 
     public delegate void ArrivedCallback();
     public ArrivedCallback m_arrivedCallback = null;
+
+    //public void Init(GroupCharObjsParam param, E_FORMATION_TYPE formationType,
+    //    Vector3 start, Vector3 lookAt)
+    //{
+    //    GroupCharObjsElement[] elements = 
+    //        new GroupCharObjsElement[param.m_objTypes.Count];
+
+    //    for(int i = 0; i < elements.Length; i++)
+    //    {
+    //        elements[i].ServerEntityID = 
+    //            BattleObjEntityIDManager.Instance.GenEntityID();
+    //        elements[i].Type = param.m_objTypes[i];
+    //    }
+
+    //    Init(elements, formationType, start, lookAt);
+
+    //}
+
     public void Init(GroupCharObjsElement[] elments, 
         E_FORMATION_TYPE formation, Vector3 start, Vector3 lookAt)
     {
@@ -242,7 +263,12 @@ public class GroupCharObjsController
                 Formation_TargetCycle(center, m_radius, lookAtDeg, lookAt,
                     count, ref m_formationPoints);
                 break;
+            case E_FORMATION_TYPE.TARGET_CYCLE_CENTER:
+                Formation_TargetCycleCenter(center, m_radius, lookAtDeg, lookAt,
+                    count, ref m_formationPoints);
+                break;
             default:
+                Debug.LogError("没有这种阵型的实现 " + formation.ToString());
                 break;
 
         }
@@ -357,6 +383,22 @@ public class GroupCharObjsController
                 center, radius, orginDeg + i * tempDeg);
             formationPoints.Add(p);
         }
+    }
+
+    void Formation_TargetCycleCenter(Vector3 center, float radius,
+        float orginDeg, Vector3 target, int count,
+        ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
+        int _count = count - 1;
+        float tempDeg = 360 / _count;
+        for (int i = 0; i < _count; i++)
+        {
+            Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                center, radius, orginDeg + i * tempDeg);
+            formationPoints.Add(p);
+        }
+        formationPoints.Add(center);
     }
 
     public void Release()

@@ -64,25 +64,25 @@ public class Test_AI_Group_2 : MonoBehaviour
                 GroupCharObjsController.E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
                 //GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE;
             m_groupCtr.Init(elements, orgFormation, new Vector3(32f, 0f, 32f), new Vector3(64f, 0f, 64f));
-            m_groupCtr.AI_Attack();
+            //m_groupCtr.AI_Attack();
             //GroupCharObjsController.E_FORMATION_TYPE switchFormation =
             //    GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE;
             //StartCoroutine(SwitchFormation(switchFormation, new Vector3(32f, 0f, 32f), new Vector3(64f, 0f, 64f)));
 
             //Debug.Log(Time.realtimeSinceStartup);
-            //Vector3 start = new Vector3(32f, 0f, 32f);
-            //Vector3 target = new Vector3(64f, 0f, 64f);
-            //m_groupCtr.AI_Arrive(start, target, 5f,
-            //    delegate()
-            //    {
-            //        //Debug.Log(Time.realtimeSinceStartup);
-            //        //m_groupCtr.m_center = target;
-            //        //m_groupCtr.m_lookAt = start;
-            //        m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
-            //            target, target + target.normalized * m_groupCtr.m_radius);
-            //    });
+            Vector3 start = new Vector3(32f, 0f, 32f);
+            Vector3 target = new Vector3(64f, 0f, 64f);
+            m_groupCtr.AI_Arrive(start, target, 5f,
+                delegate()
+                {
+                    //Debug.Log(Time.realtimeSinceStartup);
+                    //m_groupCtr.m_center = target;
+                    //m_groupCtr.m_lookAt = start;
+                    m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
+                        target, target + target.normalized * m_groupCtr.m_radius);
+                });
 
-            //StartCoroutine(WaitJob());
+            StartCoroutine(WaitJob());
         }
 
     }

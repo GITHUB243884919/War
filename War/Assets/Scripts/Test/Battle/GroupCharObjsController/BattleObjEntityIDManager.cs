@@ -15,7 +15,7 @@ public class BattleObjEntityIDManager
 {
     private static BattleObjEntityIDManager s_instance = null;
     private int m_entityID = int.MinValue;
-    public BattleObjEntityIDManager Instance 
+    public static BattleObjEntityIDManager Instance 
     {
         get 
         {
