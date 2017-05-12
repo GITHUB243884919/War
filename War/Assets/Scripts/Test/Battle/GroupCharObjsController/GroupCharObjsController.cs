@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UF_FrameWork;
 
+using E_GROUP_COMMOND = GroupCommondFormationParam.E_GROUP_COMMOND;
+using E_BATTLE_OBJECT_TYPE = BattleObjManager.E_BATTLE_OBJECT_TYPE;
+
 #if _LOG_MEDIATOR_
 using Debug = LogMediator;
 #endif
@@ -57,29 +60,34 @@ public class GroupCharObjsController
     public delegate void ArrivedCallback();
     public ArrivedCallback m_arrivedCallback = null;
 
-    //public void Init(GroupCharObjsParam param, E_FORMATION_TYPE formationType,
-    //    Vector3 start, Vector3 lookAt)
-    //{
-    //    GroupCharObjsElement[] elements = 
-    //        new GroupCharObjsElement[param.m_objTypes.Count];
+    public void Init(int paramID, E_GROUP_COMMOND groupCommond,
+        Vector3 start, Vector3 lookAt)
+    {
+        GroupCommondFormationParam param =
+            GroupCommondFormationParamManager.Instance.GetParam(paramID);
 
-    //    for(int i = 0; i < elements.Length; i++)
-    //    {
-    //        elements[i].ServerEntityID = 
-    //            BattleObjEntityIDManager.Instance.GenEntityID();
-    //        elements[i].Type = param.m_objTypes[i];
-    //    }
+        E_BATTLE_OBJECT_TYPE [] objTypes = param.GetCharObjTypesParam();
 
-    //    Init(elements, formationType, start, lookAt);
+        GroupCharObjsElement[] elements =
+            new GroupCharObjsElement[objTypes.Length];
 
-    //}
+        for(int i = 0; i < objTypes.Length; i++)
+        {
+            elements[i].ServerEntityID = 
+                BattleObjEntityIDManager.Instance.GenEntityID();
+            elements[i].Type = objTypes[i];
+        }
 
-    public void Init(GroupCharObjsElement[] elments, 
+        Init(elements, param.GetFormationParam(groupCommond).FormationType, start, lookAt);
+
+    }
+
+    public void Init(GroupCharObjsElement[] elements, 
         E_FORMATION_TYPE formation, Vector3 start, Vector3 lookAt)
     {
         bool retCode = false;
 
-        CacheObjs(elments);
+        CacheObjs(elements);
 
         retCode = SetFormationPositions(
             m_charObjs.Count, formation, true,

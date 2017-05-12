@@ -56,6 +56,18 @@ public class GroupCommondFormationParam
         m_charObjTypes.AddRange(types);
     }
 
+    public E_BATTLE_OBJECT_TYPE[] GetCharObjTypesParam()
+    {
+        E_BATTLE_OBJECT_TYPE[] types = null;
+        
+        if (m_charObjTypes!= null)
+        {
+            types = m_charObjTypes.ToArray();
+        }
+
+        return types;
+    }
+
     /// <summary>
     /// 队形参数有多个，因此本函数需要调用多次
     /// </summary>
@@ -82,6 +94,18 @@ public class GroupCommondFormationParam
         }
 
         m_formationParams.Add(groupCommond, formationParam);
+    }
+
+    public GroupFormationParam GetFormationParam(E_GROUP_COMMOND groupCommond)
+    {
+        GroupFormationParam param = null;
+        
+        if (m_formationParams != null)
+        {
+            m_formationParams.TryGetValue(groupCommond, out param);
+        }
+
+        return param;
     }
 
     public void Release()
