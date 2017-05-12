@@ -1,0 +1,14 @@
+E_BATTLE_OBJECT_TYPE
+2        M_ARM_TANK,            //坦克
+3        M_ARM_AIRPLANE_01,     //飞机
+4        M_ARM_ENGINEERCAR,     //工程车
+5        M_ARM_ENGINEERCORPS,   //士兵
+6        M_BUILD_JEEP,          //救护吉普
+7        M_ARM_ARTILLERY        //火炮
+
+E_FORMATION_TYPE
+0        TARGET_NONE,
+1        TARGET_VERTICAL_LINE,    //面朝目标纵向一字型
+2        TARGET_CYCLE,            //面朝目标散开
+3        TARGET_CYCLE_CENTER,     //面朝目标散开有一个站中间
+4        TARGET_ATTACH_CAPTION,   //面朝目标并基于队长模型上的挂点

@@ -20,7 +20,7 @@ public class GroupCharObjsController
 {
     public enum E_FORMATION_TYPE
     {
-        TARGET_NONE,
+        NONE,
         TARGET_VERTICAL_LINE,    //面朝目标纵向一字型
         TARGET_CYCLE,            //面朝目标散开
         TARGET_CYCLE_CENTER,     //面朝目标散开有一个站中间
@@ -49,7 +49,7 @@ public class GroupCharObjsController
     public float   m_radius = 5f;
     //阵型的类型
     public E_FORMATION_TYPE m_formation 
-        = E_FORMATION_TYPE.TARGET_NONE;
+        = E_FORMATION_TYPE.NONE;
     //行走的的阵型
     public E_FORMATION_TYPE m_arriveFormation
         = E_FORMATION_TYPE.TARGET_VERTICAL_LINE;

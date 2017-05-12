@@ -1,0 +1,4 @@
+ID      Type   Radius  Desc
+10       1      3       士兵队移动
+11       1      3       坦克队移动
+

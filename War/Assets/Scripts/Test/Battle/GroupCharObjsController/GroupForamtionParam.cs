@@ -21,26 +21,7 @@ public abstract class GroupFormationParam
 
     //队形类型
     public E_FORMATION_TYPE FormationType { get; set; }
-
-    //对象类型集（坦克，士兵。。。。的混合，或者是单个）
-    public List<E_BATTLE_OBJECT_TYPE> m_objTypes =
-        new List<E_BATTLE_OBJECT_TYPE>();
-
-    public void AddCharObjType(E_BATTLE_OBJECT_TYPE type)
-    {
-        m_objTypes.Add(type);
-    }
-
-    public void Release()
-    {
-        if (m_objTypes != null)
-        {
-            m_objTypes.Clear();
-            m_objTypes = null;
-        }
-    }
 }
-
 
 public class TargetVerticalLineFormationParam : GroupFormationParam
 {
@@ -93,16 +74,17 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
 /// 
 /// 游戏中一共有多少种队形，相同的队形由于参数不同可能会重复
 /// </summary>
-public class GroupFormationParamManager1
+public class GroupFormationParamManager
 {
-    private static GroupFormationParamManager1 s_instance = null;
-    public static GroupFormationParamManager1 Instance
+    private static GroupFormationParamManager s_instance = null;
+    public static GroupFormationParamManager Instance
     {
         get
         {
             if (s_instance == null)
             {
-                s_instance = new GroupFormationParamManager1();
+                s_instance = new GroupFormationParamManager();
+                s_instance.Init();
             }
 
             return s_instance;
@@ -112,7 +94,38 @@ public class GroupFormationParamManager1
     Dictionary<int, GroupFormationParam> m_params =
         new Dictionary<int, GroupFormationParam>();
 
-    public void AddParam(int paramID, GroupFormationParam param)
+    void Init()
+    {
+        GroupFormationParam[] lines =
+            GroupFormationParamConfigerMediator.GetTargetVerticalLineFormationParams();
+        for(int i = 0; i < lines.Length; i++)
+        {
+            AddParam(lines[i].ParamID, lines[i]);
+        }
+
+        GroupFormationParam[] cycles =
+            GroupFormationParamConfigerMediator.GetTargetCycleFormationParams();
+        for (int i = 0; i < cycles.Length; i++)
+        {
+            AddParam(cycles[i].ParamID, cycles[i]);
+        }
+
+        GroupFormationParam[] cycleCenters =
+            GroupFormationParamConfigerMediator.GetTargetCycleCenterFormationParams();
+        for (int i = 0; i < cycleCenters.Length; i++)
+        {
+            AddParam(cycleCenters[i].ParamID, cycleCenters[i]);
+        }
+
+        GroupFormationParam[] attachs =
+            GroupFormationParamConfigerMediator.GetTargetAttachCaptionFormationParams();
+        for (int i = 0; i < cycleCenters.Length; i++)
+        {
+            AddParam(attachs[i].ParamID, attachs[i]);
+        }
+    }
+
+    void AddParam(int paramID, GroupFormationParam param)
     {
         bool retCode = false;
         GroupFormationParam _param = null;
@@ -135,74 +148,13 @@ public class GroupFormationParamManager1
         
         return param;
     }
-}
 
-public class GroupFormationParamConfigerMediator
-{
-    public static TargetVerticalLineFormationParam [] GetTargetVerticalLineFormationParams()
+    public void Release()
     {
-        TargetVerticalLineFormationParam [] lines = null;
-
-        lines = new TargetVerticalLineFormationParam[3];
-
-        TargetVerticalLineFormationParam soldierLine = 
-            new TargetVerticalLineFormationParam();
-        soldierLine.ParamID = 0;
-        soldierLine.Radius = 3f;
-        soldierLine.AddCharObjType(E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS);
-        soldierLine.AddCharObjType(E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS);
-        soldierLine.AddCharObjType(E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS);
-
-
-        lines[0] = soldierLine;
-
-
-        return lines;
-    }
-
-    //E_BATTLE_OBJECT_TYPE [] GetCharObjTypes(string charObjs)
-    //{
-    //    E_BATTLE_OBJECT_TYPE[] types = null;
-    //    //string 
-    //    return types;
-    //}
-
-    public static E_BATTLE_OBJECT_TYPE[] GetCharObjTypes(string charObjTypes)
-    {
-        bool retCode = false;
-
-        E_BATTLE_OBJECT_TYPE[] types = null;
-        string[] objTypes = charObjTypes.Split(',');
-        types = new E_BATTLE_OBJECT_TYPE[objTypes.Length];
-        for (int i = 0; i < objTypes.Length; i++)
+        if (m_params != null)
         {
-            int nParam = 0;
-            try
-            {
-                nParam = Convert.ToInt32(objTypes[i]);
-                retCode = true;
-            }
-            catch (Exception)
-            {
-                retCode = false;
-            }
-
-            if (!retCode)
-            {
-                Debug.LogError("参数非法");
-                break;
-            }
-
-            retCode = Enum.IsDefined(typeof(E_BATTLE_OBJECT_TYPE), nParam);
-            if (!retCode)
-            {
-                Debug.LogError("参数非法");
-                break;
-            }
-
-            types[i] = (E_BATTLE_OBJECT_TYPE)Enum.Parse(typeof(E_BATTLE_OBJECT_TYPE), objTypes[i]);
+            m_params.Clear();
         }
-
-        return types;
+        m_params = null;
     }
 }

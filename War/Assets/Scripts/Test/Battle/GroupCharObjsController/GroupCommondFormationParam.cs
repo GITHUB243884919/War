@@ -1,9 +1,9 @@
 ﻿/// <summary>
-/// 队形命令参数基
+/// 队形命令参数
 /// author: fanzhengyong
 /// date: 2017-05-11
 /// 
-/// 队形命令包含攻击，待机的队形参数
+/// 有多个什么类型的战斗对象组成Group队形，队形命令包含攻击，待机的队形参数
 /// </summary>
 /// 
 using UnityEngine;
@@ -29,33 +29,76 @@ public class GroupCommondFormationParam
     //public GroupFormationParam MoveParam;
     //public GroupFormationParam AttackParam;
     //public GroupFormationParam SkillParam;
-    Dictionary<E_GROUP_COMMOND, GroupFormationParam> m_params =
+    Dictionary<E_GROUP_COMMOND, GroupFormationParam> m_formationParams =
         new Dictionary<E_GROUP_COMMOND, GroupFormationParam>();
 
-    //用英文逗号(，)分割的对象编号（数字）
-    public string CharObjs { get; set; }
+    List<E_BATTLE_OBJECT_TYPE> m_charObjTypes = new List<E_BATTLE_OBJECT_TYPE>();
 
-    public void AddParam(E_GROUP_COMMOND groupCommond, GroupFormationParam param)
+    /// <summary>
+    /// 设置m_charObjTypes
+    /// </summary>
+    /// <param name="param">用英文逗号(，)分割的对象编号（数字）</param>
+    public void SetCharObjTypesParam(string param)
     {
-        GroupFormationParam _param = null;
-        bool retCode = false;
-
-        retCode = m_params.TryGetValue(groupCommond, out _param);
-        if (retCode)
+        if (string.IsNullOrEmpty(param))
         {
-            Debug.LogError("参数重复");
+            Debug.LogError("CharObjTypes参数为空");
             return;
         }
 
-        m_params.Add(groupCommond, param);
+        if (m_charObjTypes != null && m_charObjTypes.Count > 0)
+        {
+            m_charObjTypes.Clear();
+        }
+
+        E_BATTLE_OBJECT_TYPE [] types = ParseCharObjTypes(param);
+
+        m_charObjTypes.AddRange(types);
     }
 
-    public E_BATTLE_OBJECT_TYPE[] GetCharObjTypes()
+    /// <summary>
+    /// 队形参数有多个，因此本函数需要调用多次
+    /// </summary>
+    /// <param name="groupCommond"></param>
+    /// <param name="formationParamID"></param>
+    public void AddFormationParam(E_GROUP_COMMOND groupCommond, int formationParamID)
+    {
+        bool retCode = false;
+
+        GroupFormationParam formationParam =
+            GroupFormationParamManager.Instance.GetParam(formationParamID);
+        if (formationParam == null)
+        {
+            Debug.LogError("队形参数没有取到");
+            return;
+        }
+
+        GroupFormationParam _formationParam = null;
+        retCode = m_formationParams.TryGetValue(groupCommond, out _formationParam);
+        if (retCode)
+        {
+            Debug.LogError("队形参数重复");
+            return;
+        }
+
+        m_formationParams.Add(groupCommond, formationParam);
+    }
+
+    public void Release()
+    {
+        if (m_formationParams != null)
+        {
+            m_formationParams.Clear();
+            m_formationParams = null;
+        }
+    }
+
+    public E_BATTLE_OBJECT_TYPE[] ParseCharObjTypes(string charObjTypes)
     {
         bool retCode = false;
 
         E_BATTLE_OBJECT_TYPE[] types = null;
-        string[] objTypes = CharObjs.Split(',');
+        string[] objTypes = charObjTypes.Split(',');
         types = new E_BATTLE_OBJECT_TYPE[objTypes.Length];
         for (int i = 0; i < objTypes.Length; i++)
         {
@@ -88,6 +131,7 @@ public class GroupCommondFormationParam
 
         return types;
     }
+
 }
 
 public class GroupCommondFormationParamManager
@@ -100,6 +144,7 @@ public class GroupCommondFormationParamManager
             if (s_instance == null)
             {
                 s_instance = new GroupCommondFormationParamManager();
+                s_instance.Init();
             }
 
             return s_instance;
@@ -108,6 +153,23 @@ public class GroupCommondFormationParamManager
 
     Dictionary<int, GroupCommondFormationParam> m_params =
         new Dictionary<int, GroupCommondFormationParam>();
+
+    void Init()
+    {
+        GroupCommondFormationParam[] _params =
+            GroupCommondFormationParamMediator.GetGroupCommondFormationParams();
+
+        if (_params == null)
+        {
+            Debug.LogError("GroupCommondFormationParam 配置读取失败");
+            return;
+        }
+
+        for(int i = 0; i < _params.Length; i++)
+        {
+            AddParam(_params[i].ParamID, _params[i]);
+        }
+    }
 
     public void AddParam(int paramID, GroupCommondFormationParam param)
     {
@@ -131,6 +193,19 @@ public class GroupCommondFormationParamManager
         m_params.TryGetValue(paramID, out param);
 
         return param;
+    }
+
+    public void Release()
+    {
+        if (m_params != null)
+        {
+            foreach(var param in m_params.Values)
+            {
+                param.Release();
+            }
+        }
+        m_params.Clear();
+        m_params = null;
     }
 }
 
