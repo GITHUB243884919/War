@@ -42,10 +42,10 @@ public class Test_AI_Group_3 : MonoBehaviour
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
         m_groupCtr.Init(300, E_GROUP_COMMOND.ATTACK,
-            new Vector3(32, 0, 32), new Vector3(10, 10, 10));
+            new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
-        //BattleObjManager.Instance.BorrowCharObj(BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK, 0, 1);
-        //BattleObjManager.Instance.BorrowCharObj(BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS, 1, 1);
+        //m_groupCtr.Init(300, E_GROUP_COMMOND.IDLE,
+        //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
     }
 

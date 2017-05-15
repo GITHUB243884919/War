@@ -126,32 +126,30 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
     {
         formationPoints.Clear();
 
-        Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
-            orgin, Radius, targetDeg);
-        formationPoints.Add(p);
-
         if (string.IsNullOrEmpty(AttachPoints))
         {
-            Debug.Log("队长挂点数据为空");
+            Debug.LogError("队长挂点数据为空");
             return;
         }
         string [] attachPoints = AttachPoints.Split(',');
         if (attachPoints.Length != charObjs.Count - 1)
         {
-            Debug.Log("队长挂点数目不正确");
+            Debug.LogError("队长挂点数目不正确");
             return;
         }
 
-        charObjs[0].GameObject.transform.position = p;
+        //非队长依赖挂点，所以要先把队长的位置和朝向设置好
+        charObjs[0].GameObject.transform.position = orgin;
+        charObjs[0].GameObject.transform.LookAt(target);
+        formationPoints.Add(orgin);
         for(int i = 0; i < attachPoints.Length; i++)
         {
-            Transform trs = charObjs[0].GameObject.transform.Find(attachPoints[i]);
+            Transform trs = charObjs[0].GameObject.transform.FindChild(attachPoints[i]);
             if (trs == null)
             {
-                Debug.Log("配置的挂点没找到");
+                Debug.LogError("配置的挂点没找到");
                 return;
             }
-            Debug.Log(trs.position + attachPoints[i]);
             formationPoints.Add(trs.position);
         }
     }
