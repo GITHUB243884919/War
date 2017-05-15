@@ -87,7 +87,7 @@ public class GroupCharObjsController
             elements[i] = element;
         }
 
-        Init(elements, param.GetFormationParam(groupCommond).FormationType, start, lookAt);
+        Init(elements, param.GetFormationParam(groupCommond), start, lookAt);
 
     }
 

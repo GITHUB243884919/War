@@ -119,6 +119,42 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
 
     //用英文逗号(，)分割的挂点名称（英文）
     public string AttachPoints { get; set; }
+
+    public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
+        float targetDeg, Vector3 target,
+        ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
+
+        Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+            orgin, Radius, targetDeg);
+        formationPoints.Add(p);
+
+        if (string.IsNullOrEmpty(AttachPoints))
+        {
+            Debug.Log("队长挂点数据为空");
+            return;
+        }
+        string [] attachPoints = AttachPoints.Split(',');
+        if (attachPoints.Length != charObjs.Count - 1)
+        {
+            Debug.Log("队长挂点数目不正确");
+            return;
+        }
+
+        charObjs[0].GameObject.transform.position = p;
+        for(int i = 0; i < attachPoints.Length; i++)
+        {
+            Transform trs = charObjs[0].GameObject.transform.Find(attachPoints[i]);
+            if (trs == null)
+            {
+                Debug.Log("配置的挂点没找到");
+                return;
+            }
+            Debug.Log(trs.position + attachPoints[i]);
+            formationPoints.Add(trs.position);
+        }
+    }
 }
 
 /// <summary>

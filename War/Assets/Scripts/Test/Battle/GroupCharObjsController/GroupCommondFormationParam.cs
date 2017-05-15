@@ -191,7 +191,7 @@ public class GroupCommondFormationParamManager
 
         for(int i = 0; i < _params.Length; i++)
         {
-            Debug.Log(_params[i].ParamID);
+            //Debug.Log(_params[i].ParamID);
             AddParam(_params[i].ParamID, _params[i]);
         }
     }

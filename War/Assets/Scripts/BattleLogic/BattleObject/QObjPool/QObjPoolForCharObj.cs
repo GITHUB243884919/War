@@ -14,7 +14,10 @@ using System.Collections;
 public class CharObjCreator : QObjCreator<CharObj>
 {
     //被生成并克隆的对象，称为种子。春天把一个坦克埋进去，到秋天长出好多坦克:)
-    private static GameObject    s_seed          = null;
+    //private static GameObject s_seed = null;
+    private GameObject    s_seed          = null;
+    /*这里暂时不能用static否则合并会出错*/
+    
     private GameObject    m_meshbakerGo   = null;
     private MB3_MeshBaker m_meshBaker     = null;
     private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
