@@ -55,7 +55,7 @@ public static class GroupCommondFormationParamMediator
             GroupCommondFormationParam.E_GROUP_COMMOND.ATTACK, 41);
         artillerys.AddFormationParam(
             GroupCommondFormationParam.E_GROUP_COMMOND.SKILL, 41);
-        _params[1] = artillerys;
+        _params[2] = artillerys;
 
         return _params;
     }

@@ -10,6 +10,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UF_FrameWork;
 
 using E_FORMATION_TYPE = GroupCharObjsController.E_FORMATION_TYPE;
 using E_BATTLE_OBJECT_TYPE = BattleObjManager.E_BATTLE_OBJECT_TYPE;
@@ -21,6 +22,12 @@ public abstract class GroupFormationParam
 
     //队形类型
     public E_FORMATION_TYPE FormationType { get; set; }
+
+    public virtual void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
+        float targetDeg, Vector3 target, ref List<Vector3> formationPoints)
+    {
+
+    }
 }
 
 public class TargetVerticalLineFormationParam : GroupFormationParam
@@ -31,6 +38,24 @@ public class TargetVerticalLineFormationParam : GroupFormationParam
     }
     
     public float Radius { get; set; }
+
+    public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
+        float targetDeg, Vector3 target,
+        ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
+        float angleDeg = 180f;
+        Vector3 dir = (target - orgin).normalized;
+        Vector3 fristPoint = orgin + dir * Radius;
+        Vector3 lastPoint = GeometryUtil.PositionInCycleByAngleDeg2D(orgin, Radius, targetDeg + angleDeg);
+        Debug.DrawLine(fristPoint, lastPoint, Color.blue, (fristPoint - lastPoint).magnitude);
+
+        float spaceOffset = (lastPoint - fristPoint).magnitude / (charObjs.Count - 1);
+        for (int i = 0; i < charObjs.Count; i++)
+        {
+            formationPoints.Add(fristPoint - dir * spaceOffset * i);
+        }
+    }
 }
 
 public class TargetCycleFormationParam : GroupFormationParam
@@ -41,6 +66,20 @@ public class TargetCycleFormationParam : GroupFormationParam
     }
 
     public float Radius { get; set; }
+
+    public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
+        float targetDeg, Vector3 target,
+        ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
+        float tempDeg = 360 / charObjs.Count;
+        for (int i = 0; i < charObjs.Count; i++)
+        {
+            Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                orgin, Radius, targetDeg + i * tempDeg);
+            formationPoints.Add(p);
+        }
+    }
 }
 
 public class TargetCycleCenterFormationParam : GroupFormationParam
@@ -51,6 +90,22 @@ public class TargetCycleCenterFormationParam : GroupFormationParam
     }
 
     public float Radius { get; set; }
+
+    public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
+        float targetDeg, Vector3 target,
+        ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
+        int _count = charObjs.Count - 1;
+        float tempDeg = 360 / _count;
+        for (int i = 0; i < _count; i++)
+        {
+            Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                orgin, Radius, targetDeg + i * tempDeg);
+            formationPoints.Add(p);
+        }
+        formationPoints.Add(orgin);
+    }
 }
 
 public class TargetAttachCaptionFormationParam : GroupFormationParam
@@ -119,7 +174,7 @@ public class GroupFormationParamManager
 
         GroupFormationParam[] attachs =
             GroupFormationParamConfigerMediator.GetTargetAttachCaptionFormationParams();
-        for (int i = 0; i < cycleCenters.Length; i++)
+        for (int i = 0; i < attachs.Length; i++)
         {
             AddParam(attachs[i].ParamID, attachs[i]);
         }

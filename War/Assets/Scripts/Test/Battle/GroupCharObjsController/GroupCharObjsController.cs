@@ -60,6 +60,13 @@ public class GroupCharObjsController
     public delegate void ArrivedCallback();
     public ArrivedCallback m_arrivedCallback = null;
 
+    /// <summary>
+    /// 带参数表接口
+    /// </summary>
+    /// <param name="paramID"></param>
+    /// <param name="groupCommond"></param>
+    /// <param name="start"></param>
+    /// <param name="lookAt"></param>
     public void Init(int paramID, E_GROUP_COMMOND groupCommond,
         Vector3 start, Vector3 lookAt)
     {
@@ -73,12 +80,45 @@ public class GroupCharObjsController
 
         for(int i = 0; i < objTypes.Length; i++)
         {
-            elements[i].ServerEntityID = 
+            GroupCharObjsElement element = new GroupCharObjsElement();
+            element.ServerEntityID = 
                 BattleObjEntityIDManager.Instance.GenEntityID();
-            elements[i].Type = objTypes[i];
+            element.Type = objTypes[i];
+            elements[i] = element;
         }
 
         Init(elements, param.GetFormationParam(groupCommond).FormationType, start, lookAt);
+
+    }
+
+    public void Init(GroupCharObjsElement[] elements, 
+        GroupFormationParam groupFormationParam, Vector3 start, Vector3 lookAt)
+    {
+
+        CacheObjs(elements);
+
+        SetFormationPositions(m_charObjs, groupFormationParam,
+            start, lookAt);
+
+        for (int i = 0; i < m_charObjs.Count; i++)
+        {
+            m_charObjs[i].AI_LookAt(m_formationPoints[i], lookAt);
+        }
+    }
+
+    public void SetFormationPositions(
+        List<CharObj> charObjs, GroupFormationParam groupFormationParam,
+        Vector3 center,  Vector3 lookAt)
+    {
+        m_center = center;
+        m_lookAt = lookAt;
+        m_formation = groupFormationParam.FormationType;
+
+        float lookAtRad = GeometryUtil.TwoPointAngleRad2D(center, lookAt);
+        float lookAtDeg = lookAtRad * Mathf.Rad2Deg;
+
+        groupFormationParam.SetFormationPositions(charObjs, center, lookAtDeg, 
+            lookAt, ref m_formationPoints);
 
     }
 
