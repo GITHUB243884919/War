@@ -157,7 +157,7 @@ public class GroupCharObjsController
             //m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
             //    lookAt - (m_formationPoints[i] - center), 2f,
             m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
-                m_formationPoints[i], 2f,
+                m_formationPoints[i], 1f,
                 delegate()
                 {
                     Debug.Log("SwitchFormation 中 Group执行CheckArrived" + lookAt);
@@ -169,12 +169,12 @@ public class GroupCharObjsController
     public void AI_Arrive_New(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
     {
         //查看阵型是否是一字型
-        Debug.Log(GroupFormationParamID + " " + 
-            Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID);
-
-        //if (m_formation == Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).FormationType)
+        //Debug.Log(GroupFormationParamID + " " + 
+        //    Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID);
+        
         if (GroupFormationParamID == Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID)
         {
+            Debug.Log("是ARRIVE的阵型 执行CharObj的ARRIVE");
             m_arrivedCallback = callback;
             for (int i = 0; i < m_charObjs.Count; i++)
             {
@@ -193,21 +193,25 @@ public class GroupCharObjsController
         {
             //不是ARRIVE的阵型先变成ARRIVE的阵型
             Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
-
             SwitchFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), m_center, target);
+            
+            //阵型调整完毕以后开始执行单个CharObj的Arrive
             m_arrivedCallback = delegate()
             {
+                Debug.Log("阵型调整完毕以后开始执行单个CharObj的Arrive");
                 m_arrivedCallback = callback;
                 for (int i = 0; i < m_charObjs.Count; i++)
                 {
                     Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
                     Vector3 _target = target + (_start - m_center);
                     CharObj charObj = m_charObjs[i];
+                    
                     m_charObjs[i].AI_Arrive(_start, _target, speed,
                         delegate()
                         {
                             CheckArrived(charObj, target - start);
                         });
+                    Debug.Log("Animator.speed = " +  m_charObjs[i].CharController.Animator.speed);
                 }
             };
         }
@@ -470,6 +474,7 @@ public class GroupCharObjsController
             {
                 e.Arrived = false;
             }
+            Debug.Log("m_arrivedCallback == null" + m_arrivedCallback != null);
             if (m_arrivedCallback != null)
             {
                 m_arrivedCallback();

@@ -22,7 +22,11 @@ public class M_Arm_Engineercorps_Commond : CharCommond
 
     public void OnIdle()
     {
-        Debug.Log("M_Arm_Engineercorps_Commond.Idle");
+        //Debug.Log("M_Arm_Engineercorps_Commond.Idle");
+        Debug.Log("OnIdle Stand " + Time.realtimeSinceStartup);
+        m_cctr.Animator.speed = 1f;
+        //m_cctr.Animator.SetTrigger("Move");
+        m_cctr.Animator.SetTrigger("Stand");
     }
 
     /// <summary>
@@ -93,6 +97,9 @@ public class M_Arm_Engineercorps_Commond : CharCommond
         //base.MoveAnimator();
         //m_cctr.Animator.SetBool("Move", true);
         //Debug.Log("M_Arm_Engineercorps_Commond MoveAnimator");
+
+        Debug.Log("MoveAnimator " + Time.realtimeSinceStartup);
+        m_cctr.Animator.ResetTrigger("Stand");
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Move");
     }
@@ -108,8 +115,10 @@ public class M_Arm_Engineercorps_Commond : CharCommond
 
     public override void OnArrived()
     {
-        m_cctr.Animator.speed = 1f;
-        m_cctr.Animator.SetTrigger("Stand");
+        //Debug.Log("OnArrived Stand " + Time.realtimeSinceStartup);
+        //m_cctr.Animator.speed = 1f;
+        //m_cctr.Animator.SetTrigger("Stand");
+        OnIdle();
     }
 
 	public override void Update() 

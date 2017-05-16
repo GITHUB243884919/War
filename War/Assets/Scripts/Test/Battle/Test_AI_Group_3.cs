@@ -11,11 +11,16 @@ public class Test_AI_Group_3 : MonoBehaviour
 {
     
     GroupCharObjsController m_groupCtr = null;
+    CharObj m_charObj = null;
     void Start()
     {
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(BtnClick);
         m_groupCtr = new GroupCharObjsController();
+
+        //m_charObj = BattleObjManager.Instance.BorrowCharObj(
+        // BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS,
+        //    0, 1);
     }
 
     public void BtnClick()
@@ -45,14 +50,49 @@ public class Test_AI_Group_3 : MonoBehaviour
         //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
 
         m_groupCtr.Init(300, E_GROUP_COMMOND.ATTACK,
-            new Vector3(32, 0, 32), new Vector3(64, 0, 32));
+            new Vector3(32, 0, 32), new Vector3(128, 0, 64));
 
         //m_groupCtr.Init(300, E_GROUP_COMMOND.IDLE,
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
         //StartCoroutine(SwitchFormation(E_GROUP_COMMOND.ATTACK));
+        //StartCoroutine(SwitchFormation(E_GROUP_COMMOND.ARRIVE));
+
+
         m_groupCtr.AI_Arrive_New(new Vector3(32, 0, 32),
             new Vector3(128, 0, 64), 1f, null);
+
+        //CharObj charObj = BattleObjManager.Instance.BorrowCharObj(
+        //    BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS,
+        //    0, 1);
+
+        //m_charObj.AI_Arrive(new Vector3(32, 0, 32), new Vector3(40, 0, 40), 1f,
+        //    delegate
+        //    {
+        //        m_charObj.AI_Arrive(new Vector3(40, 0, 40), new Vector3(64, 0, 64), 1f);
+        //        //StartCoroutine(TestSwitchCommond());
+        //    });
+
+
+        //m_charObj.CharController.Commond(CharController.E_COMMOND.IDLE);
+
+        
+
+    }
+
+    IEnumerator TestSwitchCommond()
+    {
+        yield return null;
+        //yield return new WaitForSeconds(0.5f);
+        //m_charObj.AI_Arrive(new Vector3(32, 0, 32), new Vector3(40, 0, 40), 1f,
+        //    delegate
+        //    {
+        //        //new WaitForSeconds(5f);
+        //        m_charObj.AI_Arrive(new Vector3(40, 0, 40), new Vector3(64, 0, 64), 1f);
+        //        m_charObj.CharController.Animator.SetTrigger("Move");
+        //    });
+
+        m_charObj.AI_Arrive(new Vector3(40, 0, 40), new Vector3(64, 0, 64), 1f);
 
     }
 
