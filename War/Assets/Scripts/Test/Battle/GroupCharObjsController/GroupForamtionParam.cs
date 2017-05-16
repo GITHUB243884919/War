@@ -23,6 +23,14 @@ public abstract class GroupFormationParam
     //队形类型
     public E_FORMATION_TYPE FormationType { get; set; }
 
+    /// <summary>
+    /// 形成队形的对象位置计算，具体由派生类根据不同的参数单独实现
+    /// </summary>
+    /// <param name="charObjs"></param>
+    /// <param name="orgin"></param>
+    /// <param name="targetDeg"></param>
+    /// <param name="target"></param>
+    /// <param name="formationPoints"></param>
     public virtual void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
         float targetDeg, Vector3 target, ref List<Vector3> formationPoints)
     {
@@ -47,8 +55,9 @@ public class TargetVerticalLineFormationParam : GroupFormationParam
         float angleDeg = 180f;
         Vector3 dir = (target - orgin).normalized;
         Vector3 fristPoint = orgin + dir * Radius;
-        Vector3 lastPoint = GeometryUtil.PositionInCycleByAngleDeg2D(orgin, Radius, targetDeg + angleDeg);
-        Debug.DrawLine(fristPoint, lastPoint, Color.blue, (fristPoint - lastPoint).magnitude);
+        Vector3 lastPoint = GeometryUtil.PositionInCycleByAngleDeg2D(
+            orgin, Radius, targetDeg + angleDeg);
+        //Debug.DrawLine(fristPoint, lastPoint, Color.blue, (fristPoint - lastPoint).magnitude);
 
         float spaceOffset = (lastPoint - fristPoint).magnitude / (charObjs.Count - 1);
         for (int i = 0; i < charObjs.Count; i++)
@@ -115,8 +124,6 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
         FormationType = E_FORMATION_TYPE.TARGET_ATTACH_CAPTION;
     }
 
-    public float Radius { get; set; }
-
     //用英文逗号(，)分割的挂点名称（英文）
     public string AttachPoints { get; set; }
 
@@ -138,13 +145,14 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
             return;
         }
 
-        //非队长依赖挂点，所以要先把队长的位置和朝向设置好
-        charObjs[0].GameObject.transform.position = orgin;
-        charObjs[0].GameObject.transform.LookAt(target);
+        //队长默认为第一个，非队长依赖挂点，所以要先把队长的位置和朝向设置好
+        GameObject captain = GameObject.Instantiate<GameObject>(charObjs[0].GameObject);
+        captain.transform.position = orgin;
+        captain.transform.LookAt(target);
         formationPoints.Add(orgin);
         for(int i = 0; i < attachPoints.Length; i++)
         {
-            Transform trs = charObjs[0].GameObject.transform.FindChild(attachPoints[i]);
+            Transform trs = captain.transform.FindChild(attachPoints[i]);
             if (trs == null)
             {
                 Debug.LogError("配置的挂点没找到");
@@ -152,6 +160,8 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
             }
             formationPoints.Add(trs.position);
         }
+        GameObject.Destroy(captain);
+        captain = null;
     }
 }
 

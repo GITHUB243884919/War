@@ -33,19 +33,19 @@ public class Test_AI_Group_3 : MonoBehaviour
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
         //m_groupCtr.Init(100, E_GROUP_COMMOND.IDLE,
-        //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+        //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
 
         //m_groupCtr.Init(200, E_GROUP_COMMOND.IDLE,
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
         //m_groupCtr.Init(200, E_GROUP_COMMOND.ATTACK,
-        //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+        //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
 
-        m_groupCtr.Init(300, E_GROUP_COMMOND.ATTACK,
+        //m_groupCtr.Init(300, E_GROUP_COMMOND.ATTACK,
+        //    new Vector3(32, 0, 32), new Vector3(64, 0, 32));
+
+        m_groupCtr.Init(300, E_GROUP_COMMOND.IDLE,
             new Vector3(32, 0, 32), new Vector3(10, 0, 10));
-
-        //m_groupCtr.Init(300, E_GROUP_COMMOND.IDLE,
-        //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
     }
 

@@ -1,4 +1,5 @@
-ID      Type   Radius  Desc
-0       1      3       士兵队移动
-1       1      3       坦克队移动
+ID      Type   AttachPoints                                        Desc
+40      4      Move_Attach_Point_1,Move_Attach_Point_2             炮队移动
+41      4      Move_Attach_Point_3,Move_Attach_Point_4             炮队攻击
+
 

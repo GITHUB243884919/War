@@ -83,14 +83,12 @@ public static class GroupFormationParamConfigerMediator
         TargetAttachCaptionFormationParam idle =
             new TargetAttachCaptionFormationParam();
         idle.ParamID = 40;
-        idle.Radius = 3f;
         idle.AttachPoints = "Move_Attach_Point_1,Move_Attach_Point_2";
         attachs[0] = idle;
 
         TargetAttachCaptionFormationParam attack =
             new TargetAttachCaptionFormationParam();
         attack.ParamID = 41;
-        attack.Radius = 3f;
         attack.AttachPoints = "Battle_Attach_Point_1,Battle_Attach_Point_2";
         attachs[1] = attack;
 
