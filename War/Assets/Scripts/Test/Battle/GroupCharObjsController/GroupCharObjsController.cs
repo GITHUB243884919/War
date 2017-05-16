@@ -60,8 +60,10 @@ public class GroupCharObjsController
     public delegate void ArrivedCallback();
     public ArrivedCallback m_arrivedCallback = null;
 
+    public GroupCommondFormationParam Param { get; set; }    
+    
     /// <summary>
-    /// 带参数表接口
+    /// 带参数表接口的最外层初始化函数（一级）
     /// </summary>
     /// <param name="paramID"></param>
     /// <param name="groupCommond"></param>
@@ -70,10 +72,9 @@ public class GroupCharObjsController
     public void Init(int paramID, E_GROUP_COMMOND groupCommond,
         Vector3 start, Vector3 lookAt)
     {
-        GroupCommondFormationParam param =
-            GroupCommondFormationParamManager.Instance.GetParam(paramID);
+        Param = GroupCommondFormationParamManager.Instance.GetParam(paramID);
 
-        E_BATTLE_OBJECT_TYPE [] objTypes = param.GetCharObjTypesParam();
+        E_BATTLE_OBJECT_TYPE[] objTypes = Param.GetCharObjTypesParam();
 
         GroupCharObjsElement[] elements =
             new GroupCharObjsElement[objTypes.Length];
@@ -87,18 +88,24 @@ public class GroupCharObjsController
             elements[i] = element;
         }
 
-        Init(elements, param.GetFormationParam(groupCommond), start, lookAt);
+        Init(elements, Param.GetFormationParam(groupCommond), start, lookAt);
 
     }
 
+    /// <summary>
+    /// 带参数表接口的最外层初始化函数（二级）
+    /// </summary>
+    /// <param name="elements"></param>
+    /// <param name="groupFormationParam"></param>
+    /// <param name="start"></param>
+    /// <param name="lookAt"></param>
     public void Init(GroupCharObjsElement[] elements, 
         GroupFormationParam groupFormationParam, Vector3 start, Vector3 lookAt)
     {
 
         CacheObjs(elements);
 
-        SetFormationPositions(m_charObjs, groupFormationParam,
-            start, lookAt);
+        SetFormationPositions(groupFormationParam, start, lookAt);
 
         for (int i = 0; i < m_charObjs.Count; i++)
         {
@@ -106,8 +113,14 @@ public class GroupCharObjsController
         }
     }
 
-    public void SetFormationPositions(
-        List<CharObj> charObjs, GroupFormationParam groupFormationParam,
+    /// <summary>
+    /// 设置某阵型的各个对象（CharObj）的位置
+    /// </summary>
+    /// <param name="charObjs"></param>
+    /// <param name="groupFormationParam"></param>
+    /// <param name="center"></param>
+    /// <param name="lookAt"></param>
+    public void SetFormationPositions(GroupFormationParam groupFormationParam,
         Vector3 center,  Vector3 lookAt)
     {
         m_center = center;
@@ -117,11 +130,96 @@ public class GroupCharObjsController
         float lookAtRad = GeometryUtil.TwoPointAngleRad2D(center, lookAt);
         float lookAtDeg = lookAtRad * Mathf.Rad2Deg;
 
-        groupFormationParam.SetFormationPositions(charObjs, center, lookAtDeg, 
+        groupFormationParam.SetFormationPositions(m_charObjs, center, lookAtDeg, 
             lookAt, ref m_formationPoints);
 
     }
 
+    /// <summary>
+    /// 阵型变换
+    /// </summary>
+    /// <param name="groupFormationParam"></param>
+    /// <param name="center"></param>
+    /// <param name="lookAt"></param>
+    public void SwitchFormation(GroupFormationParam groupFormationParam,
+        Vector3 center, Vector3 lookAt)
+    {
+        Debug.Log("切换阵型" + groupFormationParam.FormationType.ToString());
+
+        SetFormationPositions(groupFormationParam, center, lookAt);
+
+        for (int i = 0; i < m_charObjs.Count; i++)
+        {
+            //Debug.Log("移动到指定位置 " + m_formationPoints[i]);
+            CharObj charObj = m_charObjs[i];
+            //m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
+            //    lookAt - (m_formationPoints[i] - center), 2f,
+            m_charObjs[i].AI_Arrive(m_charObjs[i].GameObject.transform.position,
+                m_formationPoints[i], 2f,
+                delegate()
+                {
+                    Debug.Log("SwitchFormation 中 Group执行CheckArrived" + lookAt);
+                    CheckArrived(charObj, lookAt);
+                });
+        }
+    }
+
+    public void AI_Arrive_New(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
+    {
+        //查看阵型是否是一字型
+        if (m_formation == m_arriveFormation)
+        {
+            m_arrivedCallback = callback;
+            for (int i = 0; i < m_charObjs.Count; i++)
+            {
+                Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
+                Vector3 _target = target + (_start - m_center);
+                CharObj charObj = m_charObjs[i];
+                m_charObjs[i].AI_Arrive(_start, _target, speed,
+                    delegate()
+                    {
+                        Debug.Log("AI_Arrive 中执行CheckArrived " + Time.realtimeSinceStartup + " " + target);
+                        CheckArrived(charObj, target - start);
+                    });
+            }
+        }
+        else
+        {
+            //先变成一字型
+            //在执行Arrive
+            Debug.Log("不是一字型，要变成一字型" + m_center);
+
+            //SwitchFormation(m_arriveFormation, m_center, m_center + m_center.normalized * m_radius);
+            SwitchFormation(m_arriveFormation, start, target);
+            //m_arrivedCallback = delegate()
+            //{
+            //    Debug.Log("一字型ok");
+            //};
+            m_arrivedCallback = delegate()
+            {
+                m_arrivedCallback = callback;
+                for (int i = 0; i < m_charObjs.Count; i++)
+                {
+                    Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
+                    Vector3 _target = target + (_start - m_center);
+                    CharObj charObj = m_charObjs[i];
+                    m_charObjs[i].AI_Arrive(_start, _target, speed,
+                        delegate()
+                        {
+                            CheckArrived(charObj, target - start);
+                        });
+                }
+            };
+        }
+    }
+
+    /// <summary>
+    /// 老版本初始化
+    /// </summary>
+    /// <param name="elements"></param>
+    /// <param name="formation"></param>
+    /// <param name="start"></param>
+    /// <param name="lookAt"></param>
     public void Init(GroupCharObjsElement[] elements, 
         E_FORMATION_TYPE formation, Vector3 start, Vector3 lookAt)
     {
@@ -286,6 +384,15 @@ public class GroupCharObjsController
         m_isCached = true;
     }
 
+    /// <summary>
+    /// 老版本设置队形坐标
+    /// </summary>
+    /// <param name="count"></param>
+    /// <param name="formation"></param>
+    /// <param name="isStandCenter"></param>
+    /// <param name="center"></param>
+    /// <param name="lookAt"></param>
+    /// <returns></returns>
     public bool SetFormationPositions(
         int count, E_FORMATION_TYPE formation, bool isStandCenter, 
         Vector3 center,  Vector3 lookAt)

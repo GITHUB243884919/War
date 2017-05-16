@@ -32,6 +32,9 @@ public class Test_AI_Group_3 : MonoBehaviour
         //m_groupCtr.Init(100, E_GROUP_COMMOND.ATTACK,
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
+        m_groupCtr.Init(100, E_GROUP_COMMOND.IDLE,
+            new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+
         //m_groupCtr.Init(100, E_GROUP_COMMOND.IDLE,
         //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
 
@@ -44,21 +47,23 @@ public class Test_AI_Group_3 : MonoBehaviour
         //m_groupCtr.Init(300, E_GROUP_COMMOND.ATTACK,
         //    new Vector3(32, 0, 32), new Vector3(64, 0, 32));
 
-        m_groupCtr.Init(300, E_GROUP_COMMOND.IDLE,
-            new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+        //m_groupCtr.Init(300, E_GROUP_COMMOND.IDLE,
+        //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+
+        StartCoroutine(SwitchFormation(E_GROUP_COMMOND.ATTACK));
 
     }
 
-    //public IEnumerator SwitchFormation(
-    //    GroupCharObjsController.E_FORMATION_TYPE formation,
-    //    Vector3 target)
-    //{
+    public IEnumerator SwitchFormation(
+        E_GROUP_COMMOND  groupCommond)
+    {
 
-    //    Debug.Log("3秒后开始阵型变换");
-    //    yield return new WaitForSeconds(3f);
-    //    Debug.Log("阵型变换中。。。。");
-    //    m_groupCtr.SwitchFormation(formation, target);
-    //}
+        Debug.Log("3秒后开始阵型变换");
+        yield return new WaitForSeconds(3f);
+        Debug.Log("阵型变换中。。。。");
+        m_groupCtr.SwitchFormation(m_groupCtr.Param.GetFormationParam(groupCommond),
+            new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+    }
 
     //public IEnumerator SwitchFormation(
     //    GroupCharObjsController.E_FORMATION_TYPE formation,
