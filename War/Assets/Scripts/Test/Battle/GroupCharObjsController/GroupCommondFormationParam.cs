@@ -20,7 +20,7 @@ public class GroupCommondFormationParam
     public enum E_GROUP_COMMOND
     {
         IDLE,
-        MOVE,
+        ARRIVE,
         ATTACK,
         SKILL
     }

@@ -23,7 +23,7 @@ public static class GroupCommondFormationParamMediator
         soldiers.AddFormationParam(
             GroupCommondFormationParam.E_GROUP_COMMOND.IDLE, 30);
         soldiers.AddFormationParam(
-            GroupCommondFormationParam.E_GROUP_COMMOND.MOVE, 10);
+            GroupCommondFormationParam.E_GROUP_COMMOND.ARRIVE, 10);
         soldiers.AddFormationParam(
             GroupCommondFormationParam.E_GROUP_COMMOND.ATTACK, 20);
         soldiers.AddFormationParam(
@@ -36,7 +36,7 @@ public static class GroupCommondFormationParamMediator
         tanks.AddFormationParam(
             GroupCommondFormationParam.E_GROUP_COMMOND.IDLE, 11);
         tanks.AddFormationParam(
-            GroupCommondFormationParam.E_GROUP_COMMOND.MOVE, 11);
+            GroupCommondFormationParam.E_GROUP_COMMOND.ARRIVE, 11);
         tanks.AddFormationParam(
             GroupCommondFormationParam.E_GROUP_COMMOND.ATTACK, 21);
         tanks.AddFormationParam(
@@ -50,7 +50,7 @@ public static class GroupCommondFormationParamMediator
         artillerys.AddFormationParam(
             GroupCommondFormationParam.E_GROUP_COMMOND.IDLE, 40);
         artillerys.AddFormationParam(
-            GroupCommondFormationParam.E_GROUP_COMMOND.MOVE, 40);
+            GroupCommondFormationParam.E_GROUP_COMMOND.ARRIVE, 40);
         artillerys.AddFormationParam(
             GroupCommondFormationParam.E_GROUP_COMMOND.ATTACK, 41);
         artillerys.AddFormationParam(

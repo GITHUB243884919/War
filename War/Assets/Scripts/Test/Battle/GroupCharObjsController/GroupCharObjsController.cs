@@ -60,7 +60,8 @@ public class GroupCharObjsController
     public delegate void ArrivedCallback();
     public ArrivedCallback m_arrivedCallback = null;
 
-    public GroupCommondFormationParam Param { get; set; }    
+    public GroupCommondFormationParam Param { get; set; }
+    public int GroupFormationParamID { get; set; }
     
     /// <summary>
     /// 带参数表接口的最外层初始化函数（一级）
@@ -126,6 +127,7 @@ public class GroupCharObjsController
         m_center = center;
         m_lookAt = lookAt;
         m_formation = groupFormationParam.FormationType;
+        GroupFormationParamID = groupFormationParam.ParamID;
 
         float lookAtRad = GeometryUtil.TwoPointAngleRad2D(center, lookAt);
         float lookAtDeg = lookAtRad * Mathf.Rad2Deg;
@@ -167,7 +169,11 @@ public class GroupCharObjsController
     public void AI_Arrive_New(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
     {
         //查看阵型是否是一字型
-        if (m_formation == m_arriveFormation)
+        Debug.Log(GroupFormationParamID + " " + 
+            Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID);
+
+        //if (m_formation == Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).FormationType)
+        if (GroupFormationParamID == Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID)
         {
             m_arrivedCallback = callback;
             for (int i = 0; i < m_charObjs.Count; i++)
@@ -185,16 +191,10 @@ public class GroupCharObjsController
         }
         else
         {
-            //先变成一字型
-            //在执行Arrive
-            Debug.Log("不是一字型，要变成一字型" + m_center);
+            //不是ARRIVE的阵型先变成ARRIVE的阵型
+            Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
 
-            //SwitchFormation(m_arriveFormation, m_center, m_center + m_center.normalized * m_radius);
-            SwitchFormation(m_arriveFormation, start, target);
-            //m_arrivedCallback = delegate()
-            //{
-            //    Debug.Log("一字型ok");
-            //};
+            SwitchFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), m_center, target);
             m_arrivedCallback = delegate()
             {
                 m_arrivedCallback = callback;
