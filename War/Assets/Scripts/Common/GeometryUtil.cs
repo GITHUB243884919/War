@@ -18,6 +18,10 @@ public static class GeometryUtil
         from.y = 0f;
         to.y = 0f;
         Vector3 toTarget = to - from;
+        if (toTarget == Vector3.zero)
+        {
+            toTarget = from;
+        }
         float rad = Mathf.Acos(Mathf.Abs(toTarget.x) / toTarget.magnitude);
         angle = Mathf.Rad2Deg * rad;
         if ((toTarget.x >= 0) && (toTarget.z >= 0))
@@ -52,6 +56,10 @@ public static class GeometryUtil
         from.y = 0f;
         to.y = 0f;
         Vector3 toTarget = to - from;
+        if (toTarget == Vector3.zero)
+        {
+            toTarget = from;
+        }
         float rad = Mathf.Acos(Mathf.Abs(toTarget.x) / toTarget.magnitude);
         angle = rad;
         if ((toTarget.x >= 0) && (toTarget.z >= 0))

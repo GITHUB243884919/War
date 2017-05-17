@@ -34,8 +34,8 @@ public class Test_AI_Group_3 : MonoBehaviour
         //m_groupCtr.Init(100, E_GROUP_COMMOND.MOVE,
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
-        //m_groupCtr.Init(100, E_GROUP_COMMOND.ATTACK,
-        //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+        m_groupCtr.Init(100, E_GROUP_COMMOND.ATTACK,
+            new Vector3(32, 0, 32), new Vector3(10, 0, 10));
 
         //m_groupCtr.Init(100, E_GROUP_COMMOND.IDLE,
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));
@@ -49,8 +49,8 @@ public class Test_AI_Group_3 : MonoBehaviour
         //m_groupCtr.Init(200, E_GROUP_COMMOND.ATTACK,
         //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
 
-        m_groupCtr.Init(300, E_GROUP_COMMOND.ATTACK,
-            new Vector3(32, 0, 32), new Vector3(128, 0, 64));
+        //m_groupCtr.Init(300, E_GROUP_COMMOND.ATTACK,
+        //    new Vector3(32, 0, 32), new Vector3(40, 0, 40));
 
         //m_groupCtr.Init(300, E_GROUP_COMMOND.IDLE,
         //    new Vector3(32, 0, 32), new Vector3(10, 0, 10));

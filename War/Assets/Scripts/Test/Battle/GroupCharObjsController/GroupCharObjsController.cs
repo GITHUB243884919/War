@@ -144,7 +144,8 @@ public class GroupCharObjsController
     public void TransformFormation(GroupFormationParam groupFormationParam,
         Vector3 center, Vector3 lookAt, ArrivedCallback callback)
     {
-        Debug.Log("切换阵型" + groupFormationParam.FormationType.ToString());
+        Debug.Log("切换到阵型类型 " + groupFormationParam.FormationType.ToString()
+            + "阵型ID " + groupFormationParam.ParamID);
 
         SetFormationPositions(groupFormationParam, center, lookAt);
 
@@ -170,7 +171,7 @@ public class GroupCharObjsController
         ArrivedCallback arrivedCallback = delegate()
         {
             Debug.Log("所有对象完成Arrive后要变成Idle阵型");
-            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ATTACK),
+            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.IDLE),
                 target, target, null);
         };
 
