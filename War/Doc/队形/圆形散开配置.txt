@@ -1,5 +1,7 @@
 ID      Type   Radius  Desc
-20       2      3       Ê¿±ø¹¥»÷
-21       2      3       Ì¹¿Ë¹¥»÷
+20       2      3       groupÊ¿±ø¹¥»÷
+21       2      3       groupÌ¹¿Ë¹¥»÷
+22       2      6       teamÅÚ¶Ó¹¥»÷
+
 
 

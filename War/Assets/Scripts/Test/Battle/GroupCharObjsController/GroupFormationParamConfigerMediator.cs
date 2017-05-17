@@ -25,7 +25,7 @@ public static class GroupFormationParamConfigerMediator
     {
         TargetVerticalLineFormationParam[] lines = null;
 
-        lines = new TargetVerticalLineFormationParam[2];
+        lines = new TargetVerticalLineFormationParam[3];
 
         TargetVerticalLineFormationParam soldierLine =
             new TargetVerticalLineFormationParam();
@@ -39,6 +39,12 @@ public static class GroupFormationParamConfigerMediator
         tankLine.Radius = 3f;
         lines[1] = tankLine;
 
+        TargetVerticalLineFormationParam teamArtilleryLine =
+            new TargetVerticalLineFormationParam();
+        teamArtilleryLine.ParamID = 12;
+        teamArtilleryLine.Radius = 6f;
+        lines[2] = teamArtilleryLine;
+
         return lines;
     }
 
@@ -46,7 +52,7 @@ public static class GroupFormationParamConfigerMediator
         GetTargetCycleFormationParams()
     {
         TargetCycleFormationParam[] cycles = null;
-        cycles = new TargetCycleFormationParam[2];
+        cycles = new TargetCycleFormationParam[3];
 
         TargetCycleFormationParam soldierCycle =
             new TargetCycleFormationParam();
@@ -59,6 +65,12 @@ public static class GroupFormationParamConfigerMediator
         tankCycle.ParamID = 21;
         tankCycle.Radius = 3;
         cycles[1] = tankCycle;
+
+        TargetCycleFormationParam teamArtilleryCycle =
+            new TargetCycleFormationParam();
+        teamArtilleryCycle.ParamID = 22;
+        teamArtilleryCycle.Radius = 6f;
+        cycles[2] = teamArtilleryCycle;
 
         return cycles;
     }
