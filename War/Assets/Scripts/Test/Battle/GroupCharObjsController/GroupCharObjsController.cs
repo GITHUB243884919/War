@@ -1,4 +1,14 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Group的控制类
+/// author: fanzhengyong
+/// date: 2017-05-17
+/// 
+/// Group是包含CharObj，实现多个CharObj组成的Group的队形转换
+/// 实现了Arrive和Attack的行为
+/// 
+/// </summary>
+/// 
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UF_FrameWork;
@@ -47,14 +57,13 @@ public class GroupCharObjsController
     public Vector3 m_lookAt = Vector3.zero;
     //阵型的半径
     public float   m_radius = 5f;
-    //阵型的类型
-    //public E_FORMATION_TYPE m_formation
-    //    = E_FORMATION_TYPE.NONE;
 
     public delegate void ArrivedCallback();
-    //public ArrivedCallback m_arrivedCallback = null;
 
+    //整个group的参数
     public GroupCommondFormationParam Param { get; set; }
+
+    //当前的队形ID
     public int GroupFormationParamID { get; set; }
     
     /// <summary>
@@ -118,8 +127,7 @@ public class GroupCharObjsController
     {
         m_center = center;
         m_lookAt = lookAt;
-        //m_radius = groupFormationParam.r
-        //m_formation = groupFormationParam.FormationType;
+
         GroupFormationParamID = groupFormationParam.ParamID;
 
         float lookAtRad = GeometryUtil.TwoPointAngleRad2D(center, lookAt);

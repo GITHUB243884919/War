@@ -13,6 +13,11 @@ using System.Collections;
 
 using E_FORMATION_TYPE = GroupCharObjsController.E_FORMATION_TYPE;
 using E_BATTLE_OBJECT_TYPE = BattleObjManager.E_BATTLE_OBJECT_TYPE;
+
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public static class GroupFormationParamConfigerMediator
 {
     public static GroupFormationParam[]

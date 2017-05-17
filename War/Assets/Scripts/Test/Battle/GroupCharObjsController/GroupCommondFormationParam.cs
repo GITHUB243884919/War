@@ -13,6 +13,10 @@ using System;
 
 using E_BATTLE_OBJECT_TYPE = BattleObjManager.E_BATTLE_OBJECT_TYPE;
 
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public class GroupCommondFormationParam
 {
     public int ParamID { get; set; }

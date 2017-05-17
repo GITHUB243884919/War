@@ -84,7 +84,7 @@ public static class LogMediator
     public static void LogError(object message)
     {
 #if UNITY_EDITOR
-        if (s_enable)
+        //if (s_enable)
         {
             Debug.LogError(message);
         }
@@ -96,7 +96,7 @@ public static class LogMediator
     public static void LogErrorFormat(string format, params object[] args)
     {
 #if UNITY_EDITOR
-        if (s_enable)
+        //if (s_enable)
         {
             Debug.LogErrorFormat(format, args);
         }

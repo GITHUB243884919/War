@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-/// <summary>
+﻿/// <summary>
 /// 队形命令参数读取中介
 /// author: fanzhengyong
 /// date: 2017-05-12
@@ -9,6 +6,14 @@ using System.Collections;
 /// 对象类型用逗号分开的字符串
 /// 每个Commond对应的队形参数是数字，分别对应个参数表的ID
 /// </summary>
+
+using UnityEngine;
+using System.Collections;
+
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public static class GroupCommondFormationParamMediator
 {
     public static GroupCommondFormationParam[]
