@@ -143,7 +143,7 @@ public class GroupCharObjsController
     /// <param name="groupFormationParam"></param>
     /// <param name="center"></param>
     /// <param name="lookAt"></param>
-    public void SwitchFormation(GroupFormationParam groupFormationParam,
+    public void TransformFormation(GroupFormationParam groupFormationParam,
         Vector3 center, Vector3 lookAt)
     {
         Debug.Log("切换阵型" + groupFormationParam.FormationType.ToString());
@@ -160,60 +160,90 @@ public class GroupCharObjsController
                 m_formationPoints[i], 1f,
                 delegate()
                 {
-                    Debug.Log("SwitchFormation 中 Group执行CheckArrived" + lookAt);
-                    CheckArrived(charObj, lookAt);
+                    Debug.Log("TransformFormation 中 Group执行CheckAndSetArrived" + lookAt);
+                    CheckAndSetArrived(charObj, lookAt);
                 });
         }
     }
 
     public void AI_Arrive_New(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
     {
-        //查看阵型是否是一字型
-        //Debug.Log(GroupFormationParamID + " " + 
-        //    Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID);
-        
-        if (GroupFormationParamID == Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID)
+        //不是ARRIVE的阵型先变成ARRIVE的阵型    
+        if (GroupFormationParamID != Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID)
         {
-            Debug.Log("是ARRIVE的阵型 执行CharObj的ARRIVE");
-            m_arrivedCallback = callback;
-            for (int i = 0; i < m_charObjs.Count; i++)
+            m_arrivedCallback = delegate()
             {
-                Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
-                Vector3 _target = target + (_start - m_center);
-                CharObj charObj = m_charObjs[i];
-                m_charObjs[i].AI_Arrive(_start, _target, speed,
-                    delegate()
-                    {
-                        Debug.Log("AI_Arrive 中执行CheckArrived " + Time.realtimeSinceStartup + " " + target);
-                        CheckArrived(charObj, target - start);
-                    });
-            }
+                Arrive(start, target, speed, callback);
+            };
+            Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
+            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), m_center, target);
         }
         else
         {
-            //不是ARRIVE的阵型先变成ARRIVE的阵型
-            Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
-            SwitchFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), m_center, target);
-            
-            //阵型调整完毕以后开始执行单个CharObj的Arrive
-            m_arrivedCallback = delegate()
-            {
-                Debug.Log("阵型调整完毕以后开始执行单个CharObj的Arrive");
-                m_arrivedCallback = callback;
-                for (int i = 0; i < m_charObjs.Count; i++)
+            Arrive(start, target, speed, callback);
+        }
+    }
+
+    public void Arrive(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
+    {
+        for (int i = 0; i < m_charObjs.Count; i++)
+        {
+            Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
+            Vector3 _target = target + (_start - m_center);
+            CharObj charObj = m_charObjs[i];
+            m_charObjs[i].AI_Arrive(_start, _target, speed,
+                delegate()
                 {
-                    Vector3 _start = start + (m_charObjs[i].GameObject.transform.position - m_center);
-                    Vector3 _target = target + (_start - m_center);
-                    CharObj charObj = m_charObjs[i];
-                    
-                    m_charObjs[i].AI_Arrive(_start, _target, speed,
-                        delegate()
-                        {
-                            CheckArrived(charObj, target - start);
-                        });
-                    Debug.Log("Animator.speed = " +  m_charObjs[i].CharController.Animator.speed);
-                }
-            };
+                    Debug.Log("AI_Arrive 中执行CheckArrived " + Time.realtimeSinceStartup + " " + target);
+                    CheckAndSetArrived(charObj, target - start);
+                });
+        }
+    }
+
+    public void CheckAndSetArrived(CharObj charObj, Vector3 lookAt)
+    {
+        bool retCode = false;
+
+        //Debug.Log(charObj.ServerEntityID + " 到了");
+        GroupCharObjsElement element = null;
+        retCode = m_elments.TryGetValue(charObj.ServerEntityID, out element);
+        if (!retCode)
+        {
+            Debug.LogError("没有找到实体ID" + charObj.ServerEntityID);
+            return;
+        }
+        //更新自己的到达标志
+        element.Arrived = true;
+        //调整朝向
+        charObj.AI_LookAt(charObj.GameObject.transform.position, lookAt + lookAt.normalized * (m_radius + 1f));
+        //Debug.Log("xxxxxxxxxxxx" + Time.realtimeSinceStartup + " " + lookAt);
+        charObj.AI_LookAt(charObj.GameObject.transform.position,
+            m_lookAt + (lookAt).normalized * (m_radius + 1f));
+        //检查所有的到达标志
+        bool allArrived = true;
+        foreach (var e in m_elments.Values)
+        {
+            if (!e.Arrived)
+            {
+                allArrived = false;
+                break;
+            }
+        }
+
+        if (allArrived)
+        {
+            Debug.Log("都到了");
+            //都到了就设置没到达
+            foreach (var e in m_elments.Values)
+            {
+                e.Arrived = false;
+            }
+            //Debug.Log("m_arrivedCallback == null" + m_arrivedCallback != null);
+            if (m_arrivedCallback != null)
+            {
+                m_arrivedCallback();
+                m_arrivedCallback = null;
+            }
         }
     }
 
@@ -474,7 +504,7 @@ public class GroupCharObjsController
             {
                 e.Arrived = false;
             }
-            Debug.Log("m_arrivedCallback == null" + m_arrivedCallback != null);
+            //Debug.Log("m_arrivedCallback == null" + m_arrivedCallback != null);
             if (m_arrivedCallback != null)
             {
                 m_arrivedCallback();

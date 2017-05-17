@@ -23,9 +23,8 @@ public class M_Arm_Engineercorps_Commond : CharCommond
     public void OnIdle()
     {
         //Debug.Log("M_Arm_Engineercorps_Commond.Idle");
-        Debug.Log("OnIdle Stand " + Time.realtimeSinceStartup);
+        //Debug.Log("OnIdle Stand " + Time.realtimeSinceStartup);
         m_cctr.Animator.speed = 1f;
-        //m_cctr.Animator.SetTrigger("Move");
         m_cctr.Animator.SetTrigger("Stand");
     }
 
@@ -98,7 +97,7 @@ public class M_Arm_Engineercorps_Commond : CharCommond
         //m_cctr.Animator.SetBool("Move", true);
         //Debug.Log("M_Arm_Engineercorps_Commond MoveAnimator");
 
-        Debug.Log("MoveAnimator " + Time.realtimeSinceStartup);
+        //Debug.Log("MoveAnimator " + Time.realtimeSinceStartup);
         m_cctr.Animator.ResetTrigger("Stand");
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Move");

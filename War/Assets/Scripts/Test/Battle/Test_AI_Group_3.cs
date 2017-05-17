@@ -60,7 +60,11 @@ public class Test_AI_Group_3 : MonoBehaviour
 
 
         m_groupCtr.AI_Arrive_New(new Vector3(32, 0, 32),
-            new Vector3(128, 0, 64), 1f, null);
+            new Vector3(40, 0, 40), 1f, 
+            delegate()
+            {
+                Debug.Log("AI_Arrive_New 完成");
+            });
 
         //CharObj charObj = BattleObjManager.Instance.BorrowCharObj(
         //    BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS,
@@ -103,7 +107,7 @@ public class Test_AI_Group_3 : MonoBehaviour
         Debug.Log("3秒后开始阵型变换");
         yield return new WaitForSeconds(3f);
         Debug.Log("阵型变换中。。。。");
-        m_groupCtr.SwitchFormation(m_groupCtr.Param.GetFormationParam(groupCommond),
+        m_groupCtr.TransformFormation(m_groupCtr.Param.GetFormationParam(groupCommond),
             new Vector3(32, 0, 32), new Vector3(10, 0, 10));
     }
 

@@ -23,6 +23,9 @@ public abstract class GroupFormationParam
     //队形类型
     public E_FORMATION_TYPE FormationType { get; set; }
 
+    //变换队形需要的时间(秒)
+    public float            TransformTime { get; set; }
+
     /// <summary>
     /// 形成队形的对象位置计算，具体由派生类根据不同的参数单独实现
     /// </summary>
@@ -43,6 +46,7 @@ public class TargetVerticalLineFormationParam : GroupFormationParam
     public TargetVerticalLineFormationParam()
     {
         FormationType = E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
+        TransformTime = 5f;
     }
     
     public float Radius { get; set; }
@@ -72,6 +76,7 @@ public class TargetCycleFormationParam : GroupFormationParam
     public TargetCycleFormationParam()
     {
         FormationType = E_FORMATION_TYPE.TARGET_CYCLE;
+        TransformTime = 5f;
     }
 
     public float Radius { get; set; }
@@ -96,6 +101,7 @@ public class TargetCycleCenterFormationParam : GroupFormationParam
     public TargetCycleCenterFormationParam()
     {
         FormationType = E_FORMATION_TYPE.TARGET_CYCLE_CENTER;
+        TransformTime = 5f;
     }
 
     public float Radius { get; set; }
@@ -122,6 +128,7 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
     public TargetAttachCaptionFormationParam()
     {
         FormationType = E_FORMATION_TYPE.TARGET_ATTACH_CAPTION;
+        TransformTime = 5f;
     }
 
     //用英文逗号(，)分割的挂点名称（英文）
