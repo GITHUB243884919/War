@@ -8,12 +8,12 @@ using Debug = LogMediator;
 public class Test_AI_Group_2 : MonoBehaviour
 {
     
-    GroupCharObjsController m_groupCtr = null;
+    GroupCharObjsController_2 m_groupCtr = null;
     void Start()
     {
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(BtnClick);
-        m_groupCtr = new GroupCharObjsController();
+        m_groupCtr = new GroupCharObjsController_2();
     }
 
     public void BtnClick()
@@ -59,9 +59,9 @@ public class Test_AI_Group_2 : MonoBehaviour
         //}
 
         {
-            GroupCharObjsController.E_FORMATION_TYPE orgFormation =
+            GroupCharObjsController_2.E_FORMATION_TYPE orgFormation =
                 //GroupCharObjsController.E_FORMATION_TYPE.TARGET_HORIZONTAL_LINE;
-                GroupCharObjsController.E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
+                GroupCharObjsController_2.E_FORMATION_TYPE.TARGET_VERTICAL_LINE;
                 //GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE;
             m_groupCtr.Init(elements, orgFormation, new Vector3(32f, 0f, 32f), new Vector3(64f, 0f, 64f));
             //m_groupCtr.AI_Attack();
@@ -78,7 +78,7 @@ public class Test_AI_Group_2 : MonoBehaviour
                     //Debug.Log(Time.realtimeSinceStartup);
                     //m_groupCtr.m_center = target;
                     //m_groupCtr.m_lookAt = start;
-                    m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
+                    m_groupCtr.SwitchFormation(GroupCharObjsController_2.E_FORMATION_TYPE.TARGET_CYCLE,
                         target, target + target.normalized * m_groupCtr.m_radius);
                 });
 
@@ -119,7 +119,7 @@ public class Test_AI_Group_2 : MonoBehaviour
             {
                 //m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
                 //m_groupCtr.m_center, m_groupCtr.m_lookAt);
-                m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
+                m_groupCtr.SwitchFormation(GroupCharObjsController_2.E_FORMATION_TYPE.TARGET_CYCLE,
                     new Vector3(64f, 0f, 64f), new Vector3(32f, 0f, 32f));
             });
     }
