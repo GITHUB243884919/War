@@ -20,6 +20,9 @@ public abstract class GroupFormationParam
     //参数编号
     public int ParamID { get; set; }
 
+    //半径
+    public float Radius { get; set; }
+
     //队形类型
     public E_FORMATION_TYPE FormationType { get; set; }
 
@@ -49,7 +52,7 @@ public class TargetVerticalLineFormationParam : GroupFormationParam
         TransformTime = 5f;
     }
     
-    public float Radius { get; set; }
+    //public float Radius { get; set; }
 
     public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
         float targetDeg, Vector3 target,
@@ -79,7 +82,7 @@ public class TargetCycleFormationParam : GroupFormationParam
         TransformTime = 5f;
     }
 
-    public float Radius { get; set; }
+    //public float Radius { get; set; }
 
     public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
         float targetDeg, Vector3 target,
@@ -104,7 +107,7 @@ public class TargetCycleCenterFormationParam : GroupFormationParam
         TransformTime = 5f;
     }
 
-    public float Radius { get; set; }
+    //public float Radius { get; set; }
 
     public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
         float targetDeg, Vector3 target,
@@ -134,6 +137,8 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
     //用英文逗号(，)分割的挂点名称（英文）
     public string AttachPoints { get; set; }
 
+    //public float Radius { get; set; }
+
     public override void SetFormationPositions(List<CharObj> charObjs, Vector3 orgin,
         float targetDeg, Vector3 target,
         ref List<Vector3> formationPoints)
@@ -157,6 +162,7 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
         captain.transform.position = orgin;
         captain.transform.LookAt(target);
         formationPoints.Add(orgin);
+        Radius = 0f;
         for(int i = 0; i < attachPoints.Length; i++)
         {
             Transform trs = captain.transform.FindChild(attachPoints[i]);
@@ -166,6 +172,11 @@ public class TargetAttachCaptionFormationParam : GroupFormationParam
                 return;
             }
             formationPoints.Add(trs.position);
+            float radius = (trs.position - orgin).magnitude;
+            if (radius > Radius)
+            {
+                Radius = radius;
+            }
         }
         GameObject.Destroy(captain);
         captain = null;

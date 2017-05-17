@@ -60,7 +60,7 @@ public class Test_AI_Group_3 : MonoBehaviour
 
 
         m_groupCtr.AI_Arrive(new Vector3(32, 0, 32),
-            new Vector3(40, 0, 40), 1f);
+            new Vector3(40, 0, 64), 1f);
 
         //CharObj charObj = BattleObjManager.Instance.BorrowCharObj(
         //    BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS,
@@ -123,14 +123,14 @@ public class Test_AI_Group_3 : MonoBehaviour
         Debug.Log("等待开始");
         yield return new WaitForSeconds(30f);
         Debug.Log("结束等待");
-        m_groupCtr.AI_Arrive(new Vector3(64f, 0f, 64f), new Vector3(32f, 0f, 32f), 5f,
-            delegate()
-            {
-                //m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
-                //m_groupCtr.m_center, m_groupCtr.m_lookAt);
-                m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
-                    new Vector3(64f, 0f, 64f), new Vector3(32f, 0f, 32f));
-            });
+        //m_groupCtr.AI_Arrive(new Vector3(64f, 0f, 64f), new Vector3(32f, 0f, 32f), 5f,
+        //    delegate()
+        //    {
+        //        //m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
+        //        //m_groupCtr.m_center, m_groupCtr.m_lookAt);
+        //        m_groupCtr.SwitchFormation(GroupCharObjsController.E_FORMATION_TYPE.TARGET_CYCLE,
+        //            new Vector3(64f, 0f, 64f), new Vector3(32f, 0f, 32f));
+        //    });
     }
 
 
