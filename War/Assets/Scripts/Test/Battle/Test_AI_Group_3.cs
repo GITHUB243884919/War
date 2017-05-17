@@ -108,7 +108,7 @@ public class Test_AI_Group_3 : MonoBehaviour
         yield return new WaitForSeconds(3f);
         Debug.Log("阵型变换中。。。。");
         m_groupCtr.TransformFormation(m_groupCtr.Param.GetFormationParam(groupCommond),
-            new Vector3(32, 0, 32), new Vector3(10, 0, 10));
+            new Vector3(32, 0, 32), new Vector3(10, 0, 10), null);
     }
 
     //public IEnumerator SwitchFormation(

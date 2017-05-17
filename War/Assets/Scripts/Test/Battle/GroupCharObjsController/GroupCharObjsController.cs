@@ -90,7 +90,6 @@ public class GroupCharObjsController
         }
 
         Init(elements, Param.GetFormationParam(groupCommond), start, lookAt);
-
     }
 
     /// <summary>
@@ -103,7 +102,6 @@ public class GroupCharObjsController
     public void Init(GroupCharObjsElement[] elements, 
         GroupFormationParam groupFormationParam, Vector3 start, Vector3 lookAt)
     {
-
         CacheObjs(elements);
 
         SetFormationPositions(groupFormationParam, start, lookAt);
@@ -144,7 +142,7 @@ public class GroupCharObjsController
     /// <param name="center"></param>
     /// <param name="lookAt"></param>
     public void TransformFormation(GroupFormationParam groupFormationParam,
-        Vector3 center, Vector3 lookAt)
+        Vector3 center, Vector3 lookAt, ArrivedCallback callback)
     {
         Debug.Log("切换阵型" + groupFormationParam.FormationType.ToString());
 
@@ -161,22 +159,36 @@ public class GroupCharObjsController
                 delegate()
                 {
                     Debug.Log("TransformFormation 中 Group执行CheckAndSetArrived" + lookAt);
-                    CheckAndSetArrived(charObj, lookAt);
+                    CheckAndSetArrived(charObj, lookAt, callback);
                 });
         }
     }
 
     public void AI_Arrive_New(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
     {
+        //所有对象完成Arrive后要变成Idle阵型
+        ArrivedCallback arrivedCallback = delegate()
+        {
+            Debug.Log("所有对象完成Arrive后要变成Idle阵型");
+            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.IDLE), 
+                m_center, target, null);
+        };
+
         //不是ARRIVE的阵型先变成ARRIVE的阵型    
         if (GroupFormationParamID != Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE).ParamID)
         {
-            m_arrivedCallback = delegate()
+            //m_arrivedCallback = delegate()
+            //{
+            //    Arrive(start, target, speed, callback);
+            //};
+            
+            //阵型变换完成后的回调：执行单个对象的Arrive
+            ArrivedCallback transformedCallback = delegate()
             {
                 Arrive(start, target, speed, callback);
             };
             Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
-            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), m_center, target);
+            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), m_center, target, transformedCallback);
         }
         else
         {
@@ -195,12 +207,12 @@ public class GroupCharObjsController
                 delegate()
                 {
                     Debug.Log("AI_Arrive 中执行CheckArrived " + Time.realtimeSinceStartup + " " + target);
-                    CheckAndSetArrived(charObj, target - start);
+                    CheckAndSetArrived(charObj, target - start, callback);
                 });
         }
     }
 
-    public void CheckAndSetArrived(CharObj charObj, Vector3 lookAt)
+    public void CheckAndSetArrived(CharObj charObj, Vector3 lookAt, ArrivedCallback callback)
     {
         bool retCode = false;
 
@@ -239,10 +251,14 @@ public class GroupCharObjsController
                 e.Arrived = false;
             }
             //Debug.Log("m_arrivedCallback == null" + m_arrivedCallback != null);
-            if (m_arrivedCallback != null)
+            //if (m_arrivedCallback != null)
+            //{
+            //    m_arrivedCallback();
+            //    m_arrivedCallback = null;
+            //}
+            if (callback != null)
             {
-                m_arrivedCallback();
-                m_arrivedCallback = null;
+                callback();
             }
         }
     }
