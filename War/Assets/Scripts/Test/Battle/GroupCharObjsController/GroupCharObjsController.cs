@@ -170,8 +170,8 @@ public class GroupCharObjsController
         ArrivedCallback arrivedCallback = delegate()
         {
             Debug.Log("所有对象完成Arrive后要变成Idle阵型");
-            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.IDLE), 
-                m_center, target, null);
+            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ATTACK),
+                target, target, null);
         };
 
         //不是ARRIVE的阵型先变成ARRIVE的阵型    
@@ -185,14 +185,14 @@ public class GroupCharObjsController
             //阵型变换完成后的回调：执行单个对象的Arrive
             ArrivedCallback transformedCallback = delegate()
             {
-                Arrive(start, target, speed, callback);
+                Arrive(start, target, speed, arrivedCallback);
             };
             Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
             TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), m_center, target, transformedCallback);
         }
         else
         {
-            Arrive(start, target, speed, callback);
+            Arrive(start, target, speed, arrivedCallback);
         }
     }
 
