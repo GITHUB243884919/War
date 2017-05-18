@@ -393,5 +393,11 @@ public class GroupCharObjsController
             m_charObjs.Clear();
             m_charObjs = null;
         }
+
+        if (Param != null)
+        {
+            Param.Release();
+            Param = null;
+        }
     }
 }

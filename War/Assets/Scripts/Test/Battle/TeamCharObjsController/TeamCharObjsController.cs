@@ -101,4 +101,29 @@ public class TeamCharObjsController
                 });
         }
     }
+
+    public void Release()
+    {
+        if (m_groups != null)
+        {
+            for(int i = 0; i < m_groups.Count; i++)
+            {
+                m_groups[i].Release();
+            }
+            m_groups.Clear();
+            m_groups = null;
+        }
+
+        if (m_formationPoints != null)
+        {
+            m_formationPoints.Clear();
+            m_formationPoints = null;
+        }
+
+        if (Param != null)
+        {
+            Param.Release();
+            Param = null;
+        }
+    }
 }
