@@ -11,14 +11,14 @@ using Debug = LogMediator;
 
 public class TeamCharObjsController
 {
-
     public List<GroupCharObjsController> m_groups =
         new List<GroupCharObjsController>();
 
     public int [] m_groupIDs = null;
 
-    public List<Vector3> m_formationPoints =
-        new List<Vector3>();
+    public List<Vector3> m_formationPoints = new List<Vector3>();
+
+    public List<bool> m_blackBoard = new List<bool>();
 
     //当前的Team的阵型ID
     public int TeamFormationParamID { get; set; }
@@ -34,9 +34,6 @@ public class TeamCharObjsController
     public void Init(int paramID, E_GROUP_COMMOND groupCommond,
         Vector3 start, Vector3 lookAt)
     {
-        //整个team有一个阵型，计算出组成team的每个Group的center
-        //每个group进行阵型走位，各个的center是刚才算出的center
-
         Param = TeamCommondFormationParamManager.Instance.GetParam(paramID);
 
         //这里获得是Team的队形参数
@@ -45,7 +42,13 @@ public class TeamCharObjsController
 
         m_groupIDs = Param.GetGroup();
         SetFormationPositions(formationParam, start, lookAt, ref m_formationPoints);
-        
+
+        for (int i = 0; i < m_groupIDs.Length; i++)
+        {
+            m_blackBoard.Add(false);
+        }
+
+        //把team的队形点集合作为group的center进行各个group的初始化
         for (int i = 0; i < m_groupIDs.Length; i++)
         {
             GroupCharObjsController group = new GroupCharObjsController();
@@ -97,8 +100,38 @@ public class TeamCharObjsController
             m_groups[i].TransformFormation(_formationParam, m_formationPoints[i], lookAt, 
                 delegate()
                 {
-                    Debug.Log("Group " + group.Param.ParamID + "走位完成 ");
+                    //Debug.Log("Group " + group.Param.ParamID + "走位完成 ");
+                    CheakAndSetBlackboard(callback);
                 });
+        }
+    }
+
+    public void CheakAndSetBlackboard(ArrivedCallback callback)
+    {
+        int idx = 0;
+        for (int i = 0; i < m_blackBoard.Count; i++)
+        {
+            idx = i;
+            if (!m_blackBoard[idx])
+            {
+                m_blackBoard[idx] = true;
+                break;
+            }
+        }
+
+        if (idx == (m_groupIDs.Length - 1))
+        {
+            for (int i = 0; i < m_blackBoard.Count; i++)
+            {
+                m_blackBoard[i] = false;
+            }
+            
+            Debug.Log("所有Group的走位完成");
+
+            if (callback != null)
+            {
+                callback();
+            }
         }
     }
 
