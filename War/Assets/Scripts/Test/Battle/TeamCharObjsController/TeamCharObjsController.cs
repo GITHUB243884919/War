@@ -70,11 +70,13 @@ public class TeamCharObjsController
         //阵型变换完成后的回调：执行Group中单个对象的Arrive
         ArrivedCallback transformedCallback = delegate()
         {
-            Debug.Log("所有group完成Arrive阵型变化后要依次执行Arrive");
+            Debug.Log("所有group变成Arrive阵型变化后要依次执行Arrive");
             //Arrive(start, target, speed, arrivedCallback);
             for(int i = 0; i < m_groups.Count; i++)
             {
-                m_groups[i].AI_Arrive(m_groups[i].m_center, target, speed);
+                Vector3 _start = start + (m_groups[i].m_center - m_center);
+                Vector3 _target = target + (_start - m_center);
+                m_groups[i].AI_Arrive(_start, _target, speed);
             }
         };
 
