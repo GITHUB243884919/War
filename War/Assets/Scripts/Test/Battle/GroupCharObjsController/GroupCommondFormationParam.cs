@@ -119,6 +119,12 @@ public class GroupCommondFormationParam
             m_formationParams.Clear();
             m_formationParams = null;
         }
+
+        if (m_charObjTypes != null)
+        {
+            m_charObjTypes.Clear();
+            m_charObjTypes = null;
+        }
     }
 
     public E_BATTLE_OBJECT_TYPE[] ParseCharObjTypes(string charObjTypes)
@@ -185,7 +191,7 @@ public class GroupCommondFormationParamManager
     void Init()
     {
         GroupCommondFormationParam[] _params =
-            GroupCommondFormationParamMediator.GetGroupCommondFormationParams();
+            GroupCommondFormationParamConfigerMediator.GetGroupCommondFormationParams();
 
         if (_params == null)
         {
