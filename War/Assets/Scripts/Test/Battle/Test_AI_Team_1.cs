@@ -17,10 +17,6 @@ public class Test_AI_Team_1 : MonoBehaviour
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(BtnClick);
         m_teamCtr = new TeamCharObjsController();
-
-        //m_charObj = BattleObjManager.Instance.BorrowCharObj(
-        // BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS,
-        //    0, 1);
     }
 
     public void BtnClick()
@@ -30,8 +26,21 @@ public class Test_AI_Team_1 : MonoBehaviour
 
     void CreateTeamCharObjs()
     {
-        m_teamCtr.Init(3000, E_GROUP_COMMOND.IDLE,
+        m_teamCtr.Init(3000, E_GROUP_COMMOND.ARRIVE,
             new Vector3(32, 0, 32), new Vector3(64, 0, 45));
+
+        StartCoroutine(TransformFormation());
     }
 
+    IEnumerator TransformFormation()
+    {
+        Debug.Log("等待变阵");
+        yield return new WaitForSeconds(2);
+        Debug.Log("开始变阵");
+        GroupFormationParam formationParam = 
+            m_teamCtr.Param.GetFormationParam(E_GROUP_COMMOND.ATTACK);
+        m_teamCtr.TransformFormation(E_GROUP_COMMOND.ATTACK, 
+            new Vector3(32, 0, 32), new Vector3(64, 0, 45), null);
+
+    }
 }
