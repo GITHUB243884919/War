@@ -14,6 +14,10 @@ using System;
 
 using E_GROUP_COMMOND = GroupCommondFormationParam.E_GROUP_COMMOND;
 
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public class TeamCommondFormationParam
 {
     public int ParamID { get; set; }
@@ -33,7 +37,7 @@ public class TeamCommondFormationParam
     {
         if (string.IsNullOrEmpty(param))
         {
-            Debug.LogError("CharObjTypes参数为空");
+            Debug.LogError("GroupIDs参数为空");
             return;
         }
 
@@ -109,6 +113,7 @@ public class TeamCommondFormationParam
                 Debug.LogError("team的groups参数非法 " + groups);
                 break;
             }
+            nGroups[i] = nParam;
         }
 
         return nGroups;
@@ -181,7 +186,7 @@ public class TeamCommondFormationParamManager
             if (s_instance == null)
             {
                 s_instance = new TeamCommondFormationParamManager();
-                //s_instance.Init();
+                s_instance.Init();
             }
 
             return s_instance;
@@ -191,23 +196,23 @@ public class TeamCommondFormationParamManager
     Dictionary<int, TeamCommondFormationParam> m_params =
         new Dictionary<int, TeamCommondFormationParam>();
 
-    //void Init()
-    //{
-    //    GroupCommondFormationParam[] _params =
-    //        GroupCommondFormationParamMediator.GetGroupCommondFormationParams();
+    void Init()
+    {
+        TeamCommondFormationParam[] _params =
+            TeamCommondFormationParamConfigerMediator.GetTeamCommondFormationParams();
 
-    //    if (_params == null)
-    //    {
-    //        Debug.LogError("GroupCommondFormationParam 配置读取失败");
-    //        return;
-    //    }
+        if (_params == null)
+        {
+            Debug.LogError("TeamCommondFormationParam 配置读取失败");
+            return;
+        }
 
-    //    for (int i = 0; i < _params.Length; i++)
-    //    {
-    //        //Debug.Log(_params[i].ParamID);
-    //        AddParam(_params[i].ParamID, _params[i]);
-    //    }
-    //}
+        for (int i = 0; i < _params.Length; i++)
+        {
+            Debug.Log("TeamCommondFormationParamManager.Init() " + _params[i].ParamID);
+            AddParam(_params[i].ParamID, _params[i]);
+        }
+    }
 
     public void AddParam(int paramID, TeamCommondFormationParam param)
     {

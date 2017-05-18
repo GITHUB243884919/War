@@ -46,6 +46,14 @@ public abstract class GroupFormationParam
     {
 
     }
+
+    public virtual void SetFormationPositions(int count, Vector3 orgin,
+        float targetDeg, Vector3 target, ref List<Vector3> formationPoints)
+    {
+
+    }
+
+
 }
 
 public class TargetVerticalLineFormationParam : GroupFormationParam
@@ -76,6 +84,24 @@ public class TargetVerticalLineFormationParam : GroupFormationParam
             formationPoints.Add(fristPoint - dir * spaceOffset * i);
         }
     }
+
+    public override void SetFormationPositions(int count, Vector3 orgin,
+        float targetDeg, Vector3 target, ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
+        float angleDeg = 180f;
+        Vector3 dir = (target - orgin).normalized;
+        Vector3 fristPoint = orgin + dir * Radius;
+        Vector3 lastPoint = GeometryUtil.PositionInCycleByAngleDeg2D(
+            orgin, Radius, targetDeg + angleDeg);
+        //Debug.DrawLine(fristPoint, lastPoint, Color.blue, (fristPoint - lastPoint).magnitude);
+
+        float spaceOffset = (lastPoint - fristPoint).magnitude / (count - 1);
+        for (int i = 0; i < count; i++)
+        {
+            formationPoints.Add(fristPoint - dir * spaceOffset * i);
+        }
+    }
 }
 
 public class TargetCycleFormationParam : GroupFormationParam
@@ -95,6 +121,20 @@ public class TargetCycleFormationParam : GroupFormationParam
         formationPoints.Clear();
         float tempDeg = 360 / charObjs.Count;
         for (int i = 0; i < charObjs.Count; i++)
+        {
+            Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
+                orgin, Radius, targetDeg + i * tempDeg);
+            formationPoints.Add(p);
+        }
+    }
+
+    public override void SetFormationPositions(int count, Vector3 orgin,
+        float targetDeg, Vector3 target,
+        ref List<Vector3> formationPoints)
+    {
+        formationPoints.Clear();
+        float tempDeg = 360 / count;
+        for (int i = 0; i < count; i++)
         {
             Vector3 p = GeometryUtil.PositionInCycleByAngleDeg2D(
                 orgin, Radius, targetDeg + i * tempDeg);
