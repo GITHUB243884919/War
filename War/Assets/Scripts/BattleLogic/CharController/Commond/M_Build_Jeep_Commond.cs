@@ -7,6 +7,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public class M_Build_Jeep_Commond : CharCommond
 {
     public M_Build_Jeep_Commond(CharController cctr)
@@ -86,5 +90,4 @@ public class M_Build_Jeep_Commond : CharCommond
     {
 
     }
-
 }

@@ -10,6 +10,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public abstract class CharCommond 
 {
     public CharController m_cctr;
@@ -21,7 +25,7 @@ public abstract class CharCommond
     {
         if (cctr == null)
         {
-            Debug.LogWarning("CharController 为空");
+            Debug.LogError("CharController 为空");
             return;
         }
 
@@ -59,6 +63,8 @@ public abstract class CharCommond
                 m_cctr.CharObj.Type, cmd);
             if (cfg == null)
             {
+                Debug.LogError(m_cctr.CharObj.Type.ToString() + 
+                    " 没找到特效配置 " + cmd.ToString());
                 return;
             }
             GameObject particleObj = BattleObjManager.Instance.BorrowParticleObj(cfg.ResPath);
@@ -69,16 +75,17 @@ public abstract class CharCommond
             Transform effectPoint = m_cctr.Transform.Find(cfg.PointPath);
             if (effectPoint == null)
             {
-                LogMediator.LogError(m_cctr.CharObj.Type.ToString() 
+                Debug.LogError(m_cctr.CharObj.Type.ToString() 
                     +  " 根据配置没有找到挂点 " + cfg.PointPath);
+                return;
             }
             
             particleObj.transform.SetParent(effectPoint, false);
             
             particleSystem = particleObj.GetComponentInChildren<ParticleSystem>();
             m_charParticleEffects.Add(cmd, particleSystem);
-            particleSystem.Play();
-            return;
+            //particleSystem.Play();
+            //return;
         }
 
         //effect.ParticleSystem.transform.parent.gameObject.SetActive(true);

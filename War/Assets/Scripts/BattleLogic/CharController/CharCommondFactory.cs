@@ -8,6 +8,10 @@
 using UnityEngine;
 using System.Collections;
 
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public class CharCommondFactory
 {
     public static CharCommond CreateCommond(CharController cctr, 
@@ -39,7 +43,7 @@ public class CharCommondFactory
                 break;
             default:
                 //cmd = new TankCommond(cctr);
-                LogMediator.LogError("不存在这类CharCommond无法生成 " + charType.ToString());
+                Debug.LogError("不存在这类CharCommond无法生成 " + charType.ToString());
                 break;
         }
 

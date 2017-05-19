@@ -3,10 +3,19 @@
 /// author : fanzhengyong
 /// date  : 2017-03-09
 /// 
+/// </summary>
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UF_FrameWork;
+
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
+/// <summary>
+/// 
+/// </summary>
 public class M_Arm_Tank_Commond : CharCommond
 {
     private CharObjUSMBForDeadExit CharObjUSMBForDeadExit { get; set; }
@@ -124,5 +133,4 @@ public class M_Arm_Tank_Commond : CharCommond
     {
 
     }
-
 }

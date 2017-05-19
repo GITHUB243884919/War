@@ -1,10 +1,27 @@
-﻿using UnityEngine;
+﻿/// <summary>
+/// Team控制类
+/// author : fanzhengyong
+/// date  : 2017-05-19
+/// 
+/// Team,Group,CharObj三者的关系
+/// 
+/// Team是由一个或者多个Group组成
+/// Group是由一个或者CharObj组成
+/// Team对应了一支部队，但归根结底还是由CharObj组成
+/// 目前步兵Team由5名士兵组成，坦克Team由3辆坦克组成，炮兵Team相对特殊。
+/// 炮兵Team由3个炮兵Group组成，而每个炮兵Group是由1辆炮车和2名士兵组成。
+/// TeamCharObjsController完全是因为炮兵Team而开发的。因为实际上是有两层
+/// 队形逻辑。Group是一层，有自己队形，Team同样也是。
+/// </summary>
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UF_FrameWork;
 
 using E_GROUP_COMMOND = GroupCommondFormationParam.E_GROUP_COMMOND;
 using ArrivedCallback = GroupCharObjsController.ArrivedCallback;
+
 #if _LOG_MEDIATOR_
 using Debug = LogMediator;
 #endif

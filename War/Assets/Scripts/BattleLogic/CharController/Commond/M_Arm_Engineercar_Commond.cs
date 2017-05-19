@@ -7,6 +7,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+#if _LOG_MEDIATOR_
+using Debug = LogMediator;
+#endif
+
 public class M_Arm_Engineercar_Commond : CharCommond
 {
     private CharObjUSMBForDeadExit CharObjUSMBForDeadExit { get; set; }
@@ -111,5 +115,4 @@ public class M_Arm_Engineercar_Commond : CharCommond
     {
 
     }
-
 }
