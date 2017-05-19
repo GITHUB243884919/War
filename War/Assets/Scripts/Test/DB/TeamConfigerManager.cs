@@ -14,10 +14,10 @@ public class TeamConfigerData
 
 public class TeamConfigerManager : SimpleDBManager<int, TeamConfigerData, TeamConfigerManager>
 {
-    public List<TeamConfigerData> GetAllData()
-    {
-        return values;
-    }
+    //public List<TeamConfigerData> GetAllData()
+    //{
+    //    return values;
+    //}
 
     //public int SeekMountainInArea(int id)
     //{

@@ -53,7 +53,8 @@ public class Test_AI_Team_1 : MonoBehaviour
     {
         TeamConfigerManager.getInstance().Init("Data/TeamConfiger");
         List<TeamConfigerData> datas = null;
-        datas = TeamConfigerManager.getInstance().GetAllData();
+        //datas = TeamConfigerManager.getInstance().GetAllData();
+        datas = TeamConfigerManager.getInstance().Values;
         TeamConfigerData data = TeamConfigerManager.getInstance().Get(3000);
         return;
     }
