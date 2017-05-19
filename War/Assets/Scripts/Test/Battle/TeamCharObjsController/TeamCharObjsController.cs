@@ -63,21 +63,15 @@ public class TeamCharObjsController
         ArrivedCallback arrivedCallback = delegate()
         {
             Debug.Log("所有group完成Arrive后要变成Idle阵型");
-            //TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.IDLE),
-            //    target, target, null);
+            TransformFormation(E_GROUP_COMMOND.ATTACK,
+                target, target + target.normalized * m_radius, null);
         };
 
         //阵型变换完成后的回调：执行Group中单个对象的Arrive
         ArrivedCallback transformedCallback = delegate()
         {
             Debug.Log("所有group变成Arrive阵型变化后要依次执行Arrive");
-            //Arrive(start, target, speed, arrivedCallback);
-            for(int i = 0; i < m_groups.Count; i++)
-            {
-                Vector3 _start = start + (m_groups[i].m_center - m_center);
-                Vector3 _target = target + (_start - m_center);
-                m_groups[i].AI_Arrive(_start, _target, speed);
-            }
+            Arrive(start, target, speed, arrivedCallback);
         };
 
         //不是ARRIVE的阵型先变成ARRIVE的阵型
@@ -87,7 +81,7 @@ public class TeamCharObjsController
             Debug.LogError("没有找到本Team的Arrive阵型参数");
             return;
         }
-        Debug.Log(arriveParam.ParamID);
+        //Debug.Log(arriveParam.ParamID);
         if (TeamFormationParamID != arriveParam.ParamID)
         {
             Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
@@ -96,7 +90,17 @@ public class TeamCharObjsController
         }
         else
         {
-            //Arrive(start, target, speed, arrivedCallback);
+            Arrive(start, target, speed, arrivedCallback);
+        }
+    }
+
+    public void Arrive(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
+    {
+        for (int i = 0; i < m_groups.Count; i++)
+        {
+            Vector3 _start = start + (m_groups[i].m_center - m_center);
+            Vector3 _target = target + (_start - m_center);
+            m_groups[i].AI_Arrive(_start, _target, speed, callback);
         }
     }
 

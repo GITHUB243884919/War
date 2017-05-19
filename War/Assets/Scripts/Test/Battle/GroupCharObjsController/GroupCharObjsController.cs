@@ -169,12 +169,17 @@ public class GroupCharObjsController
 
     public void AI_Arrive(Vector3 start, Vector3 target, float speed)
     {
+        AI_Arrive(start, target, speed, null);
+    }
+
+    public void AI_Arrive(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
+    {
         //所有对象完成Arrive后的回调：要变成Idle阵型
         ArrivedCallback arrivedCallback = delegate()
         {
             Debug.Log("所有对象完成Arrive后要变成Idle阵型");
             TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.IDLE),
-                target, target, null);
+                target, target, callback);
         };
 
         //阵型变换完成后的回调：执行Group中单个对象的Arrive
@@ -191,9 +196,9 @@ public class GroupCharObjsController
             return;
         }
         if (GroupFormationParamID != arriveParam.ParamID)
-        {            
+        {
             Debug.Log("不是ARRIVE的阵型先变成ARRIVE的阵型" + m_center);
-            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE), 
+            TransformFormation(Param.GetFormationParam(E_GROUP_COMMOND.ARRIVE),
                 m_center, target, transformedCallback);
         }
         else
