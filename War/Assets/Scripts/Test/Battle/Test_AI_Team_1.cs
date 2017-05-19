@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 using E_GROUP_COMMOND = GroupCommondFormationParam.E_GROUP_COMMOND;
@@ -17,6 +18,8 @@ public class Test_AI_Team_1 : MonoBehaviour
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener(BtnClick);
         m_teamCtr = new TeamCharObjsController();
+        TestDBManager();
+        
     }
 
     public void BtnClick()
@@ -44,5 +47,14 @@ public class Test_AI_Team_1 : MonoBehaviour
         m_teamCtr.TransformFormation(E_GROUP_COMMOND.ATTACK, 
             new Vector3(32, 0, 32), new Vector3(64, 0, 45), null);
 
+    }
+
+    void TestDBManager()
+    {
+        TeamConfigerManager.getInstance().Init("Data/TeamConfiger");
+        List<TeamConfigerData> datas = null;
+        datas = TeamConfigerManager.getInstance().GetAllData();
+        TeamConfigerData data = TeamConfigerManager.getInstance().Get(3000);
+        return;
     }
 }
