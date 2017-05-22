@@ -38,7 +38,7 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
 
     private QObjCreatorForGameObject() { }
 
-    public override void Realse()
+    public override void Release()
     {
         m_seed = null;
     }
@@ -67,7 +67,7 @@ public class QObjCreatorForGameObject : QObjCreator<GameObject>
         obj.transform.position = INIT_POS;
     }
 
-    public override void RealseObject(GameObject obj)
+    public override void ReleaseObject(GameObject obj)
     {
 
     }

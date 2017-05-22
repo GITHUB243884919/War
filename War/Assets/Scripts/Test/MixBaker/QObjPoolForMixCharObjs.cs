@@ -1,7 +1,9 @@
 ﻿/// <summary>
 /// 生成对象，并使用MeshBaker合并对象
 /// author : fanzhengyong
-/// date  : 2017-02-22
+/// date  : 2017-05-22
+/// 
+/// 支持多个不同的混合的CharObj对象一起合并
 /// 
 /// QObjPool是T类型的，所以也支持自定义类型，这是CharObj版本的实现
 /// 使用方使用的任然是QObjPool，所以也要遵循QObjPool的借和还的规则。
@@ -10,11 +12,13 @@
 /// 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class CharObjCreator : QObjCreator<CharObj>
+public class MixCharObjsCreator : QObjCreator<CharObj>
 {
     //被生成并克隆的对象，称为种子。春天把一个坦克埋进去，到秋天长出好多坦克:)
-    private GameObject    m_seed          = null;
+    //private GameObject    m_seed          = null;
+    private List<GameObject> m_seeds = new List<GameObject>();
     
     private GameObject    m_meshbakerGo   = null;
     private MB3_MeshBaker m_meshBaker     = null;
@@ -47,7 +51,7 @@ public class CharObjCreator : QObjCreator<CharObj>
     /// </param>
     /// <param name="type"></param>
     /// <param name="count"></param>
-    public CharObjCreator(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
+    public MixCharObjsCreator(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, ref int count)
     {
         bool retCode        = false;
 
@@ -70,21 +74,24 @@ public class CharObjCreator : QObjCreator<CharObj>
             return;
         }
 
-        if (m_seed == null)
+        string[] seedPaths = paths[3].Split(',');
+        for (int i = 0; i < seedPaths.Length; i++)
         {
-            m_seed = ResourcesManagerMediator.GetGameObjectFromResourcesManager(paths[3]);
-            if (m_seed == null)
+            GameObject seed = ResourcesManagerMediator.
+                GetGameObjectFromResourcesManager(seedPaths[i]);
+            if (seed == null)
             {
-                Debug.LogError("加载种子资源失败 " + paths[3]);
+                Debug.LogError("加载种子资源失败 " + seedPaths[i]);
                 return;
             }
-            m_seed.transform.position = CharObj.INIT_POS;
+            seed.transform.position = CharObj.INIT_POS;
+            m_seeds.Add(seed);
         }
-
-        m_count = count;
+        count = seedPaths.Length;
+        m_count = seedPaths.Length;
     }
 
-    private CharObjCreator() { }
+    private MixCharObjsCreator() { }
 
     public override CharObj[] CreateObjects()
     {
@@ -92,11 +99,8 @@ public class CharObjCreator : QObjCreator<CharObj>
         CharObj[]    charObjs = new CharObj[m_count];
         for (int i = 0; i < m_count; i++)
         {
-            GameObject go = GameObject.Instantiate<GameObject>(m_seed);
-            
-#if _WAR_TEST_
-            MeshBakerManager.Instance.AddGo(go);
-#endif
+            //GameObject go = GameObject.Instantiate<GameObject>(m_seed);
+            GameObject go = m_seeds[i];
             go.transform.position = CharObj.INIT_POS;
             goObjs[i]             = go;
             CharObj charObj = new CharObj(goObjs[i], m_type);
@@ -109,19 +113,10 @@ public class CharObjCreator : QObjCreator<CharObj>
         charObjs[2].GameObject.transform.position = SMR_BOUND_MAX_Z;
         charObjs[3].GameObject.transform.position = SMR_BOUND_MIN_Z;
 
-        //M_Build_Jeep_Seed模型不能合并，先跳过
-        //Debug.Log(m_seed.name);
-        if (m_seed.name == "M_Build_Jeep_Seed(Clone)")
-        {
-            return charObjs;
-        }
 
         m_meshBaker.AddDeleteGameObjects(goObjs, null, true);
         m_meshBaker.Apply();
 
-#if _WAR_TEST_
-        MeshBakerManager.Instance.AddCombine(m_meshBaker, m_seed, m_meshbakerGo);
-#endif
         return charObjs;
     }
 
@@ -167,16 +162,13 @@ public class CharObjCreator : QObjCreator<CharObj>
         textureBaker.resultMaterial     = material;
         textureBaker.textureBakeResults = textureBakeResults;
         meshBaker.textureBakeResults    = textureBakeResults;
-#if _WAR_TEST_
-        MeshBakerManager.Instance.AddMaterial(material);
-        MeshBakerManager.Instance.AddTexture(textureBakeResults);
-#endif
+
         result = true;
         return result;
     }
 }
 
-public class CharObjCreatorFactory : QObjCreatorFactory<CharObj>
+public class MixCharObjsCreatorFactory : QObjCreatorFactory<CharObj>
 {
     private string[] m_paths;
     private BattleObjManager.E_BATTLE_OBJECT_TYPE m_type;
@@ -192,18 +184,18 @@ public class CharObjCreatorFactory : QObjCreatorFactory<CharObj>
     /// </param>
     /// <param name="type"></param>
     /// <param name="count"></param>
-    public CharObjCreatorFactory(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type, int count)
+    public MixCharObjsCreatorFactory(string[] paths, BattleObjManager.E_BATTLE_OBJECT_TYPE type)
     {
         m_paths = paths;
         m_type  = type;
-        m_count = count;
+        //m_count = count;
     }
 
-    private CharObjCreatorFactory() { }
+    private MixCharObjsCreatorFactory() { }
     public override QObjCreator<CharObj> CreatCreator()
     {
-        CharObjCreator creator = new CharObjCreator(
-            m_paths, m_type, m_count);
+        MixCharObjsCreator creator = new MixCharObjsCreator(
+            m_paths, m_type, ref m_count);
         return creator;
     }
 }

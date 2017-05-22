@@ -50,7 +50,7 @@ public abstract class QObjCreator<T>
     /// 释放对象
     /// </summary>
     /// <param name="obj"></param>
-    public virtual void RealseObject(T obj)
+    public virtual void ReleaseObject(T obj)
     {
 
     }
@@ -58,7 +58,7 @@ public abstract class QObjCreator<T>
     /// <summary>
     /// 释放自己
     /// </summary>
-    public virtual void Realse()
+    public virtual void Release()
     {
 
     }
@@ -75,7 +75,7 @@ public abstract class QObjCreatorFactory<T>
         return creator;
     }
 
-    public virtual void Realse()
+    public virtual void Release()
     {
 
     }
@@ -162,7 +162,7 @@ public class QObjPool<T>
     /// </summary>
     /// <param name="count"></param>
     /// <param name="leftCout"></param>
-    public void Realse(int count, out int leftCout)
+    public void Release(int count, out int leftCout)
     {
         if (BAK_CREATOR == null)
         {
@@ -175,7 +175,7 @@ public class QObjPool<T>
         for (int i = 0; i < realseCount; i++)
         {
             T obj = m_pool.Dequeue();
-            BAK_CREATOR.RealseObject(obj);
+            BAK_CREATOR.ReleaseObject(obj);
             FreeCount--;
         }
 
@@ -185,18 +185,18 @@ public class QObjPool<T>
         {
             m_pool           = null;
 
-            BAK_CREATOR.Realse();
+            BAK_CREATOR.Release();
             BAK_CREATOR      = null;
 
             if (m_creator != null)
             {
-                m_creator.Realse();
+                m_creator.Release();
                 m_creator = null;
             }
 
             if (m_creatorFactory != null)
             {
-                m_creatorFactory.Realse();
+                m_creatorFactory.Release();
                 m_creatorFactory = null;
             }
         }

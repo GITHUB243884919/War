@@ -23,7 +23,7 @@ public class ResourcesManagerMediator
         goRes = Resources.Load<GameObject>(path);
         if (goRes == null)
         {
-            LogMediator.LogError("资源加载错误！ " + path);
+            Debug.LogError("资源加载错误！ " + path);
             return go;
         }
 

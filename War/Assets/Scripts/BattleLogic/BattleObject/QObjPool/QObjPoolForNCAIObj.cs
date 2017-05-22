@@ -15,7 +15,7 @@ public class QObjPoolForNCAIObj : QObjCreatorForGameObject
     public QObjPoolForNCAIObj(string path, int count)
         :base(path, count){}
 
-    public override void Realse()
+    public override void Release()
     {
         m_seed = null;
     }
@@ -32,7 +32,7 @@ public class QObjPoolForNCAIObj : QObjCreatorForGameObject
         obj.transform.position = INIT_POS;
     }
 
-    public override void RealseObject(GameObject obj)
+    public override void ReleaseObject(GameObject obj)
     {
 
     }
