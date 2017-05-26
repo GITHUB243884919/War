@@ -1,0 +1,471 @@
+fileFormatVersion: 2
+guid: c7641afec2d12904c84d9e0e7752b1fa
+timeCreated: 1495778817
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Blast
+    100004: bone01
+    100006: bone02
+    100008: bone03
+    100010: bone04
+    100012: bone05
+    100014: bone06
+    100016: bone07
+    100018: Fire
+    100020: objm_arm_artillery
+    100022: Particle View 01
+    100024: Particle View 01 1
+    100026: Particle View 01 2
+    100028: Particle View 01 3
+    100030: Particle View 01 4
+    100032: Particle View 01 5
+    100034: Pull01
+    100036: Pull02
+    100038: Track[01]
+    100040: Track[02]
+    400000: //RootNode
+    400002: Blast
+    400004: bone01
+    400006: bone02
+    400008: bone03
+    400010: bone04
+    400012: bone05
+    400014: bone06
+    400016: bone07
+    400018: Fire
+    400020: objm_arm_artillery
+    400022: Particle View 01
+    400024: Particle View 01 1
+    400026: Particle View 01 2
+    400028: Particle View 01 3
+    400030: Particle View 01 4
+    400032: Particle View 01 5
+    400034: Pull01
+    400036: Pull02
+    400038: Track[01]
+    400040: Track[02]
+    4300000: objm_arm_artillery
+    7400000: Idle
+    7400002: Move
+    7400004: Fight
+    7400006: Die
+    7400008: Open
+    9500000: //RootNode
+    13700000: objm_arm_artillery
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 4
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: bone01
+        weight: 1
+      - path: bone01/Blast
+        weight: 1
+      - path: bone01/bone02
+        weight: 1
+      - path: bone01/bone03
+        weight: 1
+      - path: bone01/bone04
+        weight: 1
+      - path: bone01/bone05
+        weight: 1
+      - path: bone01/bone06
+        weight: 1
+      - path: bone01/bone07
+        weight: 1
+      - path: bone01/Fire
+        weight: 1
+      - path: bone01/Pull01
+        weight: 1
+      - path: bone01/Pull02
+        weight: 1
+      - path: bone01/Track[01]
+        weight: 1
+      - path: bone01/Track[02]
+        weight: 1
+      - path: objm_arm_artillery
+        weight: 1
+      - path: Particle View 01
+        weight: 1
+      - path: Particle View 01 1
+        weight: 1
+      - path: Particle View 01 2
+        weight: 1
+      - path: Particle View 01 3
+        weight: 1
+      - path: Particle View 01 4
+        weight: 1
+      - path: Particle View 01 5
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Move
+      takeName: Take 001
+      firstFrame: 8
+      lastFrame: 12
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: bone01
+        weight: 1
+      - path: bone01/Blast
+        weight: 1
+      - path: bone01/bone02
+        weight: 1
+      - path: bone01/bone03
+        weight: 1
+      - path: bone01/bone04
+        weight: 1
+      - path: bone01/bone05
+        weight: 1
+      - path: bone01/bone06
+        weight: 1
+      - path: bone01/bone07
+        weight: 1
+      - path: bone01/Fire
+        weight: 1
+      - path: bone01/Pull01
+        weight: 1
+      - path: bone01/Pull02
+        weight: 1
+      - path: bone01/Track[01]
+        weight: 1
+      - path: bone01/Track[02]
+        weight: 1
+      - path: objm_arm_artillery
+        weight: 1
+      - path: Particle View 01
+        weight: 1
+      - path: Particle View 01 1
+        weight: 1
+      - path: Particle View 01 2
+        weight: 1
+      - path: Particle View 01 3
+        weight: 1
+      - path: Particle View 01 4
+        weight: 1
+      - path: Particle View 01 5
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Fight
+      takeName: Take 001
+      firstFrame: 15
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: bone01
+        weight: 1
+      - path: bone01/Blast
+        weight: 1
+      - path: bone01/bone02
+        weight: 1
+      - path: bone01/bone03
+        weight: 1
+      - path: bone01/bone04
+        weight: 1
+      - path: bone01/bone05
+        weight: 1
+      - path: bone01/bone06
+        weight: 1
+      - path: bone01/bone07
+        weight: 1
+      - path: bone01/Fire
+        weight: 1
+      - path: bone01/Pull01
+        weight: 1
+      - path: bone01/Pull02
+        weight: 1
+      - path: bone01/Track[01]
+        weight: 1
+      - path: bone01/Track[02]
+        weight: 1
+      - path: objm_arm_artillery
+        weight: 1
+      - path: Particle View 01
+        weight: 1
+      - path: Particle View 01 1
+        weight: 1
+      - path: Particle View 01 2
+        weight: 1
+      - path: Particle View 01 3
+        weight: 1
+      - path: Particle View 01 4
+        weight: 1
+      - path: Particle View 01 5
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Die
+      takeName: Take 001
+      firstFrame: 30
+      lastFrame: 64
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: bone01
+        weight: 1
+      - path: bone01/Blast
+        weight: 1
+      - path: bone01/bone02
+        weight: 1
+      - path: bone01/bone03
+        weight: 1
+      - path: bone01/bone04
+        weight: 1
+      - path: bone01/bone05
+        weight: 1
+      - path: bone01/bone06
+        weight: 1
+      - path: bone01/bone07
+        weight: 1
+      - path: bone01/Fire
+        weight: 1
+      - path: bone01/Pull01
+        weight: 1
+      - path: bone01/Pull02
+        weight: 1
+      - path: bone01/Track[01]
+        weight: 1
+      - path: bone01/Track[02]
+        weight: 1
+      - path: objm_arm_artillery
+        weight: 1
+      - path: Particle View 01
+        weight: 1
+      - path: Particle View 01 1
+        weight: 1
+      - path: Particle View 01 2
+        weight: 1
+      - path: Particle View 01 3
+        weight: 1
+      - path: Particle View 01 4
+        weight: 1
+      - path: Particle View 01 5
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Open
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 4
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: bone01
+        weight: 1
+      - path: bone01/Blast
+        weight: 1
+      - path: bone01/bone02
+        weight: 1
+      - path: bone01/bone03
+        weight: 1
+      - path: bone01/bone04
+        weight: 1
+      - path: bone01/bone05
+        weight: 1
+      - path: bone01/bone06
+        weight: 1
+      - path: bone01/bone07
+        weight: 1
+      - path: bone01/Fire
+        weight: 1
+      - path: bone01/Pull01
+        weight: 1
+      - path: bone01/Pull02
+        weight: 1
+      - path: bone01/Track[01]
+        weight: 1
+      - path: bone01/Track[02]
+        weight: 1
+      - path: objm_arm_artillery
+        weight: 1
+      - path: Particle View 01
+        weight: 1
+      - path: Particle View 01 1
+        weight: 1
+      - path: Particle View 01 2
+        weight: 1
+      - path: Particle View 01 3
+        weight: 1
+      - path: Particle View 01 4
+        weight: 1
+      - path: Particle View 01 5
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -26,7 +26,9 @@ public class M_Arm_Artillery_Commond : CharCommond
 
     public void OnIdle()
     {
-        Debug.Log("M_Arm_Artillery_Commond.Idle");
+        //Debug.Log("M_Arm_Artillery_Commond.Idle");
+        m_cctr.Animator.speed = 1f;
+        m_cctr.Animator.SetTrigger("Stand");
     }
 
     /// <summary>
@@ -89,6 +91,26 @@ public class M_Arm_Artillery_Commond : CharCommond
         //自身动画
         m_cctr.Animator.speed = 1f;
         m_cctr.Animator.SetTrigger("Die");
+    }
+
+    public override void MoveAnimator()
+    {
+        m_cctr.Animator.ResetTrigger("Stand");
+        m_cctr.Animator.speed = 1f;
+        m_cctr.Animator.SetTrigger("Move");
+    }
+
+    public override void StopAnimator()
+    {
+        if (m_cctr.Animator != null)
+        {
+            m_cctr.Animator.speed = 0f;
+        }
+    }
+
+    public override void OnArrived()
+    {
+        OnIdle();
     }
 
 	public override void Update() 

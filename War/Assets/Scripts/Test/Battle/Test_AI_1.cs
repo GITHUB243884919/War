@@ -35,14 +35,14 @@ public class Test_AI_1 : MonoBehaviour
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_TANK;
 
-        BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
+        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
+        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_AIRPLANE_01;
 
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
 
-        //BattleObjManager.E_BATTLE_OBJECT_TYPE type
-        //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
+        BattleObjManager.E_BATTLE_OBJECT_TYPE type
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
         
         //BattleObjManager.E_BATTLE_OBJECT_TYPE type
         //    = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCAR;
@@ -53,8 +53,8 @@ public class Test_AI_1 : MonoBehaviour
         CharObj obj = BattleObjManager.Instance.BorrowCharObj(
             type, entityID, 1);
         m_obj = obj;
-        //CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
-        CharObjAI(obj, CharController.E_COMMOND.ATTACK);
+        CharObjAI(obj, CharController.E_COMMOND.ARRIVE);
+        //CharObjAI(obj, CharController.E_COMMOND.ATTACK);
         //CharObjAI(obj, CharController.E_COMMOND.DEAD);
         //CharObjAI(obj, CharController.E_COMMOND.OPEN);
 
@@ -97,7 +97,7 @@ public class Test_AI_1 : MonoBehaviour
         //Vector3 endPos = new Vector3(Random.Range(10, 310), 0f, Random.Range(10, 310));
         Vector3 endPos = new Vector3(30f, 0f, 30f);
         //假定服务器规定这段路必须time秒走完
-        float time = 3f;
+        float time = 30f;
         float speed = (endPos - startPos).magnitude / time;
 
         //LogMediator.Log("speed " + speed);
