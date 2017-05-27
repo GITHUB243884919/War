@@ -37,6 +37,7 @@ public class GroupCharObjsController
         TARGET_CYCLE,            //面朝目标散开
         TARGET_CYCLE_CENTER,     //面朝目标散开有一个站中间
         TARGET_ATTACH_CAPTION,   //面朝目标并基于队长模型上的挂点
+        TARGET_ATTACH_CAPTION_2  
     }
 
     //CharObj对象缓存
