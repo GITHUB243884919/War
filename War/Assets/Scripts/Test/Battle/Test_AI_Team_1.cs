@@ -29,7 +29,7 @@ public class Test_AI_Team_1 : MonoBehaviour
 
     void CreateTeamCharObjs()
     {
-        m_teamCtr.Init(3000, E_GROUP_COMMOND.ATTACK,
+        m_teamCtr.Init(1000, E_GROUP_COMMOND.ATTACK,
             new Vector3(32, 0, 32), new Vector3(64, 0, 45));
 
         //StartCoroutine(TransformFormation());

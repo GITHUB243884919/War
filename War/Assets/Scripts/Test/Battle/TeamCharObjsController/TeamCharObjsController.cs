@@ -81,7 +81,7 @@ public class TeamCharObjsController
         }
         else
         {
-            Debug.Log("本Team只有一个Group");
+            //Debug.Log("本Team只有一个Group");
             GroupCharObjsController group = new GroupCharObjsController();
             group.Init(m_groupIDs[0], groupCommond, start, lookAt);
             m_groups.Add(group);
@@ -90,7 +90,7 @@ public class TeamCharObjsController
             m_formationPoints = group.m_formationPoints;
             m_center = group.m_center;
             m_radius = group.m_radius;
-            //m_lookAt
+            m_lookAt = group.m_lookAt;
         }
 
     }
@@ -101,7 +101,7 @@ public class TeamCharObjsController
         ArrivedCallback arrivedCallback = delegate()
         {
             Debug.Log("所有group完成Arrive后要变成Idle阵型");
-            TransformFormation(E_GROUP_COMMOND.ATTACK,
+            TransformFormation(E_GROUP_COMMOND.IDLE,
                 target, target + target.normalized * m_radius, null);
         };
 
