@@ -29,12 +29,14 @@ public class Test_AI_Team_1 : MonoBehaviour
 
     void CreateTeamCharObjs()
     {
-        m_teamCtr.Init(1000, E_GROUP_COMMOND.ATTACK,
+        //m_teamCtr.Init(1, 1000, E_GROUP_COMMOND.ATTACK,
+        //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
+        //m_teamCtr.AI_Arrive(new Vector3(32, 0, 32), new Vector3(64, 0, 45), 1f);
+
+        m_teamCtr.Init(1, 3000, E_GROUP_COMMOND.ARRIVE,
             new Vector3(32, 0, 32), new Vector3(64, 0, 45));
-
-        //StartCoroutine(TransformFormation());
-
-        m_teamCtr.AI_Arrive(new Vector3(32, 0, 32), new Vector3(64, 0, 45), 1f);
+        m_teamCtr.AI_Arrive_New(new Vector3(32, 0, 32), new Vector3(64, 0, 45), 1f);
+        StartCoroutine(TransformFormation2());
     }
 
     IEnumerator TransformFormation()
@@ -44,8 +46,18 @@ public class Test_AI_Team_1 : MonoBehaviour
         Debug.Log("开始变阵");
         GroupFormationParam formationParam = 
             m_teamCtr.Param.GetFormationParam(E_GROUP_COMMOND.ATTACK);
-        m_teamCtr.TransformFormation(E_GROUP_COMMOND.ATTACK, 
+        m_teamCtr.TransformFormation(E_GROUP_COMMOND.ATTACK,
             new Vector3(32, 0, 32), new Vector3(64, 0, 45), null);
+
+    }
+
+    IEnumerator TransformFormation2()
+    {
+        Debug.Log("等待变阵");
+        yield return new WaitForSeconds(60);
+        Debug.Log("开始变阵");
+        m_teamCtr.AI_TransformFormation(E_GROUP_COMMOND.ATTACK,
+            new Vector3(64, 0, 45));
 
     }
 

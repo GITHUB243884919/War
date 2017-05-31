@@ -28,6 +28,9 @@ using Debug = LogMediator;
 
 public class TeamCharObjsController
 {
+    //服务器对整个Team的唯一编号
+    public int ServerTeamID { get; set; }
+
     public List<GroupCharObjsController> m_groups =
         new List<GroupCharObjsController>();
 
@@ -48,9 +51,10 @@ public class TeamCharObjsController
 
     public TeamCommondFormationParam Param { get; set; }
 
-    public void Init(int paramID, E_GROUP_COMMOND groupCommond,
+    public void Init(int serverTeamID, int paramID, E_GROUP_COMMOND groupCommond,
         Vector3 start, Vector3 lookAt)
     {
+        ServerTeamID = serverTeamID;
         Param = TeamCommondFormationParamManager.Instance.GetParam(paramID);
 
         m_groupIDs = Param.GetGroup();
@@ -134,6 +138,16 @@ public class TeamCharObjsController
         {
             Arrive(start, target, speed, arrivedCallback);
         }
+    }
+
+    public void AI_Arrive_New(Vector3 start, Vector3 target, float speed)
+    {
+        Arrive(start, target, speed, null);
+    }
+
+    public void AI_TransformFormation(E_GROUP_COMMOND cmd, Vector3 target)
+    {
+        TransformFormation(cmd, m_center, target, null);
     }
 
     public void Arrive(Vector3 start, Vector3 target, float speed, ArrivedCallback callback)
