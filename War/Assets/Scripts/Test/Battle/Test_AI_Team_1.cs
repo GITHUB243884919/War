@@ -29,14 +29,14 @@ public class Test_AI_Team_1 : MonoBehaviour
 
     void CreateTeamCharObjs()
     {
-        //m_teamCtr.Init(1, 1000, E_GROUP_COMMOND.ATTACK,
-        //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
-        //m_teamCtr.AI_Arrive(new Vector3(32, 0, 32), new Vector3(64, 0, 45), 1f);
-
-        m_teamCtr.Init(1, 3000, E_GROUP_COMMOND.ARRIVE,
+        m_teamCtr.Init(1, 3000, E_GROUP_COMMOND.ATTACK,
             new Vector3(32, 0, 32), new Vector3(64, 0, 45));
-        m_teamCtr.AI_Arrive_New(new Vector3(32, 0, 32), new Vector3(64, 0, 45), 1f);
-        StartCoroutine(TransformFormation2());
+        m_teamCtr.AI_Arrive(new Vector3(32, 0, 32), new Vector3(64, 0, 45), 1f);
+
+        //m_teamCtr.Init(1, 3000, E_GROUP_COMMOND.ARRIVE,
+        //    new Vector3(32, 0, 32), new Vector3(64, 0, 45));
+        //m_teamCtr.AI_Arrive_New(new Vector3(32, 0, 32), new Vector3(64, 0, 45), 1f);
+        //StartCoroutine(TransformFormation2());
     }
 
     IEnumerator TransformFormation()
