@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// Team控制类
 /// author : fanzhengyong
-/// date  : 2017-05-19
+/// date  : 2017-05-26
 /// 
 /// Team,Group,CharObj三者的关系
 /// 
@@ -105,7 +105,7 @@ public class TeamCharObjsController
         ArrivedCallback arrivedCallback = delegate()
         {
             Debug.Log("所有group完成Arrive后要变成Idle阵型");
-            TransformFormation(E_GROUP_COMMOND.IDLE,
+            TransformFormation(E_GROUP_COMMOND.ATTACK,
                 target, target + target.normalized * m_radius, null);
         };
 
