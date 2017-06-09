@@ -47,11 +47,11 @@ public class NetworkBehaviour:TaskExecutor
 
 	protected virtual void OnBackClick(){
 		
-		MessageBox.Show ("是否退出游戏?", delegate (MessageBoxButton button){
-			if(button == MessageBoxButton.ButtonOk){
-				Application.Quit();
-			}
-		});
+        //MessageBox.Show ("是否退出游戏?", delegate (MessageBoxButton button){
+        //    if(button == MessageBoxButton.ButtonOk){
+        //        Application.Quit();
+        //    }
+        //});
 	}
  
 	void OnApplicationPause(bool isPause){ 
@@ -82,58 +82,58 @@ public class NetworkBehaviour:TaskExecutor
 				OnConnected(client.ClientType); 
 			});	
 		} else if(status == NetworkStatus.Fail){
-			ScheduleTask (delegate {
-				LoadingTips.Hide (); 
-				LoginManager.NotifyLoginError();
-				GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_ERROR));
-			});
+            //ScheduleTask (delegate {
+            //    LoadingTips.Hide (); 
+            //    LoginManager.NotifyLoginError();
+            //    GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_ERROR));
+            //});
 		}else if(status == NetworkStatus.Timeout){
-			ScheduleTask (delegate {
-				LoadingTips.Hide (); 
-				LoginManager.NotifyLoginTimeout();
-				GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_ERROR));
-			});
+            //ScheduleTask (delegate {
+            //    LoadingTips.Hide (); 
+            //    LoginManager.NotifyLoginTimeout();
+            //    GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_ERROR));
+            //});
 		}else if(status == NetworkStatus.Error){
 			if (client.ClientType == ClientType.WORLD) {
 				TCPHelper.GameClient.Stop ();
 			}
-			ScheduleTask (delegate {
-				LoadingTips.Hide (); 
-				LoginManager.NotifyConnectError();						 
-				OnDisConnected(client.ClientType);
-			});	
+            //ScheduleTask (delegate {
+            //    LoadingTips.Hide (); 
+            //    LoginManager.NotifyConnectError();						 
+            //    OnDisConnected(client.ClientType);
+            //});	
 		}		
 	} 
 
 	protected virtual void OnConnected(ClientType type){
 		if (type == ClientType.WORLD) {
 			TCPHelper.GameClient.Stop();
-			LoginManager.LoginToWorldServer ();
+			//LoginManager.LoginToWorldServer ();
 		} else {
-			LoginManager.LoginToGameServer ();
+			//LoginManager.LoginToGameServer ();
 		}
-		GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_SUCCESS,type));
+		//GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_SUCCESS,type));
     }
 
 	protected virtual void OnDisConnected(ClientType type){
-		GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_CLOSED,type));
+		//GameEventCenter.getEventCenter ().DispatchEvent (new GameEvent((int)GameEventCode.EVENT_CONNECT_CLOSED,type));
 	}
 
 	protected virtual void OnDNSServerReady(ServerInfo serverInfo){
-		LoadingTips.Hide (); 
+		//LoadingTips.Hide (); 
 		TCPHelper.InitWorldClient (serverInfo.ip, serverInfo.port); 
 	}
 
 	protected virtual void OnDNSServerError(string error){
-		LoadingTips.Hide (); 
-		MessageBox.Show(string.Format("DNS检测失败{0},是否重试?",error),delegate(MessageBoxButton button){
-			if(button == MessageBoxButton.ButtonOk){
-				LoadingTips.Show(null);
-				DNSHelper.Request(this);
-			}else{
-				Application.Quit();
-			}
-		});		
+        //LoadingTips.Hide (); 
+        //MessageBox.Show(string.Format("DNS检测失败{0},是否重试?",error),delegate(MessageBoxButton button){
+        //    if(button == MessageBoxButton.ButtonOk){
+        //        LoadingTips.Show(null);
+        //        DNSHelper.Request(this);
+        //    }else{
+        //        Application.Quit();
+        //    }
+        //});		
 	}
 } 
 
