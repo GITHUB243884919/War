@@ -37,7 +37,7 @@ public class TCPHelper
 
     }
 
-    [NoToLuaAttribute]
+    //[NoToLuaAttribute]
     public static void Tick()
     {
         if (worldClient != null)
@@ -126,7 +126,7 @@ public class TCPHelper
     {
         cmdCache.Clear();
     }
-    [NoToLuaAttribute]
+    //[NoToLuaAttribute]
     public static void SendToWorldServer(int cmd, object msg)
     {
         try
@@ -139,7 +139,7 @@ public class TCPHelper
         }
     }
 
-    [NoToLuaAttribute]
+    //[NoToLuaAttribute]
     public static void SendToGameServer(int cmd, object msg)
     {
         try
@@ -166,33 +166,33 @@ public class TCPHelper
         }
     }
 
-    public static void SendToWorldServer(int cmd, LuaStringBuffer msg)
-    {
-        if (IsCmdSendable(cmd))
-        {
-            try
-            {
-                worldClient.Send(cmd, msg.buffer);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-    }
+    //public static void SendToWorldServer(int cmd, LuaStringBuffer msg)
+    //{
+    //    if (IsCmdSendable(cmd))
+    //    {
+    //        try
+    //        {
+    //            worldClient.Send(cmd, msg.buffer);
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Debug.LogException(e);
+    //        }
+    //    }
+    //}
 
-    public static void SendToGameServer(int cmd, LuaStringBuffer msg)
-    {
-        if (IsCmdSendable(cmd))
-        {
-            try
-            {
-                gameClient.Send(cmd, msg.buffer);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-    }
+    //public static void SendToGameServer(int cmd, LuaStringBuffer msg)
+    //{
+    //    if (IsCmdSendable(cmd))
+    //    {
+    //        try
+    //        {
+    //            gameClient.Send(cmd, msg.buffer);
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Debug.LogException(e);
+    //        }
+    //    }
+    //}
 }
