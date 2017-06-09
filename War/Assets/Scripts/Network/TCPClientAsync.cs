@@ -10,39 +10,58 @@ using System.Timers;
  
 public class TCPClientAsync : TCPClient
 { 
-	 
+    //注意此TcpClient是C#网络库的
 	private TcpClient client = null;
 	private NetworkStream networkStream; 
 	private System.Timers.Timer timer = new System.Timers.Timer(SEND_TIMEOUT);
-	public TCPClientAsync(ClientType type):base(type){ 
+	public TCPClientAsync(ClientType type):base(type)
+    { 
+        //超时timer初始化
 		timer.AutoReset = false;
 		timer.Elapsed += new System.Timers.ElapsedEventHandler(OnConnectTimeout);
 	}
 
-	public override void Dispose(){ 
+	public override void Dispose()
+    { 
 		Reset ();
 		timer.Dispose ();
 	}
 
-	public override void Reset(bool cleanup = true){
+    /// <summary>
+    /// Reset操作
+    /// 1.调用base的Reset
+    /// 2.networkStream关
+    /// 3.内存stream关
+    /// 4.client关
+    /// </summary>
+    /// <param name="cleanup"></param>
+	public override void Reset(bool cleanup = true)
+    {
 		base.Reset (cleanup);
 		timer.Enabled = false;
 
-		if (networkStream != null) {
-			networkStream.Close ();
+		if (networkStream != null) 
+        {
+			networkStream.Close();
+            networkStream = null;
 		}
-		if (client!=null && client.Connected) {  
+		
+        if (client != null && client.Connected) 
+        {  
 			client.Close();
+            client = null;
 		}
 		stream.Seek (0, SeekOrigin.Begin);
-		client = null;
-		networkStream = null;
 	}
 	 
-	
-	public override bool Start(){ 
-
-		if (Status != NetworkStatus.Idle) { 
+	/// <summary>
+	/// 启动网络连接
+	/// </summary>
+	/// <returns></returns>
+	public override bool Start()
+    { 
+        if (Status != NetworkStatus.Idle) 
+        { 
 			Debug.LogWarningFormat("tcp client start failed when status is {0}",status);
 			//NotifyStatusChange(status);
 			//return false;
@@ -59,18 +78,19 @@ public class TCPClientAsync : TCPClient
 		 
 		client.NoDelay = true;
 
-		if (!client.NoDelay) {
+		if (!client.NoDelay) 
+        {
 			Debug.LogErrorFormat ("{0} NoDelay {1}",type, client.NoDelay);
 		}
 		Assert.IsTrue (client.NoDelay);
 
-
-		try{
+		try
+        {
 			Status = NetworkStatus.Connecting;
 			var result = client.BeginConnect (ip, port,OnConnect,null);
 			timer.Enabled = true; 
-			           
-		}catch(Exception exe){
+		}catch(Exception exe)
+        {
 			Debug.LogError(exe);
 			NotifyStatusChange(NetworkStatus.Fail);
 			Status = NetworkStatus.Idle;
@@ -79,18 +99,20 @@ public class TCPClientAsync : TCPClient
 		return true;
 	}
 	
-	public override void Stop(){ 
-		//Debug.LogFormat ("{0} Stop Before {1}",type,status);
+	public override void Stop()
+    { 
 		Reset (); 
-		if (client != null) {
-			client.Close ();
-		}
-		//Debug.LogFormat ("{0} Stop After {0}",type,status); 
 	} 
  
 	
-	[NoToLuaAttribute]
-	public override  void Send(int cmd,byte[] data){
+	//[NoToLuaAttribute]
+	/// <summary>
+	/// 发送消息
+	/// </summary>
+	/// <param name="cmd"></param>
+	/// <param name="data"></param>
+    public override  void Send(int cmd,byte[] data)
+    {
 		if (networkStream == null) {
 			Debug.LogWarningFormat("tcp client not connected , status is {0}",status);
 			return;
@@ -124,16 +146,25 @@ public class TCPClientAsync : TCPClient
 
 	byte[] buffer = new byte[BUF_SIZE];
 	bool readingHeader = true;
-	int cmd = 0;
+	//网络消息协议编号
+    int cmd = 0;
+    //包的长度
 	int totalSize = 0;
 
 	MemoryStream stream = new MemoryStream();   
 
-	private void OnConnect(IAsyncResult result){		
+    /// <summary>
+    /// 网络Connect成功后的回调
+    /// 
+    /// </summary>
+    /// <param name="result"></param>
+	private void OnConnect(IAsyncResult result)
+    {		
 		client.EndConnect(result);
 		timer.Enabled = false; 
 		timer.Stop ();
-		if (client.Connected) {
+		if (client.Connected)
+        {
 			Status = NetworkStatus.Connected;
 			networkStream = client.GetStream (); 
 			
@@ -145,7 +176,9 @@ public class TCPClientAsync : TCPClient
 			networkStream.BeginRead (buffer, 0, PACKAGE_HEADER_LENGTH, OnRead, null); 
 			
 			NotifyStatusChange (NetworkStatus.Connected);
-		} else { 
+		} 
+        else 
+        { 
 			NotifyStatusChange(NetworkStatus.Fail);
 			Status = NetworkStatus.Idle;
 		}
@@ -167,32 +200,49 @@ public class TCPClientAsync : TCPClient
 		networkStream.EndWrite (result);
 	}
 
-	private void OnRead(IAsyncResult result){ 
-
-		try{
+    /// <summary>
+    /// 网络读取回调
+    /// 解析字节流调用了OnRecieve()函数
+    /// </summary>
+    /// <param name="result"></param>
+	private void OnRead(IAsyncResult result)
+    {
+        try
+        {
 			int readBytes = networkStream.EndRead (result);
 			
 			//Debug.LogFormat ("OnRead {0} :{1} ",readingHeader?"Header":"Body",readBytes);
 			
-			if (readBytes > 0) {
+			if (readBytes > 0)
+            {
 				stream.Write (buffer, 0, readBytes);  
 				OnRecieve ();
-				if (readingHeader) {
+				if (readingHeader)
+                {
 					//Debug.Log ("OnRead New Header");
 					networkStream.BeginRead (buffer, 0, PACKAGE_HEADER_LENGTH - (int)stream.Length, OnRead, null);
-				} else if (totalSize > 0) {
+				}
+                else if (totalSize > 0)
+                {
 					//Debug.LogFormat ("OnRead New Body {0} {1}",totalSize,stream.Length);
 					networkStream.BeginRead (buffer, 0, Math.Min(totalSize - (int)stream.Length,BUF_SIZE), OnRead, null);
-				}else {
+				}
+                else 
+                {
 					Debug.LogError ("OnRecieve Error"); 
 				}
-			} else if(Status == NetworkStatus.Connected){
+			}
+            else if(Status == NetworkStatus.Connected)
+            {
 				Debug.LogErrorFormat ("{0} OnRead Error {0}",type,status);
-				if(Status == NetworkStatus.Connected){ 
+				if(Status == NetworkStatus.Connected)
+                { 
 					NotifyStatusChange(NetworkStatus.Error);
 					Reset(false);
 				}
-			}else{
+			}
+            else
+            {
 				Debug.Log ("OnRead End");
 				NotifyStatusChange(NetworkStatus.Error);
 				Reset (false);
@@ -205,11 +255,18 @@ public class TCPClientAsync : TCPClient
 		}		
 	}
  
-	
-	private void OnRecieve(){
+	/// <summary>
+    /// 网络stream解析，解析完以后要调用父类的Process（）函数放入队列中
+    /// 头一个int代表长度
+    /// 后一个int代表协议号
+	/// </summary>
+	private void OnRecieve()
+    {
 		 
-		if (readingHeader) {
-			if (stream.Length == PACKAGE_HEADER_LENGTH) {
+		if (readingHeader) 
+        {
+			if (stream.Length == PACKAGE_HEADER_LENGTH) 
+            {
 				byte[] header = stream.ToArray ();
 				
 				totalSize = IPAddress.NetworkToHostOrder (System.BitConverter.ToInt32 (header, 0)) - 5;	
@@ -223,17 +280,22 @@ public class TCPClientAsync : TCPClient
 				} else {
 					Process (cmd, stream.ToArray ());
 				}
-			}else if(stream.Length > PACKAGE_HEADER_LENGTH){
+			}else if(stream.Length > PACKAGE_HEADER_LENGTH)
+            {
 				Debug.LogError("Network Stream Error When Reading Message Header");
 			}
-		} else {
-			if(stream.Length == totalSize){
+		} 
+        else 
+        {
+			if(stream.Length == totalSize)
+            {
 				Process(cmd,stream.ToArray());
 				readingHeader = true;				
 				stream.Seek(0,SeekOrigin.Begin);
 				stream.SetLength(0);
 				totalSize = 0;
-			}else if(stream.Length > totalSize){
+			}else if(stream.Length > totalSize)
+            {
 				Debug.LogError("Network Stream Error When Reading Message Body");
 			}
 		}		 

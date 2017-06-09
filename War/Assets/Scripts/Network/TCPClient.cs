@@ -29,7 +29,7 @@ public abstract class TCPClient : IDisposable
 	protected const int SEND_TIMEOUT = 5000;
 	protected const int RECV_TIMEOUT = 5000;
 	protected const int SEND_BUFF_SIZE = 1024;
-	
+	//解析完stream后缓存的消息队列
 	protected Queue<TCPMessage> messages = new Queue<TCPMessage>(); 
 
 	protected ClientType type;
@@ -40,7 +40,7 @@ public abstract class TCPClient : IDisposable
 	public delegate void NetworkStatusEvent(TCPClient client,NetworkStatus status); 
 	public event NetworkStatusEvent OnStatusChanged; 
 
-	[NoToLuaAttribute]
+	////[NoToLuaAttribute]
 	public delegate void MessageEvent(ref TCPMessage msg);  
 	 
 	
@@ -78,14 +78,18 @@ public abstract class TCPClient : IDisposable
 	
 	public abstract void Stop ();
 
-	[NoToLuaAttribute]
+	////[NoToLuaAttribute]
 	public abstract void Send (int cmd, byte[] data);
 
-	public  void Send(int cmd,LuaStringBuffer data){
-		Send (cmd, data.buffer);
-	}
+    //public  void Send(int cmd,LuaStringBuffer data){
+    //    Send (cmd, data.buffer);
+    //}
 
-	[NoToLuaAttribute]
+	////[NoToLuaAttribute]
+    /// <summary>
+    /// 给外界提供真正处理网络协议的接口
+    /// </summary>
+    /// <param name="handler"></param>
 	public void Tick(MessageEvent handler){ 
 		TCPMessage msg;
 		lock (messages) { 
@@ -101,8 +105,14 @@ public abstract class TCPClient : IDisposable
 		}*/
 	}
 
-	[NoToLuaAttribute]
-	protected void Process(int cmd,byte[] data){
+	//[NoToLuaAttribute]
+    /// <summary>
+    /// 网络消息队列
+    /// </summary>
+    /// <param name="cmd"></param>
+    /// <param name="data"></param>
+	protected void Process(int cmd,byte[] data)
+    {
 		//#if UNITY_EDITOR
         Debug.LogFormat("recv {0} with len {1} at time {2}", cmd, data.Length, System.DateTime.Now);
 		//#endif
@@ -115,8 +125,10 @@ public abstract class TCPClient : IDisposable
 		}
 	}
 	
-	protected void NotifyStatusChange(NetworkStatus status){
-		if (OnStatusChanged != null) {
+	protected void NotifyStatusChange(NetworkStatus status)
+    {
+		if (OnStatusChanged != null) 
+        {
 			OnStatusChanged (this,status);
 		}
 		
@@ -131,33 +143,29 @@ public abstract class TCPClient : IDisposable
 		}
 	}
 
-	public ClientType ClientType{
+	public ClientType ClientType
+    {
 		get {return this.type;}
 	}
 
-	public virtual bool IsConnected{
+	public virtual bool IsConnected
+    {
 		get {return Status == NetworkStatus.Connected;}
 	}
 
 	protected static bool IsSocketConnected(Socket s)
-	{ 
-		try{  
-			return s.Connected && !((s.Poll(1000, SelectMode.SelectRead) && (s.Available == 0)) || !s.Connected);  
+	{
+        try{
+            return s.Connected && 
+                !(
+                    (
+                        s.Poll(1000, SelectMode.SelectRead) && 
+                        (s.Available == 0)
+                    ) || !s.Connected
+                 );  
 		}catch(Exception e){
 			Debug.LogException(e); 
 		}
 		return false;
 	}
-	
-	protected static void CloseSocket(Socket socket){
-		if(socket!=null){
-			try{
-                socket.Shutdown(SocketShutdown.Both);
-				socket.Close();
-			}catch(Exception e){
-				Debug.LogException(e);
-			}
-		}
-	}
- 
 } 
