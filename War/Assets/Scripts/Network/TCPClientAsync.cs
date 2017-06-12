@@ -1,4 +1,3 @@
-
 using System; 
 using UnityEngine;
 using System.Collections.Generic; 
@@ -11,47 +10,59 @@ using System.Timers;
 public class TCPClientAsync : TCPClient
 { 
     //注意此TcpClient是C#网络库的
-	private TcpClient client = null;
-	private NetworkStream networkStream; 
-	private System.Timers.Timer timer = new System.Timers.Timer(SEND_TIMEOUT);
+	private TcpClient            m_client        = null;
+	private NetworkStream        m_networkStream = null; 
+	private System.Timers.Timer  m_timer         = new System.Timers.Timer(SEND_TIMEOUT);
+    
+
+    bool                         m_readingHeader = true;
+    //网络消息协议编号
+    int                          m_cmd           = 0;
+    //包的长度
+    int                          m_totalSize     = 0;
+    const int                    BUF_SIZE        = 1024 * 10;
+    byte[]                       m_buffer        = new byte[BUF_SIZE];
+    MemoryStream                 m_memStream     = new MemoryStream();
+
 	public TCPClientAsync(ClientType type):base(type)
     { 
         //超时timer初始化
-		timer.AutoReset = false;
-		timer.Elapsed += new System.Timers.ElapsedEventHandler(OnConnectTimeout);
+        m_timer.AutoReset  = false;
+        m_timer.Elapsed   += new System.Timers.ElapsedEventHandler(
+            OnConnectTimeout);
 	}
 
 	public override void Dispose()
     { 
 		Reset ();
-		timer.Dispose ();
+        m_timer.Dispose();
 	}
 
     /// <summary>
     /// Reset操作
     /// 1.调用base的Reset
     /// 2.networkStream关
-    /// 3.内存stream关
+    /// 3.内存stream的指针设置到0
     /// 4.client关
     /// </summary>
     /// <param name="cleanup"></param>
 	public override void Reset(bool cleanup = true)
     {
 		base.Reset (cleanup);
-		timer.Enabled = false;
+        m_timer.Enabled = false;
 
-		if (networkStream != null) 
+		if (m_networkStream != null) 
         {
-			networkStream.Close();
-            networkStream = null;
+            m_networkStream.Close();
+            m_networkStream = null;
 		}
-		
-        if (client != null && client.Connected) 
-        {  
-			client.Close();
-            client = null;
+
+        if (m_client != null && m_client.Connected) 
+        {
+            m_client.Close();
+            m_client = null;
 		}
-		stream.Seek (0, SeekOrigin.Begin);
+		m_memStream.Seek (0, SeekOrigin.Begin);
 	}
 	 
 	/// <summary>
@@ -69,26 +80,26 @@ public class TCPClientAsync : TCPClient
 		 
 		Reset (); 
 
-		Assert.IsNull (client);  
-  
-		client = new TcpClient (); 
-		client.ReceiveTimeout = RECV_TIMEOUT;
-		client.SendTimeout = SEND_TIMEOUT; 
-		client.SendBufferSize = SEND_BUFF_SIZE; 
-		 
-		client.NoDelay = true;
+		Assert.IsNull (m_client);
 
-		if (!client.NoDelay) 
+        m_client = new TcpClient();
+        m_client.ReceiveTimeout = RECV_TIMEOUT;
+        m_client.SendTimeout    = SEND_TIMEOUT;
+        m_client.SendBufferSize = SEND_BUFF_SIZE;
+
+        m_client.NoDelay = true;
+
+        if (!m_client.NoDelay) 
         {
-			Debug.LogErrorFormat ("{0} NoDelay {1}",type, client.NoDelay);
+            Debug.LogErrorFormat("{0} NoDelay {1}", type, m_client.NoDelay);
 		}
-		Assert.IsTrue (client.NoDelay);
+        Assert.IsTrue(m_client.NoDelay);
 
 		try
         {
-			Status = NetworkStatus.Connecting;
-			var result = client.BeginConnect (ip, port,OnConnect,null);
-			timer.Enabled = true; 
+			Status     = NetworkStatus.Connecting;
+            var result = m_client.BeginConnect(ip, port, OnConnect, null);
+			m_timer.Enabled = true; 
 		}catch(Exception exe)
         {
 			Debug.LogError(exe);
@@ -113,7 +124,7 @@ public class TCPClientAsync : TCPClient
 	/// <param name="data"></param>
     public override  void Send(int cmd,byte[] data)
     {
-		if (networkStream == null) {
+		if (m_networkStream == null) {
 			Debug.LogWarningFormat("tcp client not connected , status is {0}",status);
 			return;
 		}
@@ -130,7 +141,7 @@ public class TCPClientAsync : TCPClient
 		Array.Copy (data,0,bytes,PACKAGE_HEADER_LENGTH,data.Length); 
 
 		try{
-			networkStream.BeginWrite (bytes,0,bytes.Length,OnWrite,null);  	
+			m_networkStream.BeginWrite (bytes, 0, bytes.Length, OnWrite, null);  	
 			#if UNITY_EDITOR
             Debug.LogFormat("send {0} with len {1} at time {2}", cmd, data.Length, System.DateTime.Now);
             #endif
@@ -142,17 +153,6 @@ public class TCPClientAsync : TCPClient
 
 	}
 	 
-	const int BUF_SIZE = 1024 * 10;
-
-	byte[] buffer = new byte[BUF_SIZE];
-	bool readingHeader = true;
-	//网络消息协议编号
-    int cmd = 0;
-    //包的长度
-	int totalSize = 0;
-
-	MemoryStream stream = new MemoryStream();   
-
     /// <summary>
     /// 网络Connect成功后的回调
     /// 
@@ -160,20 +160,20 @@ public class TCPClientAsync : TCPClient
     /// <param name="result"></param>
 	private void OnConnect(IAsyncResult result)
     {		
-		client.EndConnect(result);
-		timer.Enabled = false; 
-		timer.Stop ();
-		if (client.Connected)
+		m_client.EndConnect(result);
+		m_timer.Enabled = false; 
+		m_timer.Stop ();
+		if (m_client.Connected)
         {
 			Status = NetworkStatus.Connected;
-			networkStream = client.GetStream (); 
+			m_networkStream = m_client.GetStream (); 
 			
-			readingHeader = true; 
-			totalSize = 0;
+			m_readingHeader = true; 
+			m_totalSize = 0;
 			
-			stream.Seek (0, SeekOrigin.Begin);
-			stream.SetLength (0);
-			networkStream.BeginRead (buffer, 0, PACKAGE_HEADER_LENGTH, OnRead, null); 
+			m_memStream.Seek (0, SeekOrigin.Begin);
+            m_memStream.SetLength(0);
+			m_networkStream.BeginRead (m_buffer, 0, PACKAGE_HEADER_LENGTH, OnRead, null); 
 			
 			NotifyStatusChange (NetworkStatus.Connected);
 		} 
@@ -195,9 +195,10 @@ public class TCPClientAsync : TCPClient
         }
     }
 
-	private void OnWrite(IAsyncResult result){
+	private void OnWrite(IAsyncResult result)
+    {
 		//Debug.Log ("OnWrite");
-		networkStream.EndWrite (result);
+		m_networkStream.EndWrite (result);
 	}
 
     /// <summary>
@@ -209,23 +210,25 @@ public class TCPClientAsync : TCPClient
     {
         try
         {
-			int readBytes = networkStream.EndRead (result);
+			int readBytes = m_networkStream.EndRead (result);
 			
 			//Debug.LogFormat ("OnRead {0} :{1} ",readingHeader?"Header":"Body",readBytes);
 			
 			if (readBytes > 0)
             {
-				stream.Write (buffer, 0, readBytes);  
+				m_memStream.Write (m_buffer, 0, readBytes);  
 				OnRecieve ();
-				if (readingHeader)
+				if (m_readingHeader)
                 {
 					//Debug.Log ("OnRead New Header");
-					networkStream.BeginRead (buffer, 0, PACKAGE_HEADER_LENGTH - (int)stream.Length, OnRead, null);
+					m_networkStream.BeginRead (m_buffer, 0, 
+                        PACKAGE_HEADER_LENGTH - (int)m_memStream.Length, OnRead, null);
 				}
-                else if (totalSize > 0)
+                else if (m_totalSize > 0)
                 {
 					//Debug.LogFormat ("OnRead New Body {0} {1}",totalSize,stream.Length);
-					networkStream.BeginRead (buffer, 0, Math.Min(totalSize - (int)stream.Length,BUF_SIZE), OnRead, null);
+					m_networkStream.BeginRead (m_buffer, 0, 
+                        Math.Min(m_totalSize - (int)m_memStream.Length, BUF_SIZE), OnRead, null);
 				}
                 else 
                 {
@@ -263,38 +266,43 @@ public class TCPClientAsync : TCPClient
 	private void OnRecieve()
     {
 		 
-		if (readingHeader) 
+		if (m_readingHeader) 
         {
-			if (stream.Length == PACKAGE_HEADER_LENGTH) 
+			if (m_memStream.Length == PACKAGE_HEADER_LENGTH) 
             {
-				byte[] header = stream.ToArray ();
+                byte[] header = m_memStream.ToArray();
 				
-				totalSize = IPAddress.NetworkToHostOrder (System.BitConverter.ToInt32 (header, 0)) - 5;	
-				cmd = IPAddress.NetworkToHostOrder (System.BitConverter.ToInt32 (header, 5));							 
+				m_totalSize = IPAddress.NetworkToHostOrder (System.BitConverter.ToInt32 (header, 0)) - 5;	
+				m_cmd = IPAddress.NetworkToHostOrder (System.BitConverter.ToInt32 (header, 5));							 
 
-				stream.Seek (0, SeekOrigin.Begin);
-				stream.SetLength (0); 
+				m_memStream.Seek (0, SeekOrigin.Begin);
+                m_memStream.SetLength(0); 
 				
-				if (totalSize > 0) {
-					readingHeader = false;
-				} else {
-					Process (cmd, stream.ToArray ());
+				if (m_totalSize > 0) 
+                {
+					m_readingHeader = false;
+				} 
+                else 
+                {
+					Process(m_cmd, m_memStream.ToArray ());
 				}
-			}else if(stream.Length > PACKAGE_HEADER_LENGTH)
+			}
+            else if(m_memStream.Length > PACKAGE_HEADER_LENGTH)
             {
 				Debug.LogError("Network Stream Error When Reading Message Header");
 			}
 		} 
         else 
         {
-			if(stream.Length == totalSize)
+			if(m_memStream.Length == m_totalSize)
             {
-				Process(cmd,stream.ToArray());
-				readingHeader = true;				
-				stream.Seek(0,SeekOrigin.Begin);
-				stream.SetLength(0);
-				totalSize = 0;
-			}else if(stream.Length > totalSize)
+				Process(m_cmd, m_memStream.ToArray());
+				m_readingHeader = true;				
+				m_memStream.Seek(0, SeekOrigin.Begin);
+                m_memStream.SetLength(0);
+				m_totalSize = 0;
+			}
+            else if(m_memStream.Length > m_totalSize)
             {
 				Debug.LogError("Network Stream Error When Reading Message Body");
 			}
@@ -302,9 +310,14 @@ public class TCPClientAsync : TCPClient
 		
 	} 
 
-	public virtual bool IsConnected{
-		get {return client!=null && client.Connected && IsSocketConnected(client.Client);}
-	}
- 
-	
+    //public virtual bool IsConnected
+    //{
+    //    get 
+    //    {
+    //        bool result = m_client != null &&
+    //            m_client.Connected &&
+    //            IsSocketConnected(m_client.Client);
+    //        return result;
+    //    }
+    //}
 } 

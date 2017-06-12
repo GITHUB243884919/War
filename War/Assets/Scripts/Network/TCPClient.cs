@@ -107,7 +107,7 @@ public abstract class TCPClient : IDisposable
 
 	//[NoToLuaAttribute]
     /// <summary>
-    /// 网络消息队列
+    /// 缓存网络消息队列
     /// </summary>
     /// <param name="cmd"></param>
     /// <param name="data"></param>
@@ -120,7 +120,8 @@ public abstract class TCPClient : IDisposable
 		msg.cmd = cmd;
 		msg.data = data;
 		
-		lock(messages){
+		lock(messages)
+        {
 			messages.Enqueue (msg);
 		}
 	}
