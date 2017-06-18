@@ -56,19 +56,20 @@ public class NetworkBehaviour:TaskExecutor
  
 	void OnApplicationPause(bool isPause){ 
 #if !UNITY_EDITOR
-		Debug.LogFormat ("OnApplicationPause {0}",isPause);
+        //安卓调试测试暂时屏蔽20170616
+        //Debug.LogFormat ("OnApplicationPause {0}",isPause);
 
-		if (isPause) {
-			if (TCPHelper.WorldClient.IsConnected) {
-				LoginManager.Disconnect ();
-				isHoldNetwork = true;
-			}
-		} else {
-			if (isHoldNetwork) {
-				LoadingTips.Show();
-				LoginManager.Reconnect ();
-			}
-		}
+        //if (isPause) {
+        //    if (TCPHelper.WorldClient.IsConnected) {
+        //        LoginManager.Disconnect ();
+        //        isHoldNetwork = true;
+        //    }
+        //} else {
+        //    if (isHoldNetwork) {
+        //        LoadingTips.Show();
+        //        LoginManager.Reconnect ();
+        //    }
+        //}
 #endif
 
 	}

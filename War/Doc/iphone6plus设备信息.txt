@@ -1,0 +1,43 @@
+﻿设备名称：			范征勇的 iPhone
+设备类型：			iPhone
+产品类型：			iPhone7,1
+系统版本：			10.3.2
+序列号：				C39Q31X0G5QW
+设备标识：			a58633fe40fe3ca3b0f0cb6e316070d59c616d74
+设备型号：			MGAJ2
+产品版本：			14F89
+硬件型号：			N56AP
+前面板颜色：			White
+外壳颜色			Silver
+地区信息：			ZP/A
+CPU 架构：			arm64
+Wi-Fi地址：			50:7a:55:6c:a3:14
+蓝牙地址：			50:7a:55:6c:a3:15
+分区类型：			GUID_partition_scheme
+固件版本：			iBoot-3406.60.10
+激活状态：			Activated
+激活确认：			True
+基带版本：			5.62.00
+基带芯片：			8343777
+基带证书：			3840149528
+ICCID:				89860113811053647348
+IMEI:				359247069370710
+MLB序列号：			C0752850A02FRRCH
+订阅网络码：			01
+密码保护：			True
+电话号码：			+86 186-0036-6709
+产品SOC：			True
+协议版本：			2
+SIM卡状态：			kCTSIMSupportSIMStatusReady
+设备家族：			1 
+Unix时间：			1497573342
+时区：				Asia/Shanghai
+时区差：				28800
+芯片标识：			8558839646917670
+24小时制：			True
+键盘：				en_US@hw=US;sw=QWERTY
+正在充电：			True
+剩余电量：			100
+运营商：			中国联通
+购买地区：			香港特别行政区
+联系方式：			http://www.apple.com/support/contact/phone_contacts.html

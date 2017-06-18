@@ -73,9 +73,9 @@ public class Scene_Commond_Test : MonoBehaviour
     void CreateTank_Arrive_Attack(int entityID, bool withAI, bool withEffect)
     {
         BattleObjManager.E_BATTLE_OBJECT_TYPE type
-            //= BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK;
+            = BattleObjManager.E_BATTLE_OBJECT_TYPE.TANK;
             //= BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ENGINEERCORPS;
-            = BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
+            //= BattleObjManager.E_BATTLE_OBJECT_TYPE.M_ARM_ARTILLERY;
         //int serverEntityID = entityID;
         int serverEntityType = 1;
 
